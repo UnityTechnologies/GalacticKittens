@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d042368499dfb047b05fe63a00a3b44, type: 3}
+  m_Name: Dante
+  m_EditorClassIdentifier: Assembly-CSharp::CharactersDataSO
+  characterSprite: {fileID: 21300000, guid: 86ace3724f37ac3c9af25e8cbea3d0a3, type: 3}
+  characterShipSprite: {fileID: 21300000, guid: 54c407a6e3cfdec32b4685599e18fc1b, type: 3}
+  iconSprite: {fileID: 21300000, guid: 1193d4c5158fa7975999bb3373de66f1, type: 3}
+  iconDeathSprite: {fileID: 21300000, guid: 8778c06018cf3445c87ee726dd89be7b, type: 3}
+  characterName: DANTE
+  spaceshipPrefab: {fileID: 8673732105992480305, guid: c7d4f4a8fe132964b9888445555f49db, type: 3}
+  spaceshipScorePrefab: {fileID: 4916945949233725477, guid: fe82c230770585649babf2a77bd6bae7, type: 3}
+  color: {r: 0.24705884, g: 0.7019608, b: 1, a: 1}
+  darkColor: {r: 0.07450981, g: 0.34901962, b: 0.54901963, a: 1}
+  clientId: 0
+  playerId: 0
+  isSelected: 0
+  enemiesDestroyed: 0
+  powerUpsUsed: 0

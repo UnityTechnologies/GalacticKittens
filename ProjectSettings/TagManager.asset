@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Debri
+  - Bullet
+  - PowerUpSpecial
+  - DefenseMatrix
+  - Enemy
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Enemy
+  - Player
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Background
+    uniqueID: 2682266015
+    locked: 0
+  - name: Gameplay
+    uniqueID: 4102571313
+    locked: 0
+  - name: Frontground
+    uniqueID: 2961614731
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0

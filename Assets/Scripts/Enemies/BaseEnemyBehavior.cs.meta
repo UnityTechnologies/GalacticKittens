@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Luis/DefenseMatrix.cs.meta
+guid: 1af98fea6802c854db2eb078b72e0afc
+=======
+guid: 79d52dfa5a7d0b143a899c1bfa1a0057
+>>>>>>> 756f45c5645204c019c919f961ab0680fbefb806:Assets/Scripts/Enemies/BaseEnemyBehavior.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

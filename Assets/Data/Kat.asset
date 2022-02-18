@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d042368499dfb047b05fe63a00a3b44, type: 3}
+  m_Name: Kat
+  m_EditorClassIdentifier: Assembly-CSharp::CharactersDataSO
+  characterSprite: {fileID: 21300000, guid: e1b5dfd56dd1ef41480422918c65ca09, type: 3}
+  characterShipSprite: {fileID: 21300000, guid: 6d52700f34e69bd929316899474e093a, type: 3}
+  iconSprite: {fileID: 21300000, guid: 143213081105297be85972676d33f655, type: 3}
+  iconDeathSprite: {fileID: 21300000, guid: 5fbf3568e569fae2f92ef19cd2b599f1, type: 3}
+  characterName: KAT
+  spaceshipPrefab: {fileID: 8673732105992480305, guid: 6ee35708ec1f39e4693e0795f6582bf6, type: 3}
+  spaceshipScorePrefab: {fileID: 4916945949233725477, guid: 5e1466cc0fdd3c642a598e3df198dd9b, type: 3}
+  color: {r: 1, g: 0, b: 0, a: 1}
+  darkColor: {r: 0.5849056, g: 0.08001069, b: 0.08914966, a: 1}
+  clientId: 0
+  playerId: 0
+  isSelected: 1
+  enemiesDestroyed: 9
+  powerUpsUsed: 0
