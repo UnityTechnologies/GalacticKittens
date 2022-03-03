@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: -5345985685899822454}
   - component: {fileID: 4119703525026390935}
   - component: {fileID: 4258864899122587332}
+  - component: {fileID: 9147236365500616333}
   m_Layer: 7
   m_Name: PlayerShipBase
   m_TagString: Player
@@ -206,31 +207,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health:
     m_InternalValue: 10
-  m_moveType: 1
-  m_speed: 10
   m_fireDamage: 1
   m_maxSpecialPower: 2
   m_bulletPrefab: {fileID: 4404811376452213675, guid: 88e53608c0ea71d4fb68ae0b30f07304, type: 3}
   m_defenseMatrix: {fileID: 467963061353800756}
   m_cannonPosition: {fileID: 3314117860024100998}
   m_characterData: {fileID: 0}
-  m_shipSprite: {fileID: 4455599089423587300}
   m_explosionVfxPrefab: {fileID: 891729954413761739, guid: 57043e97584ceda4a951bca5a5216bd1, type: 3}
   m_shootVfx: {fileID: 7011346253425340032, guid: 3e6abb8b3230f5b40af22df2ceb7bf2a, type: 3}
   m_hitEffectDuration: 0.2
-  m_verticalLimits:
-    minLimit: -5
-    maxLimit: 5
-  m_hortizontalLimits:
-    minLimit: -8
-    maxLimit: 8
   m_hitClip: {fileID: 8300000, guid: a6863a3e6babcfe44ab0470a2325153b, type: 3}
   m_shieldClip: {fileID: 8300000, guid: f20db210d68a13c4cbe5b8194b58c79d, type: 3}
   m_shootClip: {fileID: 8300000, guid: 13cf73b828d6d4a45b61b7c7b8d8397b, type: 3}
   m_shipRenderer: {fileID: 4455599089423587300}
-  m_normalSprite: {fileID: 21300000, guid: bccc3a49e6ce9f449a454cb0c3521dc4, type: 3}
-  m_upSprite: {fileID: 21300000, guid: d990a526815f0b136a7840469d8e7027, type: 3}
-  m_downSprite: {fileID: 21300000, guid: 5e113a0ccd42d067c82a2763bf5ce7b7, type: 3}
   playerUI: {fileID: 0}
   characterData: {fileID: 0}
   gameplayManager: {fileID: 0}
@@ -416,6 +405,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9147236365500616333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3287878277684609727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9a9ff2dd945824d800933f3a93d90e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_moveType: 0
+  m_verticalLimits:
+    minLimit: 0
+    maxLimit: 0
+  m_hortizontalLimits:
+    minLimit: 0
+    maxLimit: 0
+  m_shipRenderer: {fileID: 4455599089423587300}
+  m_normalSprite: {fileID: 0}
+  m_upSprite: {fileID: 0}
+  m_downSprite: {fileID: 0}
+  m_speed: 0
 --- !u!1 &5202601799221992705
 GameObject:
   m_ObjectHideFlags: 0
