@@ -59,9 +59,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerShipVariant_Kat
       objectReference: {fileID: 0}
+    - target: {fileID: 7856277709828443390, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_upSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d990a526815f0b136a7840469d8e7027, type: 3}
+    - target: {fileID: 7856277709828443390, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_downSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5e113a0ccd42d067c82a2763bf5ce7b7, type: 3}
+    - target: {fileID: 7856277709828443390, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_normalSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bccc3a49e6ce9f449a454cb0c3521dc4, type: 3}
     - target: {fileID: 8586030701048118988, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 951099334
       objectReference: {fileID: 0}
+    - target: {fileID: 9147236365500616333, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_upSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d990a526815f0b136a7840469d8e7027, type: 3}
+    - target: {fileID: 9147236365500616333, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_downSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5e113a0ccd42d067c82a2763bf5ce7b7, type: 3}
+    - target: {fileID: 9147236365500616333, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_normalSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bccc3a49e6ce9f449a454cb0c3521dc4, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}

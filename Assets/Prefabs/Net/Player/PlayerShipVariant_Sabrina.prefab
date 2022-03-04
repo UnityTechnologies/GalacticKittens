@@ -101,7 +101,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3287878277684609727, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
       propertyPath: m_Name
-      value: PlayerShipVariant_3
+      value: PlayerShipVariant_Sabrina
       objectReference: {fileID: 0}
     - target: {fileID: 3314117860024100998, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
       propertyPath: m_RootOrder
@@ -139,6 +139,18 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7856277709828443390, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_upSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4d07b19ad04e78707987155c67bfb96c, type: 3}
+    - target: {fileID: 7856277709828443390, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_downSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 94fe821194bf8e9e2a895de69da9f1ff, type: 3}
+    - target: {fileID: 7856277709828443390, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_normalSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7eb5dad5a6d132c49b96cae3ccb89fd0, type: 3}
     - target: {fileID: 8586030701048118988, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 951099334

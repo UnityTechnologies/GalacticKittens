@@ -140,7 +140,7 @@ public class PlayerShipMovement : MonoBehaviour
         if (transform.position.y <= m_verticalLimits.minLimit)
         {
             // Check if the inputs goes on that direction -> vertical min is negative
-            if (Mathf.Sign(m_inputY) == -1f)
+            if (Mathf.Approximately(Mathf.Sign(m_inputY), -1f))
             {
                 m_inputY = 0;
             }
@@ -148,7 +148,7 @@ public class PlayerShipMovement : MonoBehaviour
         else if (transform.position.y >= m_verticalLimits.maxLimit)
         {
             // Check if the inputs goes on that direction -> vertical max is positive
-            if (Mathf.Sign(m_inputY) == 1f)
+            if (Mathf.Approximately(Mathf.Sign(m_inputY), 1f))
             {
                 m_inputY = 0f;
             }
@@ -158,7 +158,7 @@ public class PlayerShipMovement : MonoBehaviour
         if (transform.position.x <= m_hortizontalLimits.minLimit)
         {
             // Check if the inputs goes on that direction -> horizontal min is negative
-            if (Mathf.Sign(m_inputX) == -1f)
+            if (Mathf.Approximately(Mathf.Sign(m_inputX), -1f))
             {
                 m_inputX = 0f;
             }
@@ -166,7 +166,7 @@ public class PlayerShipMovement : MonoBehaviour
         else if (transform.position.x >= m_hortizontalLimits.maxLimit)
         {
             // Check if the inputs goes on that direction -> horizontal max is positive
-            if (Mathf.Sign(m_inputX) == 1f)
+            if (Mathf.Approximately(Mathf.Sign(m_inputX), 1f))
             {
                 m_inputX = 0f;
             }
