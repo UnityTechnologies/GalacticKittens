@@ -6,8 +6,10 @@ public class OnUIButtonHover : MonoBehaviour
 {    
     [SerializeField]
     Sprite m_normalSprite;
+
     [SerializeField]
-    Sprite m_hoverSprite;            
+    Sprite m_hoverSprite;
+
     Image buttonImageUI;
 
     void Start()

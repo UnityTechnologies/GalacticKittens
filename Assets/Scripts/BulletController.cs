@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class BulletController : NetworkBehaviour
 {
-    private enum BulletOwner { enemy, player };
+    private enum BulletOwner
+    {
+        enemy,
+        player
+    };
 
     public int damage;
 

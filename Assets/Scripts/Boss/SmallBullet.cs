@@ -18,7 +18,7 @@ public class SmallBullet : NetworkBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (IsServer)
-        {            
+        {
             if (collider.TryGetComponent(out IDamagable damagable))
             {
                 damagable.Hit(_damage);

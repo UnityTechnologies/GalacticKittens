@@ -155,6 +155,18 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 951099334
       objectReference: {fileID: 0}
+    - target: {fileID: 9147236365500616333, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_upSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5be7f7ac7b2f9da19bbb61e6e95facbc, type: 3}
+    - target: {fileID: 9147236365500616333, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_downSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1aea474bea39bec84a1d632cfd2cf6bd, type: 3}
+    - target: {fileID: 9147236365500616333, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_normalSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9e4709dc955508c48add3d3bd6adc388, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
 --- !u!4 &8647392977046195208 stripped

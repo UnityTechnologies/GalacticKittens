@@ -6,14 +6,19 @@ public class HomingMisile : NetworkBehaviour
 {
     [SerializeField]
     int m_damage;
+
     [SerializeField]
     float m_startingSpeed;
+
     [SerializeField]
     float m_followSpeed;
+
     [SerializeField]
     float m_startingTime;
+
     [SerializeField]
     float m_followTime;
+
     [Header("Set in runtime")]
     [SerializeField]
     Transform m_targetToHit;
@@ -101,6 +106,7 @@ public class HomingMisile : NetworkBehaviour
 
             // Start misile routine
             StartCoroutine(MisileHoming());
+
             base.OnNetworkSpawn();
         }
     }

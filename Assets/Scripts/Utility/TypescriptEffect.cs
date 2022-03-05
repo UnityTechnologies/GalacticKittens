@@ -15,14 +15,6 @@ public class TypescriptEffect : MonoBehaviour
 
     private TextMeshProUGUI _textUI;            // The ProGUI text on the UI
 
-    // private void Start()
-    // {
-    //     // Get the componente needed for animating the text
-    //     _textUI = GetComponent<TextMeshProUGUI>();        
-    //     StartCoroutine(Effect());        
-    //     print("typescript start");
-    // }
-
     private void OnEnable()
     {        
         // Get the componente needed for animating the text
@@ -44,7 +36,7 @@ public class TypescriptEffect : MonoBehaviour
             string animText = "";
             _textUI.text = animText;
 
-            // With a loop we create a typescript effect assigning charactater per character
+            // With a loop we create a typescript effect assigning character per character
             // in animText var and waiting X time
             for (int i = 0; i < _text.Length; i++)
             {

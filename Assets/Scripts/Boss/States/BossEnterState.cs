@@ -5,6 +5,7 @@ public class BossEnterState : BaseBossState
 {
     [SerializeField]
     float m_speed;
+
     [Header("Set in runtime")]
     public Vector3 initialPosition;
 

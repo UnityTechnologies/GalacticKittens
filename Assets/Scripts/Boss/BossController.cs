@@ -3,7 +3,7 @@ using UnityEngine;
 
 /*
     Script that controls how the boss is going to work,
-    the diferent behaviours are set on diferent scripts. 
+    the different behaviours are set on different scripts. 
     Here you can add new states
 */
 
@@ -11,20 +11,27 @@ public class BossController : NetworkBehaviour
 {
     [SerializeField]
     int m_damage;
+
     [Header("States for the boss")]
     [SerializeField]
     BossEnterState m_enterState;
+
     [SerializeField]
-    BaseBossState m_fireState;    
+    BaseBossState m_fireState;
+
     [SerializeField]
     BaseBossState m_misileBarrageState;
+
     [SerializeField]
     BaseBossState m_idleState;
+
     [SerializeField]
     BaseBossState m_deathState;
     [Header("For testing the boss states -> false for production")]
+
     [SerializeField]
     bool m_isTesting;
+
     [SerializeField]
     BossState m_testState;
 
@@ -53,37 +60,37 @@ public class BossController : NetworkBehaviour
     }
 
     // Set the boss state to run
-    // You can add more states to the bosss
-    //..    
+    // You can add more states to the boss
+    //..
     public void SetState(BossState state)
     {
-        if (IsServer)
-        {
-            switch (state)
-            {
-                case BossState.enter:
-                    m_enterState.RunState();
-                    break;
-                case BossState.fire:
-                    m_fireState.RunState();
-                    break;
-                case BossState.misileBarrage:
-                    m_misileBarrageState.RunState();
-                    break;                
-                case BossState.idle:
-                    m_idleState.RunState();
-                    break;
-                case BossState.death:
-                    // Stop all coroutines from other state
-                    // because the death can override any state                                        
-                    m_enterState.StopState();
-                    m_fireState.StopState();
-                    m_misileBarrageState.StopState();                    
-                    m_idleState.StopState();
+        if (!IsServer)
+            return;
 
-                    m_deathState.RunState();
-                    break;
-            }
+        switch (state)
+        {
+            case BossState.enter:
+                m_enterState.RunState();
+                break;
+            case BossState.fire:
+                m_fireState.RunState();
+                break;
+            case BossState.misileBarrage:
+                m_misileBarrageState.RunState();
+                break;
+            case BossState.idle:
+                m_idleState.RunState();
+                break;
+            case BossState.death:
+                // Stop all coroutines from other state
+                // because the death can override any state                                        
+                m_enterState.StopState();
+                m_fireState.StopState();
+                m_misileBarrageState.StopState();
+                m_idleState.StopState();
+
+                m_deathState.RunState();
+                break;
         }
     }
 

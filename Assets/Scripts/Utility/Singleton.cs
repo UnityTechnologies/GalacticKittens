@@ -78,4 +78,3 @@ public class SingletonNetworkPersistent<T> : NetworkBehaviour where T : Componen
         }
     }
 }
-

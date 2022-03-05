@@ -2,8 +2,8 @@ using Unity.Netcode;
 using UnityEngine;
 using System;
 
-// TODO: Internal dicionary for better performance on the lookup
-// No longer in use, because now we use the audiomanager for sfx that plays for a moment
+// TODO: Internal dictionary for better performance on the lookup
+// No longer in use, because now we use the audio manager for sfx that plays for a moment
 
 [Serializable]
 struct PlayerAudioClip
@@ -19,16 +19,17 @@ public class PlayerShipAudio : NetworkBehaviour
     public enum PlayerClip
     {
         hit,
-        shield,        
+        shield,
         shoot,
-    }    
+    }
+
     [SerializeField]
-    private PlayerAudioClip[] _playerClips;    
+    private PlayerAudioClip[] _playerClips;
     private AudioSource _source;
 
     void Start()
     {
-        _source = GetComponent<AudioSource>();        
+        _source = GetComponent<AudioSource>();
     }
 
     public void Play(PlayerClip playerClip)

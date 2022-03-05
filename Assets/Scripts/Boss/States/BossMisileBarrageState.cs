@@ -5,8 +5,10 @@ public class BossMisileBarrageState : BaseBossState
 {
     [SerializeField]
     Transform[] _misileSpawningArea;
+
     [SerializeField]
-    GameObject _misilePrefab;    
+    GameObject _misilePrefab;
+
     [SerializeField]
     [Range(0f, 1f)]
     float misileDelayBetweenSpawns;
@@ -20,7 +22,7 @@ public class BossMisileBarrageState : BaseBossState
             yield return new WaitForSeconds(misileDelayBetweenSpawns);
         }
 
-        // Go idle from a moment                
+        // Go idle from a moment
         m_controller.SetState(BossState.idle);
     }
 

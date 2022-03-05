@@ -5,8 +5,10 @@ public class CircularBullet : NetworkBehaviour
 {
     [SerializeField]
     private float _speed;
+
     [SerializeField]
     private GameObject _smallBulletPrefab;
+
     [SerializeField]
     private Transform[] _firePositions;
 
@@ -35,9 +37,9 @@ public class CircularBullet : NetworkBehaviour
     {
         if (IsServer)
         {
-            // After x time blow up and spawn small bullets        
+            // After x time blow up and spawn small bullets
             float randomSpawn = Random.Range(1.5f, 3f);
-            Invoke("SpawnBullets", randomSpawn);
+            Invoke(nameof(SpawnBullets), randomSpawn);
         }
         base.OnNetworkSpawn();
     }

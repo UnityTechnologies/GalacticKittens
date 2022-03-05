@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerShipMovement : MonoBehaviour
+public class PlayerShipMovement : NetworkBehaviour
 {
     enum MoveType 
     { 
@@ -56,6 +57,11 @@ public class PlayerShipMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // We're only updating the ship's movements when we're surely updating on the owning
+        // instance
+        if (!IsOwner)
+            return;
+
         /*
             There two types of movement:
             constant -> linear move, there are no time aceleration
@@ -172,5 +178,4 @@ public class PlayerShipMovement : MonoBehaviour
             }
         }
     }
-
 }

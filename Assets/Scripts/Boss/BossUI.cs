@@ -11,8 +11,10 @@ public class BossUI : NetworkBehaviour
 {
     [SerializeField]
     Slider m_healthSlider;
+
     [SerializeField]
     Image m_healthImage;
+
     [SerializeField]
     HealthColor m_healthColor;
 
@@ -21,7 +23,8 @@ public class BossUI : NetworkBehaviour
     [ClientRpc]
     private void SetHealthClientRpc(int health)
     {
-        if (IsServer) return;
+        if (IsServer)
+            return;
 
         maxHealth = health;
         m_healthImage.color = m_healthColor.normalColor;
@@ -31,7 +34,8 @@ public class BossUI : NetworkBehaviour
     [ClientRpc]
     private void UpdateUIClientRpc(float currentHealth)
     {
-        if (IsServer) return;
+        if (IsServer)
+            return;
 
         m_healthSlider.value = currentHealth;
         m_healthImage.color = m_healthColor.GetHealthColor(currentHealth);
@@ -39,7 +43,8 @@ public class BossUI : NetworkBehaviour
 
     public void SetHealth(int health)
     {
-        if (!IsServer) return;
+        if (!IsServer)
+            return;
         
         maxHealth = health;
         m_healthImage.color = m_healthColor.normalColor;
@@ -49,17 +54,20 @@ public class BossUI : NetworkBehaviour
 
     public void UpdateUI(int currentHealth)
     {
-        if (!IsServer) return;
+        if (!IsServer)
+            return;
         
-        float convertedHealth = (float)currentHealth / (float)maxHealth;
+        float convertedHealth = (float)currentHealth / maxHealth;
         m_healthSlider.value = convertedHealth;
         m_healthImage.color = m_healthColor.GetHealthColor(convertedHealth);
+
         UpdateUIClientRpc(convertedHealth);
     }
 
     public override void OnNetworkSpawn()
     {
         gameObject.SetActive(false);
+
         base.OnNetworkSpawn();
     }
 }

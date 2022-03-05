@@ -11,7 +11,7 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
         new NetworkVariable<float>(NetworkVariableReadPermission.Everyone, 3.5f);
         
     [SerializeField]
-    private AudioClip _shootClip;    
+    private AudioClip _shootClip;
 
     private float m_CurrentCooldownTime = 0f;
 
@@ -20,7 +20,7 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
         if (IsServer)
             m_EnemyHealthPoints.OnValueChanged += OnEnemyHealthPointsChange;
 
-        m_EnemyMovementType = GetRandomEnemyMovementType();        
+        m_EnemyMovementType = GetRandomEnemyMovementType();
 
         base.OnNetworkSpawn();
     }

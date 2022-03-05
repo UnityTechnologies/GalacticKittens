@@ -4,19 +4,26 @@ using UnityEngine;
 public class PlayerShipScore : MonoBehaviour
 {
     [SerializeField]
-    GameObject m_vfxSmoke;                
+    GameObject m_vfxSmoke;
+
     [SerializeField]
-    GameObject m_vfxJet;                    
+    GameObject m_vfxJet;
+
     [SerializeField]
-    TextMeshPro m_scoreText;                
+    TextMeshPro m_scoreText;
+
     [SerializeField]
     TextMeshPro m_enemiesDestroyedText;
+    
     [SerializeField]
     TextMeshPro m_powerUpsUsedText;
+
     [SerializeField]
     GameObject m_ship;
+
     [SerializeField]
     GameObject m_crown;
+
     [SerializeField]
     AnimationCurve m_moveCurve;
 
@@ -43,7 +50,7 @@ public class PlayerShipScore : MonoBehaviour
         m_scoreText.text = score.ToString();
     }
 
-    // Turn on the crown because im the best ship
+    // Turn on the crown because I'm the best ship
     public void BestShip()
     {
         m_crown.SetActive(true);
