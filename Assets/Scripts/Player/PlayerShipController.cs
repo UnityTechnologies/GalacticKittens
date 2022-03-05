@@ -82,8 +82,6 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
                 if (IsServer) // Host
                 {
                     // All player should shutdown and exit
-                    // NetworkManager.Singleton.Shutdown();
-                    // LoadingSceneManager.Instance.LoadScene(SceneName.Menu, false);
                     StartCoroutine(HostShutdown());
                 }
                 else
@@ -197,8 +195,6 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
                     // Update UI
                     playerUI.UpdatePowerUp(m_specials.Value, true);
 
-                    // Sync to clients
-                    // SetSpecialsClientRpc(m_specials.Value, true);
                     // Remove the power-up
                     powerUp.Despawn();
                 }
