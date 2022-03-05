@@ -119,9 +119,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
             // Tell the UI to remove the icon
             playerUI.UpdatePowerUp(m_specials.Value, false);
 
-            // Update the UI on clients
-            // SetSpecialsClientRpc(m_specials.Value, false);
-            // Reduce the number of specials available
+            // Update the UI on clients, reduce the number of specials available
             m_specials.Value--;
 
             // Activate the special on clients for sync
@@ -187,7 +185,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     {
         if (IsServer)
         {
-            // If the collider hit a powerup
+            // If the collider hit a power-up
             if (collider.TryGetComponent(out PowerUpSpecial powerUp))
             {
                 // Check if i have space to take the special
@@ -195,11 +193,13 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
                 {
                     // Update var
                     m_specials.Value++;
+
                     // Update UI
                     playerUI.UpdatePowerUp(m_specials.Value, true);
+
                     // Sync to clients
                     // SetSpecialsClientRpc(m_specials.Value, true);
-                    // Remove the powerup
+                    // Remove the power-up
                     powerUp.Despawn();
                 }
             }
@@ -241,11 +241,9 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
             // Spawn the death vfx
             NetworkSpawnController.SpawnHelper(m_explosionVfxPrefab, this.transform.position);
 
-            // Tell the Gameplay manager that i died
-            // GameplayManager.playerDead?.Invoke(m_characterData.clientId);
+            // Tell the Gameplay manager that I've been defeated
             gameplayManager.PlayerDeath(m_characterData.clientId);
 
-            // GameplayManager.Instance.PlayerDeath(m_characterData.clientId);
             // Safety check
             if (NetworkObject != null || NetworkObject.IsSpawned)
                 NetworkObject.Despawn();

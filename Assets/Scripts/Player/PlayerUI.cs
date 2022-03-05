@@ -5,8 +5,8 @@ using System;
 using Unity.Netcode;
 
 /*
-    This script set and update the values of the playership UI
-    set: by gamemanager
+    This script set and update the values of the player ship UI
+    set: by game manager
 */
 
 public class PlayerUI : NetworkBehaviour
@@ -22,7 +22,6 @@ public class PlayerUI : NetworkBehaviour
         public Image healthImage;
         public HealthColor healthColor;
         public GameObject[] powerUp;
-
     }
 
     // Struct for a better organization of the death UI
@@ -44,12 +43,14 @@ public class PlayerUI : NetworkBehaviour
     [ClientRpc]
     void UpdateHealthClientRpc(float currentHealth)
     {
-        if (IsServer) return;
+        if (IsServer)
+            return;
         
-        m_healthUI.healthSlider.value = currentHealth;        
+        m_healthUI.healthSlider.value = currentHealth;
         m_healthUI.healthImage.color = m_healthUI.healthColor.GetHealthColor(currentHealth);
+
         // print($"{gameObject.name} {currentHealth}");
-        if (currentHealth <= 0)
+        if (currentHealth <= 0f)
         {
             // Turn off lifeUI
             m_healthUI.healthUI.SetActive(false);
@@ -62,14 +63,13 @@ public class PlayerUI : NetworkBehaviour
     // TODO: check if the initial values are set on client
     // Set the initial values of the UI
     public void SetUI(int playerId, Sprite playerIcon, Sprite playerDeathIcon, int maxHealth, Color color)
-    {        
-        // if (!IsServer) return;
-
+    {
         m_healthUI.playerIconImage.sprite = playerIcon;
         m_healthUI.playerIdText.color = color;
         m_healthUI.playerIdText.text = $"P{(playerId + 1)}";
         m_deathUI.playerIdDeathText.color = color;
         m_deathUI.playerIconDeathImage.sprite = playerDeathIcon;
+
         this.maxHealth = maxHealth;
         m_healthUI.healthImage.color = m_healthUI.healthColor.normalColor;
 
@@ -78,47 +78,21 @@ public class PlayerUI : NetworkBehaviour
 
         // Safety -> inactive in scene
         m_deathUI.deathUI.SetActive(false);
-
-        //print($"Set UI -> {playerId}");
-
-        // Sync to clients
-        // SetUIClientRpc(playerId, color);
-
     }
-
-    // [ClientRpc]
-    // void SetUIClientRpc(int playerId, Color color)
-    // {
-    //     if (IsServer) return;
-
-    //     print($"SetUIClient -> {playerId}");
-
-    //     // m_healthUI.playerIconImage.sprite = playerIcon;
-    //     m_healthUI.playerIdText.color = color;
-    //     m_healthUI.playerIdText.text = $"P{(playerId + 1)}";
-    //     m_deathUI.playerIdDeathText.color = color;
-    //     // m_deathUI.playerIconDeathImage.sprite = playerDeathIcon;
-    //     // this.maxHealth = maxHealth;
-    //     m_healthUI.healthImage.color = m_healthUI.healthColor.normalColor;
-
-    //     // Turn on my lifeUI
-    //     m_healthUI.healthUI.SetActive(true);
-
-    //     // Safety -> inactive in scene
-    //     m_deathUI.deathUI.SetActive(false);
-    // }
 
     // Update the UI health 
     public void UpdateHealth(int currentHealth)
     {
-        if (!IsServer) return;
+        if (!IsServer)
+            return;
 
-        // Don't let health to go below 0
+        // Don't let health to go below 
         currentHealth = currentHealth < 0 ? 0 : currentHealth;
 
         float convertedHealth = (float)currentHealth / (float)maxHealth;
-        m_healthUI.healthSlider.value = convertedHealth;        
+        m_healthUI.healthSlider.value = convertedHealth;
         m_healthUI.healthImage.color = m_healthUI.healthColor.GetHealthColor(convertedHealth);
+
         // print($"{gameObject.name} {currentHealth}");
         if (currentHealth <= 0)
         {
@@ -129,13 +103,14 @@ public class PlayerUI : NetworkBehaviour
             m_deathUI.deathUI.SetActive(true);
         }
 
-        UpdateHealthClientRpc(convertedHealth);        
+        UpdateHealthClientRpc(convertedHealth);
     }
 
     // Activate/deactivate the power up icons base on the index pass
     public void UpdatePowerUp(int index, bool hasSpecial)
     {
-        if (!IsServer) return;
+        if (!IsServer)
+            return;
 
         //print($"PlayerUI server -> {index} {gameObject.name}");
         m_healthUI.powerUp[index - 1].SetActive(hasSpecial);
@@ -146,7 +121,8 @@ public class PlayerUI : NetworkBehaviour
     [ClientRpc]
     void UpdatePowerUpClientRpc(int index, bool hasSpecial)
     {
-        if (IsServer) return;
+        if (IsServer)
+            return;
 
         //print($"PlayerUI PowerUp client -> {index} {gameObject.name}");
         m_healthUI.powerUp[index - 1].SetActive(hasSpecial);
