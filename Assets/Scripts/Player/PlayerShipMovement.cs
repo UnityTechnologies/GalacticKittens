@@ -67,7 +67,6 @@ public class PlayerShipMovement : NetworkBehaviour
             constant -> linear move, there are no time aceleration
             momentum -> move with aceleration at the start
         */
-
         if (m_moveType == MoveType.constant)
         {
             m_inputX = 0f;
