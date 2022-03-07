@@ -4,11 +4,18 @@ using Unity.Netcode;
 
 public class PlayerShipMovement : NetworkBehaviour
 {
-    enum MoveType 
+    enum MoveType
     { 
         constant,
         momentum
-    };
+    }
+
+    enum VerticalMovementType
+    {
+        none,
+        upward,
+        downward
+    }
 
     [Serializable]
     public struct PlayerLimits
@@ -44,6 +51,9 @@ public class PlayerShipMovement : NetworkBehaviour
 
     private float m_inputX;
     private float m_inputY;
+
+    private VerticalMovementType m_previousVerticalMovementType = VerticalMovementType.none;
+    private VerticalMovementType m_currentVerticalMovementType = VerticalMovementType.none;
 
     const string k_horizontalAxis = "Horizontal";
     const string k_verticalAxis = "Vertical";
@@ -86,47 +96,23 @@ public class PlayerShipMovement : NetworkBehaviour
             if (Input.GetKey(KeyCode.W))
             {
                 m_inputY = 1f;
-                m_shipRenderer.sprite = m_upSprite;
             }
             else if (Input.GetKey(KeyCode.S))
             {
                 m_inputY = -1f;
-                m_shipRenderer.sprite = m_downSprite;
             }
-
-            // Set the sprite to normal when release the input
-            if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S))
-            {
-                m_shipRenderer.sprite = m_normalSprite;
-            }
-
-            // Check the limits of the ship
-            CheckLimits();
         }
         else if (m_moveType == MoveType.momentum)
         {
             // Get the inputs 
             m_inputX = Input.GetAxis(k_horizontalAxis);
             m_inputY = Input.GetAxis(k_verticalAxis);
-
-
-            // Change the ship sprites base on the input value
-            if (m_inputY > 0f)
-            {
-                m_shipRenderer.sprite = m_upSprite;
-            }
-            else if (m_inputY < 0f)
-            {
-                m_shipRenderer.sprite = m_downSprite;
-            }
-            else
-            {
-                m_shipRenderer.sprite = m_normalSprite;
-            }
-
-            // Check the limits of the ship
-            CheckLimits();
         }
+
+        UpdateVerticalMovementSprite();
+
+        // Check the limits of the ship
+        CheckLimits();
 
         // Take the value from the input and multiply by speed and time
         float speedTimesDeltaTime = m_speed * Time.deltaTime;
@@ -138,6 +124,60 @@ public class PlayerShipMovement : NetworkBehaviour
         transform.Translate(xPos, yPos, 0f);
     }
 
+    void UpdateVerticalMovementSprite()
+    {
+        // Change the ship sprites base on the input value
+        if (m_inputY > 0f)
+        {
+            m_shipRenderer.sprite = m_upSprite;
+            m_currentVerticalMovementType = VerticalMovementType.upward;
+        }
+        else if (m_inputY < 0f)
+        {
+            m_shipRenderer.sprite = m_downSprite;
+            m_currentVerticalMovementType = VerticalMovementType.downward;
+        }
+        else
+        {
+            m_shipRenderer.sprite = m_normalSprite;
+            m_currentVerticalMovementType = VerticalMovementType.none;
+        }
+
+        bool changeInVerticalMovement =
+            m_currentVerticalMovementType != m_previousVerticalMovementType;
+
+        m_previousVerticalMovementType = m_currentVerticalMovementType;
+
+        //inform the server of any updates to vertical movement sprites
+        if (changeInVerticalMovement)
+        {
+            NewVerticalMovementServerRPC(m_currentVerticalMovementType);
+        }
+    }
+
+    [ServerRpc]
+    void NewVerticalMovementServerRPC(VerticalMovementType newVerticalMovementType)
+    {
+        NewVerticalMovementClientRPC(newVerticalMovementType);
+    }
+
+    [ClientRpc]
+    void NewVerticalMovementClientRPC(VerticalMovementType newVerticalMovementType)
+    {
+        switch (newVerticalMovementType)
+        {
+            case VerticalMovementType.none:
+                m_shipRenderer.sprite = m_normalSprite;
+                break;
+            case VerticalMovementType.upward:
+                m_shipRenderer.sprite = m_upSprite;
+                break;
+            case VerticalMovementType.downward:
+                m_shipRenderer.sprite = m_downSprite;
+                break;
+        }
+    }
+
     // Check the limits of the player and adjust the input
     void CheckLimits()
     {
@@ -147,7 +187,7 @@ public class PlayerShipMovement : NetworkBehaviour
             // Check if the inputs goes on that direction -> vertical min is negative
             if (Mathf.Approximately(Mathf.Sign(m_inputY), -1f))
             {
-                m_inputY = 0;
+                m_inputY = 0f;
             }
         }
         else if (transform.position.y >= m_verticalLimits.maxLimit)

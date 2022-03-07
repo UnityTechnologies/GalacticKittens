@@ -22,7 +22,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     Transform m_cannonPosition;
 
     [SerializeField]
-    CharacterDataSO m_characterData;    
+    CharacterDataSO m_characterData;
 
     [SerializeField]
     GameObject m_explosionVfxPrefab;
@@ -99,8 +99,8 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
         // Spawn the bullet and set the damage and character for stats
         NetworkSpawnController.SpawnHelper(m_shootVfx, m_cannonPosition.position);
 
-        GameObject bullet = NetworkSpawnController.SpawnHelper(m_bulletPrefab, m_cannonPosition.position);
-        BulletController bulletController = bullet.GetComponent<BulletController>();
+        GameObject newBullet = NetworkSpawnController.SpawnHelper(m_bulletPrefab, m_cannonPosition.position);
+        BulletController bulletController = newBullet.GetComponent<BulletController>();
         bulletController.damage = m_fireDamage;
         bulletController.characterData = m_characterData;
 
@@ -229,7 +229,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
         {
             PlayShipHitSoundClientRpc(NetworkObject.OwnerClientId);
         }
-        else if (health.Value <= 0)
+        else // (health.Value <= 0)
         {
             // When death set the bool so this is only call one time
             m_death = true;
