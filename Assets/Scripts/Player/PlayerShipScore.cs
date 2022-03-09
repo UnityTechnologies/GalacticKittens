@@ -55,5 +55,4 @@ public class PlayerShipScore : MonoBehaviour
     {
         m_crown.SetActive(true);
     }
-
 }

@@ -2,33 +2,22 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
+[RequireComponent(typeof(NetworkObject))]
 public class PlayerShipController : NetworkBehaviour, IDamagable
 {
     public NetworkVariable<int> health = new NetworkVariable<int>();
 
     [SerializeField]
-    int m_fireDamage;
-
-    [SerializeField]
     int m_maxSpecialPower;
 
     [SerializeField]
-    GameObject m_bulletPrefab;
-
-    [SerializeField]
-    GameObject m_defenseMatrix;
-
-    [SerializeField]
-    Transform m_cannonPosition;
+    GameObject m_defenseShield;
 
     [SerializeField]
     CharacterDataSO m_characterData;
 
     [SerializeField]
     GameObject m_explosionVfxPrefab;
-
-    [SerializeField]
-    GameObject m_shootVfx;
 
     [SerializeField]
     float m_hitEffectDuration;
@@ -39,9 +28,6 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
 
     [SerializeField]
     AudioClip m_shieldClip;
-
-    [SerializeField]
-    AudioClip m_shootClip;
 
     [Header("ShipSprites")]
     [SerializeField]
@@ -56,7 +42,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
 
     NetworkVariable<int> m_specials = new NetworkVariable<int>(0);
 
-    bool m_death;
+    bool m_isPlayerDefeated;
 
     const string k_hitEffect = "_Hit";
 
@@ -64,16 +50,10 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     {
         if (IsOwner)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                // Tell the server to spawn the bullet
-                FireServerRpc();
-            }
-
             if (Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.LeftShift))
             {
                 // Tell the server to activate the shield
-                FireSpecialServerRpc();
+                ActivateShieldServerRpc();
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -94,22 +74,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
 
 
     [ServerRpc]
-    void FireServerRpc()
-    {
-        // Spawn the bullet and set the damage and character for stats
-        NetworkSpawnController.SpawnHelper(m_shootVfx, m_cannonPosition.position);
-
-        GameObject newBullet = NetworkSpawnController.SpawnHelper(m_bulletPrefab, m_cannonPosition.position);
-        BulletController bulletController = newBullet.GetComponent<BulletController>();
-        bulletController.damage = m_fireDamage;
-        bulletController.characterData = m_characterData;
-
-        // Tell the clients to reproduce the shoot sound
-        PlayShootBulletSoundClientRpc();
-    }
-
-    [ServerRpc]
-    void FireSpecialServerRpc()
+    void ActivateShieldServerRpc()
     {
         // Activate the special in case the ship has available
         if (m_specials.Value > 0)
@@ -121,7 +86,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
             m_specials.Value--;
 
             // Activate the special on clients for sync
-            SpecialActivateClientRpc();
+            ActivateShieldClientRpc();
 
             // Update the power up use for the final score
             characterData.powerUpsUsed++;
@@ -129,18 +94,11 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     }
 
     [ClientRpc]
-    void SpecialActivateClientRpc()
+    void ActivateShieldClientRpc()
     {
         // Activate the special
-        m_defenseMatrix.SetActive(true);
+        m_defenseShield.SetActive(true);
         AudioManager.Instance?.PlaySound(m_shieldClip);
-    }
-
-    [ClientRpc]
-    void PlayShootBulletSoundClientRpc()
-    {
-        // Reproduce the ssfx on shoot on all clients
-        AudioManager.Instance?.PlaySound(m_shootClip);
     }
 
     [ClientRpc]
@@ -213,7 +171,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
 
     public void Hit(int damage)
     {
-        if (!IsServer || m_death)
+        if (!IsServer || m_isPlayerDefeated)
             return;
 
         // Update health var
@@ -232,16 +190,16 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
         else // (health.Value <= 0)
         {
             // When death set the bool so this is only call one time
-            m_death = true;
+            m_isPlayerDefeated = true;
 
             // Spawn the death vfx
-            NetworkSpawnController.SpawnHelper(m_explosionVfxPrefab, this.transform.position);
+            NetworkSpawnController.SpawnHelper(m_explosionVfxPrefab, transform.position);
 
             // Tell the Gameplay manager that I've been defeated
             gameplayManager.PlayerDeath(m_characterData.clientId);
 
             // Safety check
-            if (NetworkObject != null || NetworkObject.IsSpawned)
+            if (NetworkObject != null && NetworkObject.IsSpawned)
                 NetworkObject.Despawn();
         }
     }

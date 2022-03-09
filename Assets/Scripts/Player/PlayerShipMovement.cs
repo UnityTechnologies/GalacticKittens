@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Unity.Netcode;
 
+[RequireComponent(typeof(NetworkObject))]
 public class PlayerShipMovement : NetworkBehaviour
 {
     enum MoveType
@@ -57,12 +58,6 @@ public class PlayerShipMovement : NetworkBehaviour
 
     const string k_horizontalAxis = "Horizontal";
     const string k_verticalAxis = "Vertical";
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()

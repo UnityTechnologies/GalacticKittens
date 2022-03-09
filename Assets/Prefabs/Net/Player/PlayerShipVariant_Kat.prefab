@@ -59,6 +59,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerShipVariant_Kat
       objectReference: {fileID: 0}
+    - target: {fileID: 3314117860024100998, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 3314117860024100998, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.325
+      objectReference: {fileID: 0}
     - target: {fileID: 7856277709828443390, guid: 403484b6c20b84b4eb78e30a558e1163, type: 3}
       propertyPath: m_upSprite
       value: 

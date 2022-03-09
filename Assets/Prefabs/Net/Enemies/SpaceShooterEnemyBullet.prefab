@@ -93,9 +93,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  speed: 12
-  _timeToLive: 6
-  _owner: 0
+  m_speed: 12
+  m_timeToLive: 6
+  m_owner: 0
   characterData: {fileID: 0}
 --- !u!70 &3108039366544907229
 CapsuleCollider2D:

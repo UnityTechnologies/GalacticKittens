@@ -73,7 +73,7 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
     {
         // print($"Fire:: {NetworkObject.OwnerClientId}");
         var newEnemyLaser = NetworkSpawnController.SpawnHelper(m_EnemyBulletPrefab);
-        PlayShootAudioClientRpc();        
+        PlayShootAudioClientRpc();
 
         var bulletController = newEnemyLaser.GetComponent<BulletController>();
         if (bulletController != null)

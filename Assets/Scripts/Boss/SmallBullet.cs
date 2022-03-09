@@ -23,7 +23,7 @@ public class SmallBullet : NetworkBehaviour
             {
                 damagable.Hit(_damage);
                 Despawn();
-            }   
+            }
         }
     }
 

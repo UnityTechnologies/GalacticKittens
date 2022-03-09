@@ -12,24 +12,27 @@ public class BulletController : NetworkBehaviour
     public int damage;
 
     [SerializeField]
-    private float speed;
+    private float m_speed;
+
+    [Header("Time alive in seconds (s)")]
+    [SerializeField]
+    private float m_timeToLive;
 
     [SerializeField]
-    private int _timeToLive;
+    private BulletOwner m_owner;
 
-    [SerializeField]
-    private BulletOwner _owner;
-
-    [Header("Set in runtime")]
+    [HideInInspector]
     public CharacterDataSO characterData;
 
+    [HideInInspector]
     public Vector3 direction { get; set; } = Vector3.right;
 
+    [HideInInspector]
     public GameObject m_Owner { get; set; } = null;
 
     private void Start()
     {
-        if (_owner == BulletOwner.player && IsServer)
+        if (m_owner == BulletOwner.player && IsServer)
         {
             ChangeBulletColorClientRpc(characterData.color);
         }
@@ -39,7 +42,7 @@ public class BulletController : NetworkBehaviour
     {
         if (IsServer)
         {
-            transform.Translate(direction * speed * Time.deltaTime);
+            transform.Translate(direction * m_speed * Time.deltaTime);
         }
     }
 
@@ -48,7 +51,7 @@ public class BulletController : NetworkBehaviour
         if (!IsServer)
             return;
 
-        if (_owner == BulletOwner.player)
+        if (m_owner == BulletOwner.player)
         {
             if (collider.TryGetComponent(out IDamagable damagable))
             {
@@ -89,7 +92,7 @@ public class BulletController : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (IsServer)
-            Invoke(nameof(AutoDestroy), _timeToLive);
+            Invoke(nameof(AutoDestroy), m_timeToLive);
 
         base.OnNetworkSpawn();
     }

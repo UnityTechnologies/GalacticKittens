@@ -5,13 +5,13 @@ using UnityEngine;
 public class DefenseMatrix : NetworkBehaviour, IDamagable
 {
     [SerializeField]
-    private float _rotationSpeed;
+    private float m_rotationSpeed;
 
     void Update()
     {
         if (IsServer)
         {
-            transform.Rotate(Vector3.forward * _rotationSpeed * Time.deltaTime);
+            transform.Rotate(Vector3.forward * m_rotationSpeed * Time.deltaTime);
         }
     }
 
@@ -28,7 +28,7 @@ public class DefenseMatrix : NetworkBehaviour, IDamagable
     [ClientRpc]
     private void TurnOffMatrixClientRpc()
     {
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void Hit(int damage)
