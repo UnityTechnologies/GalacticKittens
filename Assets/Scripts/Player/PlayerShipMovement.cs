@@ -67,6 +67,18 @@ public class PlayerShipMovement : NetworkBehaviour
         if (!IsOwner)
             return;
 
+        HandleKeyboardInput();
+
+        UpdateVerticalMovementSprite();
+
+        // Check the limits of the ship
+        CheckLimits();
+
+        MovePlayerShip();
+    }
+
+    private void HandleKeyboardInput()
+    {
         /*
             There two types of movement:
             constant -> linear move, there are no time aceleration
@@ -103,23 +115,9 @@ public class PlayerShipMovement : NetworkBehaviour
             m_inputX = Input.GetAxis(k_horizontalAxis);
             m_inputY = Input.GetAxis(k_verticalAxis);
         }
-
-        UpdateVerticalMovementSprite();
-
-        // Check the limits of the ship
-        CheckLimits();
-
-        // Take the value from the input and multiply by speed and time
-        float speedTimesDeltaTime = m_speed * Time.deltaTime;
-
-        float yPos = m_inputY * speedTimesDeltaTime;
-        float xPos = m_inputX * speedTimesDeltaTime;
-
-        // move the ship
-        transform.Translate(xPos, yPos, 0f);
     }
 
-    void UpdateVerticalMovementSprite()
+    private void UpdateVerticalMovementSprite()
     {
         // Change the ship sprites base on the input value
         if (m_inputY > 0f)
@@ -151,13 +149,13 @@ public class PlayerShipMovement : NetworkBehaviour
     }
 
     [ServerRpc]
-    void NewVerticalMovementServerRPC(VerticalMovementType newVerticalMovementType)
+    private void NewVerticalMovementServerRPC(VerticalMovementType newVerticalMovementType)
     {
         NewVerticalMovementClientRPC(newVerticalMovementType);
     }
 
     [ClientRpc]
-    void NewVerticalMovementClientRPC(VerticalMovementType newVerticalMovementType)
+    private void NewVerticalMovementClientRPC(VerticalMovementType newVerticalMovementType)
     {
         switch (newVerticalMovementType)
         {
@@ -174,7 +172,7 @@ public class PlayerShipMovement : NetworkBehaviour
     }
 
     // Check the limits of the player and adjust the input
-    void CheckLimits()
+    private void CheckLimits()
     {
         // Vertical limits
         if (transform.position.y <= m_verticalLimits.minLimit)
@@ -211,5 +209,16 @@ public class PlayerShipMovement : NetworkBehaviour
                 m_inputX = 0f;
             }
         }
+    }
+    private void MovePlayerShip()
+    {
+        // Take the value from the input and multiply by speed and time
+        float speedTimesDeltaTime = m_speed * Time.deltaTime;
+
+        float yPos = m_inputY * speedTimesDeltaTime;
+        float xPos = m_inputX * speedTimesDeltaTime;
+
+        // move the ship
+        transform.Translate(xPos, yPos, 0f);
     }
 }
