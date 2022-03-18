@@ -22,7 +22,6 @@ Galactic Kittens uses basic [Network Manager](https://docs-multiplayer.unity3d.c
 ## Services Used:
   * [Netcode for GameObjects](https://unity.com/products/netcode)
 <br>
-<br>
 
 ---------------
 ## Setting up the project
