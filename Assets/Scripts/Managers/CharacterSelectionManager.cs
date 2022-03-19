@@ -37,7 +37,7 @@ public struct CharacterContainer
     public GameObject borderReady;                  // The border of the character container when ready
     public GameObject borderClient;                 // Client border of the character container
     public Image playerIcon;                        // The background icon of the player (p1, p2)    
-    public GameObject waitingText;                  // The waiting text on the container were no client conneted
+    public GameObject waitingText;                  // The waiting text on the container were no client connected
     public GameObject backgroundShip;               // The background of the ship when not ready
     public Image backgroundShipImage;               // The image of the ship when not ready
     public GameObject backgroundShipReady;          // The background of the ship when ready
@@ -52,30 +52,42 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
     [SerializeField]
     CharacterContainer[] m_charactersContainers;
+
     [SerializeField]
     GameObject m_readyButton;
+
     [SerializeField]
     GameObject m_cancelButton;
+
     [SerializeField]
     float m_timeToStartGame;
+
     [SerializeField]
     SceneName m_nextScene = SceneName.Gameplay;
+
     [SerializeField]
     Color m_clientColor;
+
     [SerializeField]
     Color m_playerColor;
+
     [SerializeField]
     PlayerConnectionState[] m_playerStates;
+
     [SerializeField]
     GameObject m_playerPrefab;
+
     [Header("Audio clips")]
     [SerializeField]
     AudioClip m_confirmClip;
+
     [SerializeField]
     AudioClip m_cancelClip;
 
     bool m_isTimerOn;
     float m_timer;
+
+    private readonly Color k_selectedColor = new Color32(74, 74, 74, 255);
 
     void OnDisable()
     {
@@ -98,7 +110,8 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
         if (m_isTimerOn)
         {
             m_timer -= Time.deltaTime;
-            if (m_timer < 0)
+
+            if (m_timer < 0f)
             {
                 m_isTimerOn = false;
                 StartGame();
@@ -130,8 +143,8 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
     {
         for (int i = 0; i < m_playerStates.Length; i++)
         {
-            // if (m_playerStates[i].clientId == clientId)
-            if (m_playerStates[i].playerState == ConnectionState.ready && m_playerStates[i].clientId == clientId)
+            if (m_playerStates[i].playerState == ConnectionState.ready &&
+                m_playerStates[i].clientId == clientId)
             {
 
                 if (disconected)
@@ -151,7 +164,8 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
     [ClientRpc]
     void UpdatePlayerStateClientRpc(ulong clientId, int stateIndex, ConnectionState state)
     {
-        if (IsServer) return;
+        if (IsServer)
+            return;
 
         m_playerStates[stateIndex].playerState = state;
         m_playerStates[stateIndex].clientId = clientId;
@@ -162,10 +176,11 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
         foreach (PlayerConnectionState state in m_playerStates)
         {
             // If a player is connected (not ready)
-            if (state.playerState == ConnectionState.connected) return;
+            if (state.playerState == ConnectionState.connected)
+                return;
         }
 
-        // If all players connected are ready       
+        // If all players connected are ready
         m_timer = m_timeToStartGame;
         m_isTimerOn = true;
     }
@@ -173,7 +188,7 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
     void SetNonPlayableChar(int playerId)
     {
         m_charactersContainers[playerId].imageContainer.sprite = null;
-        m_charactersContainers[playerId].imageContainer.color = new Color(1, 1, 1, 0);
+        m_charactersContainers[playerId].imageContainer.color = new Color(1f, 1f, 1f, 0f);
         m_charactersContainers[playerId].nameContainer.text = "";
         m_charactersContainers[playerId].border.SetActive(true);
         m_charactersContainers[playerId].borderClient.SetActive(false);
@@ -194,12 +209,11 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
     public void SetCharacterColor(int playerId, int characterSelected)
     {
-
         // print($"SetCharacterColor -> playerId: {playerId} Char: {characterSelected} Selected: {charactersData[characterSelected].isSelected}");
         if (charactersData[characterSelected].isSelected)
         {
-            m_charactersContainers[playerId].imageContainer.color = new Color32(74, 74, 74, 255);
-            m_charactersContainers[playerId].nameContainer.color = new Color32(74, 74, 74, 255);
+            m_charactersContainers[playerId].imageContainer.color = k_selectedColor;
+            m_charactersContainers[playerId].nameContainer.color = k_selectedColor;
         }
         else
         {
@@ -211,11 +225,21 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
     public void SetCharacterUI(int playerId, int characterSelected)
     {
         // print($"SetCharacterUI -> playerId:: {playerId} charSelected {characterSelected}");
-        m_charactersContainers[playerId].imageContainer.sprite = charactersData[characterSelected].characterSprite;
-        m_charactersContainers[playerId].backgroundShipImage.sprite = charactersData[characterSelected].characterShipSprite;
-        m_charactersContainers[playerId].backgroundShipReadyImage.sprite = charactersData[characterSelected].characterShipSprite;
-        m_charactersContainers[playerId].backgroundClientShipReadyImage.sprite = charactersData[characterSelected].characterShipSprite;
-        m_charactersContainers[playerId].nameContainer.text = charactersData[characterSelected].characterName;
+        m_charactersContainers[playerId].imageContainer.sprite =
+            charactersData[characterSelected].characterSprite;
+
+        m_charactersContainers[playerId].backgroundShipImage.sprite =
+            charactersData[characterSelected].characterShipSprite;
+
+        m_charactersContainers[playerId].backgroundShipReadyImage.sprite =
+            charactersData[characterSelected].characterShipSprite;
+
+        m_charactersContainers[playerId].backgroundClientShipReadyImage.sprite =
+            charactersData[characterSelected].characterShipSprite;
+
+        m_charactersContainers[playerId].nameContainer.text =
+            charactersData[characterSelected].characterName;
+
         SetCharacterColor(playerId, characterSelected);
     }
 
@@ -238,6 +262,7 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
             m_charactersContainers[playerId].borderClient.SetActive(false);
             m_charactersContainers[playerId].playerIcon.color = m_playerColor;
         }
+
         m_charactersContainers[playerId].backgroundShip.SetActive(true);
         m_charactersContainers[playerId].waitingText.SetActive(false);
     }
@@ -246,14 +271,19 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
     {
         if (playerId != -1)
             return m_playerStates[playerId].playerState;
-        else
-            return ConnectionState.disconnected;
+
+        return ConnectionState.disconnected;
     }
 
     public void ServerSceneInit(ulong clientId)
     {
-
-        GameObject go = NetworkSpawnController.SpawnHelper(m_playerPrefab, this.transform.position, null, true, true, clientId);
+        GameObject go = NetworkSpawnController.SpawnHelper(
+            m_playerPrefab,
+            transform.position,
+            null,
+            true,
+            true,
+            clientId);
         //print(clientId);
         // go.name = $"Player{clientId}";
 
@@ -275,29 +305,41 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
         for (int i = 0; i < m_playerStates.Length; i++)
         {
             if (m_playerStates[i].playerObject != null)
-                PlayerConnectsClientRpc(m_playerStates[i].clientId, i, m_playerStates[i].playerState, m_playerStates[i].playerObject.GetComponent<NetworkObject>());
+                PlayerConnectsClientRpc(
+                    m_playerStates[i].clientId,
+                    i,
+                    m_playerStates[i].playerState,
+                    m_playerStates[i].playerObject.GetComponent<NetworkObject>());
         }
 
     }
 
     [ClientRpc]
-    void PlayerConnectsClientRpc(ulong clientId, int stateIndex, ConnectionState state, NetworkObjectReference player)
+    void PlayerConnectsClientRpc(
+        ulong clientId,
+        int stateIndex,
+        ConnectionState state,
+        NetworkObjectReference player)
     {
-        if (IsServer) return;
+        if (IsServer)
+            return;
 
         if (state != ConnectionState.disconnected)
         {
             // print($"PlayerConnection -> clientId: {clientId} {playerName} stateIndex: {stateIndex} state: {state}");
             m_playerStates[stateIndex].playerState = state;
             m_playerStates[stateIndex].clientId = clientId;
+
             if (player.TryGet(out NetworkObject playerObject))
-                m_playerStates[stateIndex].playerObject = playerObject.GetComponent<PlayerCharSelection>();
+                m_playerStates[stateIndex].playerObject = 
+                    playerObject.GetComponent<PlayerCharSelection>();
         }
     }
 
     public void PlayerDisconnects(ulong clientId)
     {
-        if (!ClientConnection.Instance.IsExtraClient(clientId)) return;
+        if (!ClientConnection.Instance.IsExtraClient(clientId))
+            return;
 
         PlayerNotReady(clientId, isDisconected: true);
         // print($"PlayerDisconnect {clientId}");
@@ -318,7 +360,7 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
         RemoveReadyStates(clientId, isDisconected);
 
-        // Notify clients to chage UI
+        // Notify clients to change UI
         if (isDisconected)
         {
             PlayerDisconnectedClientRpc(playerId);
@@ -345,13 +387,10 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
     // Set the player ready if the player is not selected and check if all player are ready to start the countdown
     public void PlayerReady(ulong clientId, int playerId, int characterSelected)
     {
-        // PlayerReadyServerRpc( playerId, characterSelected);
         if (!charactersData[characterSelected].isSelected)
         {
-            // charactersData[characterSelected].isSelected = true;
-            // SetPlayerReadyUIButtons(true, characterSelected);
             PlayerReadyClientRpc(clientId, playerId, characterSelected);
-            // m_audioSource.PlayOneShot(m_confirmClip);
+
             StartGameTimer();
         }
     }
@@ -385,6 +424,7 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
         charactersData[characterSelected].clientId = clientId;
         charactersData[characterSelected].playerId = playerId;
         m_playerStates[playerId].playerState = ConnectionState.ready;
+
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
             m_charactersContainers[playerId].backgroundClientShipReady.SetActive(true);
@@ -452,16 +492,13 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
                 }
             }
         }
-        // if (m_playerStates[playerId].playerObject.CharSelected == characterSelected)
-        // {
-        //     SetCharacterColor(playerId, characterSelected);
-        // }
     }
 
     [ClientRpc]
     public void PlayerDisconnectedClientRpc(int playerId)
     {
         SetNonPlayableChar(playerId);
+
         // All character data unselected
         RemoveSelectedStates();
     }
@@ -473,5 +510,4 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
             NetworkManager.Singleton.OnClientDisconnectCallback += PlayerDisconnects;
         }
     }
-
 }

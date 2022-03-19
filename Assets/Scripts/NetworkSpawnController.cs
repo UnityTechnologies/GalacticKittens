@@ -12,8 +12,7 @@ public class NetworkSpawnController : MonoBehaviour
         Quaternion? rotation = null,
         bool destroyWithScene = true,
         bool changeOwnershipToClient = false,
-        ulong newClientOwnerId = 0UL
-        )
+        ulong newClientOwnerId = 0UL)
     {
         if (position == null)
             position = Vector3.zero;
