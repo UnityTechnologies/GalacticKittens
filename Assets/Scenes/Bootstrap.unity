@@ -415,6 +415,10 @@ PrefabInstance:
       propertyPath: NetworkConfig.NetworkPrefabs.Array.data[23].Prefab
       value: 
       objectReference: {fileID: 7960238908659979937, guid: c4e70dcceffc75a45abe5f34e75ac886, type: 3}
+    - target: {fileID: 5466296451182135795, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
+      propertyPath: MessageBufferSize
+      value: 15630
+      objectReference: {fileID: 0}
     - target: {fileID: 5466296451182135796, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
       propertyPath: m_Name
       value: NetworkManager

@@ -61,7 +61,7 @@ public class BossFireState : BaseBossState
         float randomRotation = Random.Range(-25f, 45f);
         foreach (Transform laseCannon in _fireCannonSpawningArea)
         {
-            NetworkSpawnController.SpawnHelper(
+            NetworkObjectSpawner.SpawnNewNetworkObject(
                 firePrefab,
                 laseCannon.position,
                 Quaternion.Euler(0f, 0f, randomRotation)

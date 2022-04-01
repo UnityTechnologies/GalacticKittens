@@ -10,17 +10,22 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
         victory,
         defeat,
     };
+
     [SerializeField]
     EndGameStatus m_status;                     // Set the scene status to now if we are on victory o defeat scene
+
     [SerializeField]
     CharacterDataSO[] m_charactersData;         // The characters data use to take some data from there
+
     [SerializeField]
     Transform[] m_shipsPositions;               // The final positions of the ships 
+
     [SerializeField]
     AudioClip m_endGameClip;                    // The audio clip to reproduce when the scene start
 
     int m_shipPositionindex;                    // Var to move every player to diferent position
-    PlayerShipScore m_bestPlayer;               // Catch who is the best player -> only on server    
+
+    PlayerShipScore m_bestPlayer;               // Catch who is the best player -> only on server
     List<ulong> m_connectedClients = new List<ulong>();
 
     void Start()
@@ -31,9 +36,10 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
     [ClientRpc]
     void SetShipDataClientRpc(int enemiesDestroyed, int powerUpsUsed, int score, string spaceShipScoreName)
     {
-        // Not optimal but this is only call one time per ship        
-        // We use find because we cannot pass a object on RPC   
+        // Not optimal, but this is only called one time per ship
+        // We use find because we cannot pass a object on RPC
         GameObject spaceShipScore = GameObject.Find(spaceShipScoreName);
+
         if (m_status == EndGameStatus.victory)
             spaceShipScore.GetComponent<PlayerShipScore>().SetShip(true, enemiesDestroyed, powerUpsUsed, score);
         else
@@ -52,10 +58,12 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
 
     IEnumerator HostShutdown()
     {
-        // Tell the clients to shudown
+        // Tell all clients to shutdown
         ShutdownClientRpc();
+
         // Wait some time for the message to get to clients
         yield return new WaitForSeconds(0.5f);
+
         // Shutdown server/host
         Shutdown();
     }
@@ -69,7 +77,8 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
     [ClientRpc]
     void ShutdownClientRpc()
     {
-        if (IsServer) return;
+        if (IsServer)
+            return;
 
         Shutdown();
     }
@@ -80,49 +89,65 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
         m_connectedClients.Add(clientId);
 
         // Check if is the last client        
-        if (m_connectedClients.Count < NetworkManager.Singleton.ConnectedClients.Count) return;
+        if (m_connectedClients.Count < NetworkManager.Singleton.ConnectedClients.Count)
+            return;
 
         // We do this only one time when all clients are connected so they sync correctly
-        // Tell all clients instance to set the UI base on the server characters data                                
+        // Tell all clients instance to set the UI base on the server characters data
         int bestScore = -1;
         for (int i = 0; i < m_charactersData.Length; i++)
         {
-            // if (m_charactersData[i].isSelected && m_charactersData[i].clientId == clientId)
             if (m_charactersData[i].isSelected)
             {
                 // Spawn the spaceship                
-                GameObject go = NetworkSpawnController.SpawnHelper(m_charactersData[i].spaceshipScorePrefab, m_shipsPositions[m_shipPositionindex].position);
+                GameObject go = NetworkObjectSpawner.SpawnNewNetworkObject(
+                    m_charactersData[i].spaceshipScorePrefab,
+                    m_shipsPositions[m_shipPositionindex].position);
 
                 // Check who has the best score
-                // The score is calculated base on the enemies destroyed minus the powerups the player use
-                // Feel free to modifty this values
-                int score = (m_charactersData[i].enemiesDestroyed * 100) - (m_charactersData[i].powerUpsUsed * 50);
-                if (score > bestScore)
+                // The score is calculated base on the enemies destroyed minus the power-ups the player used
+                // Feel free to modify these values
+                int enemyDestroyedScore = (m_charactersData[i].enemiesDestroyed * 100);
+                int powerUpsUsedScore = (m_charactersData[i].powerUpsUsed * 50);
+                int currentFinalScore = enemyDestroyedScore - powerUpsUsedScore;
+
+                if (currentFinalScore > bestScore)
                 {
                     m_bestPlayer = go.GetComponent<PlayerShipScore>();
-                    bestScore = score;
+                    bestScore = currentFinalScore;
                 }
 
-                // Victory or defeat so turn on the apropiate vfx                
+                // Victory or defeat so turn on the appropriate vfx
                 if (m_status == EndGameStatus.victory)
-                    go.GetComponent<PlayerShipScore>().SetShip(true, m_charactersData[i].enemiesDestroyed, m_charactersData[i].powerUpsUsed, score);
+                    go.GetComponent<PlayerShipScore>().SetShip(
+                        true,
+                        m_charactersData[i].enemiesDestroyed,
+                        m_charactersData[i].powerUpsUsed,
+                        currentFinalScore);
                 else
-                    go.GetComponent<PlayerShipScore>().SetShip(false, m_charactersData[i].enemiesDestroyed, m_charactersData[i].powerUpsUsed, score);
+                    go.GetComponent<PlayerShipScore>().SetShip(
+                        false,
+                        m_charactersData[i].enemiesDestroyed,
+                        m_charactersData[i].powerUpsUsed,
+                        currentFinalScore);
 
-                // Set the values of the score on every instance                
-                SetShipDataClientRpc(m_charactersData[i].enemiesDestroyed, m_charactersData[i].powerUpsUsed, score, go.name);
+                // Set the values of the score on every instance
+                SetShipDataClientRpc(
+                    m_charactersData[i].enemiesDestroyed,
+                    m_charactersData[i].powerUpsUsed,
+                    currentFinalScore,
+                    go.name);
 
                 m_shipPositionindex++;
             }
         }
 
-        // Set the crown to the best player            
+        // Set the crown to the best player
         if (m_status == EndGameStatus.victory)
         {
             m_bestPlayer.BestShip();
 
             BestShipClientRpc(m_bestPlayer.name);
-
         }
     }
 
@@ -138,5 +163,4 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
             Shutdown();
         }
     }
-
 }

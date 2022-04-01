@@ -17,11 +17,14 @@ public class DefenseMatrix : NetworkBehaviour, IDamagable
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        // print($"DefenseMatrix collide with:: {collider.tag}");
-        if (collider.TryGetComponent(out IDamagable damagable))
+        if (IsServer)
         {
-            damagable.Hit(1);
-            TurnOffMatrixClientRpc();
+            // print($"DefenseMatrix collide with:: {collider.tag}");
+            if (collider.TryGetComponent(out IDamagable damagable))
+            {
+                damagable.Hit(1);
+                TurnOffMatrixClientRpc();
+            }
         }
     }
 

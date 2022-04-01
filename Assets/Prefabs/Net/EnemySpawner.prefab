@@ -64,13 +64,13 @@ MonoBehaviour:
   spaceGhostEnemyPrefabToSpawn: {fileID: 4567805413435945178, guid: 55ba4a568374a154dababe39db54d302, type: 3}
   spaceShooterEnemyPrefabToSpawn: {fileID: 5848059733458262090, guid: fb788bc15d1791b44ba081e57e6dd30e, type: 3}
   m_bossUI: {fileID: 0}
-  _bossPrefabToSpawn: {fileID: 1545438727490091040, guid: 72413ffe12d5ce74fb384c2a3d9b1564, type: 3}
-  _bossPosition: {fileID: 0}
+  m_bossPrefabToSpawn: {fileID: 1545438727490091040, guid: 72413ffe12d5ce74fb384c2a3d9b1564, type: 3}
+  m_bossPosition: {fileID: 0}
   m_EnemySpawnTime:
     m_InternalValue: 1.8
   _bossSpawnTime:
     m_InternalValue: 90
-  _meteorPrefab: {fileID: 725679874921966097, guid: fe9a10ed4446cb746b91532fd1efc96b, type: 3}
+  m_meteorPrefab: {fileID: 725679874921966097, guid: fe9a10ed4446cb746b91532fd1efc96b, type: 3}
   m_meteorSpawningTime: 1.2
   m_warningClip: {fileID: 8300000, guid: 31ac21d465ea4964ba9ac4cc001e29ab, type: 3}
   m_warningUI: {fileID: 0}

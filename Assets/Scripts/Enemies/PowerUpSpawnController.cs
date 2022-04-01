@@ -32,7 +32,7 @@ public class PowerUpSpawnController : MonoBehaviour
         {
             var nextPowerUpToSpawn = GetRandomPowerUp();
 
-            var newSpawnedPowerup = NetworkSpawnController.SpawnHelper(nextPowerUpToSpawn);
+            var newSpawnedPowerup = NetworkObjectSpawner.SpawnNewNetworkObject(nextPowerUpToSpawn);
 
             newSpawnedPowerup.transform.position = positionToSpawn;
         }

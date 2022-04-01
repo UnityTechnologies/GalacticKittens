@@ -277,7 +277,7 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
     public void ServerSceneInit(ulong clientId)
     {
-        GameObject go = NetworkSpawnController.SpawnHelper(
+        GameObject go = NetworkObjectSpawner.SpawnNewNetworkObject(
             m_playerPrefab,
             transform.position,
             null,

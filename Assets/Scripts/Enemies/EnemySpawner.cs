@@ -15,21 +15,23 @@ public class EnemySpawner : NetworkBehaviour
     BossUI m_bossUI;
 
     [SerializeField]
-    private GameObject _bossPrefabToSpawn;
+    private GameObject m_bossPrefabToSpawn;
 
     [SerializeField]
-    private Transform _bossPosition;
+    private Transform m_bossPosition;
 
     [Header("Enemies")]
     [SerializeField]
-    private NetworkVariable<float> m_EnemySpawnTime = new NetworkVariable<float>(NetworkVariableReadPermission.Everyone, 5f);
+    private NetworkVariable<float> m_EnemySpawnTime =
+        new NetworkVariable<float>(NetworkVariableReadPermission.Everyone, 5f);
 
     [SerializeField]
-    private NetworkVariable<float> _bossSpawnTime = new NetworkVariable<float>(NetworkVariableReadPermission.Everyone, 10f);
+    private NetworkVariable<float> _bossSpawnTime =
+        new NetworkVariable<float>(NetworkVariableReadPermission.Everyone, 10f);
 
     [Header("Meteors")]
     [SerializeField]
-    private GameObject _meteorPrefab;
+    private GameObject m_meteorPrefab;
 
     [SerializeField]
     private float m_meteorSpawningTime;
@@ -59,8 +61,7 @@ public class EnemySpawner : NetworkBehaviour
 
                 var nextPrefabToSpawn = GetNextRandomEnemyPrefabToSpawn();
 
-                var newEnemy = NetworkSpawnController.SpawnHelper(nextPrefabToSpawn);
-
+                var newEnemy = NetworkObjectSpawner.SpawnNewNetworkObject(nextPrefabToSpawn);
                 newEnemy.transform.position = position;
 
                 m_CurrentSpawnTime = 0f;
@@ -84,9 +85,10 @@ public class EnemySpawner : NetworkBehaviour
     void SpawnMeteor()
     {
         // The min and max Y pos for spawning the meteors
-        float randomYpos = Random.Range(-5.0f, 6.0f);
-        Vector3 pos = new Vector3(transform.position.x, randomYpos, 0f);
-        NetworkSpawnController.SpawnHelper(_meteorPrefab, pos);
+        float randomYpos = Random.Range(-5f, 6f);
+        Vector3 meteorSpawnPosition = new Vector3(transform.position.x, randomYpos, 0f);
+
+        NetworkObjectSpawner.SpawnNewNetworkObject(m_meteorPrefab, meteorSpawnPosition);
     }
 
     IEnumerator BossAppear()
@@ -102,9 +104,12 @@ public class EnemySpawner : NetworkBehaviour
         StopWarnnigClientRpc();
         m_warningUI.SetActive(false);
 
-        GameObject boss = NetworkSpawnController.SpawnHelper(_bossPrefabToSpawn, transform.position);
+        GameObject boss = NetworkObjectSpawner.SpawnNewNetworkObject(
+            m_bossPrefabToSpawn,
+            transform.position);
+
         BossController bossController = boss.GetComponent<BossController>();
-        bossController.StartBoss(_bossPosition.position);
+        bossController.StartBoss(m_bossPosition.position);
         bossController.SetUI(m_bossUI);
         boss.name = "BOSS";
     }

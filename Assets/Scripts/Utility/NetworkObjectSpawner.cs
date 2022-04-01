@@ -1,12 +1,11 @@
 using Unity.Netcode;
 using UnityEngine;
 
-// This script is a helper for spawning on the network
 
-public class NetworkSpawnController : MonoBehaviour
+public class NetworkObjectSpawner
 {  
     //TODO: TEST function, evaluate if needed
-    public static GameObject SpawnHelper(
+    public static GameObject SpawnNewNetworkObject(
         GameObject prefab,
         Vector3? position = null,
         Quaternion? rotation = null,
@@ -22,7 +21,7 @@ public class NetworkSpawnController : MonoBehaviour
 
         if (NetworkManager.Singleton.IsServer)
         {
-            GameObject newGameObject = Instantiate(prefab, position.Value, rotation.Value);
+            GameObject newGameObject = Object.Instantiate(prefab, position.Value, rotation.Value);
 
             NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
             newGameObjectNetworkObject.Spawn(destroyWithScene);

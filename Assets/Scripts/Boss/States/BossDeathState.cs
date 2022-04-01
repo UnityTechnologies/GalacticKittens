@@ -32,9 +32,9 @@ public class BossDeathState : BaseBossState
         if (IsServer)
         {
             // Add the explosions Positions 
-            foreach (Transform t in m_explosionPositionsContainer)
+            foreach (Transform transform in m_explosionPositionsContainer)
             {
-                explosionPositions.Add(t);
+                explosionPositions.Add(transform);
             }
         }
     }
@@ -54,17 +54,16 @@ public class BossDeathState : BaseBossState
 
     IEnumerator RunDeath()
     {
-        // Show various explosion vfx for x seconds
+        // Show various explosion vfx for some seconds
         int numberOfExplosions = 0;
         float stepDuration = m_explosionDuration / m_maxNumberOfExplosions;
 
         StartCoroutine(Shake());
         while (numberOfExplosions < m_maxNumberOfExplosions)
         {
-            // get a random position
-            Vector3 randPos = explosionPositions[Random.Range(0, explosionPositions.Count)].position;
+            Vector3 randPosition = explosionPositions[Random.Range(0, explosionPositions.Count)].position;
 
-            NetworkSpawnController.SpawnHelper(m_explosionVfx, randPos);
+            NetworkObjectSpawner.SpawnNewNetworkObject(m_explosionVfx, randPosition);
 
             yield return new WaitForSeconds(stepDuration);
 
@@ -74,11 +73,18 @@ public class BossDeathState : BaseBossState
 
         yield return new WaitForEndOfFrame();
         GameplayManager.Instance.BossDefeat();
-        NetworkObject.Despawn();
+
+        Despawn();
     }
 
     public override void RunState()
     {
         StartCoroutine(RunDeath());
+    }
+
+    private void Despawn()
+    {
+        if (NetworkObject != null && NetworkObject.IsSpawned)
+            NetworkObject.Despawn();
     }
 }

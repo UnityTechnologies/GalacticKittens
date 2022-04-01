@@ -13,7 +13,7 @@ public class BossSuperLaserState : BaseBossState
     {
         float randomRotation = Random.Range(-40f, 10f);
 
-        GameObject superLaser = NetworkSpawnController.SpawnHelper(
+        GameObject superLaser = NetworkObjectSpawner.SpawnNewNetworkObject(
             m_superLaserPrefab,
             m_superLaserPosition.localPosition,
             Quaternion.Euler(0f, 0f, randomRotation)

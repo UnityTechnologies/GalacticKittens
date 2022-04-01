@@ -129,21 +129,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 853a9e9530154814db471e763e020166, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 1
-  _speed: 5
-  _rotationSpeed: 90
-  _health: 1
-  _timeToLive: 8
-  _vfxExplosion: {fileID: 891729954413761739, guid: 57043e97584ceda4a951bca5a5216bd1, type: 3}
-  _meteors:
+  m_damage: 1
+  m_speed: 5
+  m_rotationSpeed: 90
+  m_health: 1
+  m_timeToLive: 8
+  m_vfxExplosion: {fileID: 891729954413761739, guid: 57043e97584ceda4a951bca5a5216bd1, type: 3}
+  m_meteors:
   - {fileID: 21300000, guid: 3ab69feb94450ca8487c26ce598fd3ad, type: 3}
   - {fileID: 21300000, guid: 2043cefaaaf560729a0e0add8125c68e, type: 3}
   - {fileID: 21300000, guid: 3372ee62b47d0033aaad979ef49af036, type: 3}
-  _meteorSprite: {fileID: 3814097183250432388}
+  m_meteorSprite: {fileID: 3814097183250432388}
   m_sprite: {fileID: 4471921374155204335}
   m_hitEffectDuration: 0.2
-  _scaleMin: 0.8
-  _scaleMax: 1.5
+  m_scaleMin: 0.8
+  m_scaleMax: 1.5
 --- !u!114 &-1601595711673747187
 MonoBehaviour:
   m_ObjectHideFlags: 0

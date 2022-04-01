@@ -4,22 +4,22 @@ using UnityEngine;
 public class BossMisileBarrageState : BaseBossState
 {
     [SerializeField]
-    Transform[] _misileSpawningArea;
+    Transform[] m_misileSpawningArea;
 
     [SerializeField]
-    GameObject _misilePrefab;
+    GameObject m_misilePrefab;
 
     [SerializeField]
     [Range(0f, 1f)]
-    float misileDelayBetweenSpawns;
+    float m_misileDelayBetweenSpawns;
     
     IEnumerator RunMisileBarrageState()
     {
         // Spawn the missiles
-        foreach (Transform spawnPosition in _misileSpawningArea)
+        foreach (Transform spawnPosition in m_misileSpawningArea)
         {
             FireMisiles(spawnPosition.position);
-            yield return new WaitForSeconds(misileDelayBetweenSpawns);
+            yield return new WaitForSeconds(m_misileDelayBetweenSpawns);
         }
 
         // Go idle from a moment
@@ -29,7 +29,10 @@ public class BossMisileBarrageState : BaseBossState
     // Spawn the missile prefab
     void FireMisiles(Vector3 position)
     {
-        NetworkSpawnController.SpawnHelper(_misilePrefab, position, _misilePrefab.transform.rotation);
+        NetworkObjectSpawner.SpawnNewNetworkObject(
+            m_misilePrefab,
+            position,
+            m_misilePrefab.transform.rotation);
     }
 
     // Run state

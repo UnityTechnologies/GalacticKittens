@@ -10,10 +10,13 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
 
     [SerializeField]
     CharacterDataSO[] m_charactersData;
+
     [SerializeField]
     PlayerUI[] m_playersUI;
+
     [SerializeField]
     GameObject m_deathUI;
+
     [SerializeField]
     Transform[] m_shipStartingPositions;
 
@@ -41,19 +44,16 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
 
     public void PlayerDeath(ulong clientId)
     {
-        // print("PlayerDeath " + m_numberOfPlayerConnected);
         m_numberOfPlayerConnected--;
 
         if (m_numberOfPlayerConnected <= 0)
         {
-            // print("GameLose " + m_numberOfPlayerConnected);
-            // isGameOver = true;
             LoadClientRpc();
             LoadingSceneManager.Instance.LoadScene(SceneName.Defeat);
         }
         else
         {
-            // Send a client rpc to check witch clients is the one that dies and activate the death UI
+            // Send a client rpc to check which client was defeated, and activate the death UI
             ActivateDeathUIClientRpc(clientId);
         }
     }
@@ -61,10 +61,8 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
     // Event to check when a player disconnect
     void OnClientDisconnect(ulong clientId)
     {
-        // print($"OnClientDisconnect -> {clientId}");
         foreach (var player in m_playerShips)
         {
-            // print($"OnClientDisconnect ->{player.name} {player.characterData.clientId} {clientId}");
             if (player != null)
             {
                 if (player.characterData.clientId == clientId)
@@ -78,7 +76,6 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
     [ClientRpc]
     void ActivateDeathUIClientRpc(ulong clientId)
     {
-        // print($"{clientId} == {NetworkManager.Singleton.LocalClientId}");
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
             m_deathUI.SetActive(true);
@@ -91,24 +88,17 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
         if (IsServer)
             return;
 
-        // LoadingFadeEffect.fadedAll?.Invoke();
         LoadingFadeEffect.Instance.FadeAll();
     }
-
-    // void SetPlayerUIOnClients(int charIndex, string playerShipName)
-    // {
-    //     SetPlayerUIClientRpc(charIndex, playerShipName);
-    // }
 
     [ClientRpc]
     void SetPlayerUIClientRpc(int charIndex, string playerShipName)
     {
-        // Not optimal but this is only call one time per ship
-        // We do this because we can not pass a GameObject on a RPC
+        // Not optimal, but this is only called one time per ship
+        // We do this because we can not pass a GameObject in an RPC
         GameObject go = GameObject.Find(playerShipName);
         PlayerShipController playerShipController = go.GetComponent<PlayerShipController>();
 
-        // print($"playerUI set -> {OwnerClientId}");
         m_playersUI[m_charactersData[charIndex].playerId].SetUI(
             m_charactersData[charIndex].playerId,
             m_charactersData[charIndex].iconSprite,
@@ -118,7 +108,6 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
         );
 
         // Pass the UI to the player
-        // print($"setplayuerUi ->  player id {_charactersData[charIndex].playerId} ");
         playerShipController.playerUI = m_playersUI[m_charactersData[charIndex].playerId];
     }
 
@@ -143,14 +132,14 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
     [ClientRpc]
     void ShutdownClientRpc()
     {
-        if (IsServer) return;
+        if (IsServer)
+            return;
 
         Shutdown();
     }
 
     public void BossDefeat()
     {
-        // print("Boss defeated");
         LoadClientRpc();
         LoadingSceneManager.Instance.LoadScene(SceneName.Victory);
     }
@@ -187,18 +176,18 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
         foreach (var client in m_connectedClients)
         {
             int index = 0;
+
             foreach (CharacterDataSO data in m_charactersData)
             {
                 if (data.isSelected && data.clientId == client)
                 {
-                    GameObject spaceShip = NetworkSpawnController.SpawnHelper(
+                    GameObject spaceShip = NetworkObjectSpawner.SpawnNewNetworkObject(
                         data.spaceshipPrefab,
                         m_shipStartingPositions[m_numberOfPlayerConnected].position,
                         null,
                         true,
                         true,
-                        data.clientId
-                        );
+                        data.clientId);
 
                     PlayerShipController playerShipController = spaceShip.GetComponent<PlayerShipController>();
                     playerShipController.characterData = data;
@@ -209,28 +198,9 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
 
                     m_numberOfPlayerConnected++;
                 }
+
                 index++;
             }
-            // print($"PlayerConnected {m_numberOfPlayerConnected}");
         }
     }
 }
-
-// Pass to only clients all the players connected on a list
-
-// int index = 0;
-// foreach (CharacterDataSO data in m_charactersData)
-// {
-//     if (data.isSelected && data.clientId == clientId)
-//     {
-//         GameObject spaceShip = NetworkSpawnController.SpawnHelper(data.spaceshipPrefab, m_shipStartingPositions[m_numberOfPlayerConnected].position, null, true, true, data.clientId);
-//         spaceShip.GetComponent<PlayerShipController>().characterData = data;
-//         // SetPlayerUIOnClients(index, spaceShip.name);
-//         SetPlayerUI(index, spaceShip.name);
-
-//         m_numberOfPlayerConnected++;
-//     }
-//     index++;
-// }
-//     }
-// }

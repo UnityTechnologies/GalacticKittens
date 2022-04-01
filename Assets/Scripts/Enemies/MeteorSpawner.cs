@@ -28,7 +28,7 @@ public class MeteorSpawner : MonoBehaviour
         // The min and max Y pos for spawning the meteors
         float randomYpos = Random.Range(-5.0f, 6.0f);
         Vector3 pos = new Vector3(transform.position.x, randomYpos, 0);
-        NetworkSpawnController.SpawnHelper(_meteorPrefab, pos);        
+        NetworkObjectSpawner.SpawnNewNetworkObject(_meteorPrefab, pos);
     }
 
 }

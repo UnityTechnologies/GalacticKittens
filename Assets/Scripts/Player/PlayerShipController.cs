@@ -194,7 +194,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
             m_isPlayerDefeated = true;
 
             // Spawn the death vfx
-            NetworkSpawnController.SpawnHelper(m_explosionVfxPrefab, transform.position);
+            NetworkObjectSpawner.SpawnNewNetworkObject(m_explosionVfxPrefab, transform.position);
 
             // Tell the Gameplay manager that I've been defeated
             gameplayManager.PlayerDeath(m_characterData.clientId);

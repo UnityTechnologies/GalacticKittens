@@ -4,9 +4,9 @@ using UnityEngine;
 /*
 	Generic classes for the use of singleton
 	there are 3 types:
-	- monobehaviour -> for the use of singleton to normal behaviours
-	- networkbehaviour -> for the use of singleton that use the network behaviour
-	- persitent -> when we need to make the class dont destroy
+	- MonoBehaviour -> for the use of singleton to normal MonoBehaviours
+	- NetworkBehaviour -> for the use of singleton that uses the NetworkBehaviours
+	- Persistent -> when we need to make sure the object is not destroyed during the session
 */
 
 public class Singleton<T> : MonoBehaviour where T : Component

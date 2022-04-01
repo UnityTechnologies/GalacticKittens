@@ -63,7 +63,7 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
     protected override void UpdateDefeatedAnimation()
     {
         PowerUpSpawnController.instance.OnPowerUpSpawn(transform.position);
-        NetworkSpawnController.SpawnHelper(m_VfxExplosion, this.transform.position);
+        NetworkObjectSpawner.SpawnNewNetworkObject(m_VfxExplosion, this.transform.position);
 
         m_EnemyState.Value = EnemyState.defeated;
     }
@@ -72,7 +72,7 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
     private void ShootLaserServerRpc()
     {
         // print($"Fire:: {NetworkObject.OwnerClientId}");
-        var newEnemyLaser = NetworkSpawnController.SpawnHelper(m_EnemyBulletPrefab);
+        var newEnemyLaser = NetworkObjectSpawner.SpawnNewNetworkObject(m_EnemyBulletPrefab);
         PlayShootAudioClientRpc();
 
         var bulletController = newEnemyLaser.GetComponent<BulletController>();
