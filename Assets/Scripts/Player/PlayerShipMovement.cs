@@ -83,6 +83,8 @@ public class PlayerShipMovement : NetworkBehaviour
             There two types of movement:
             constant -> linear move, there are no time aceleration
             momentum -> move with aceleration at the start
+
+            Note: feel free to add your own type as well
         */
         if (m_moveType == MoveType.constant)
         {
@@ -210,6 +212,7 @@ public class PlayerShipMovement : NetworkBehaviour
             }
         }
     }
+
     private void MovePlayerShip()
     {
         // Take the value from the input and multiply by speed and time

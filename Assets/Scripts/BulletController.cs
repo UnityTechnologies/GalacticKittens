@@ -9,14 +9,14 @@ public class BulletController : NetworkBehaviour
         player
     };
 
-    public int damage;
+    public int damage = 1;
 
     [SerializeField]
-    private float m_speed;
+    private float m_speed = 12f;
 
     [Header("Time alive in seconds (s)")]
     [SerializeField]
-    private float m_timeToLive;
+    private float m_timeToLive = 6f;
 
     [SerializeField]
     private BulletOwner m_owner;
@@ -42,6 +42,10 @@ public class BulletController : NetworkBehaviour
     {
         if (IsServer)
         {
+            m_timeToLive -= Time.deltaTime;
+            if(m_timeToLive <= 0f)
+                Despawn();
+
             transform.Translate(direction * m_speed * Time.deltaTime);
         }
     }
@@ -72,11 +76,6 @@ public class BulletController : NetworkBehaviour
         }
     }
 
-    private void AutoDestroy()
-    {
-        Despawn();
-    }
-
     [ClientRpc]
     private void ChangeBulletColorClientRpc(Color newColor)
     {
@@ -87,13 +86,5 @@ public class BulletController : NetworkBehaviour
     {
         if(NetworkObject != null && NetworkObject.IsSpawned)
             NetworkObject.Despawn();
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        if (IsServer)
-            Invoke(nameof(AutoDestroy), m_timeToLive);
-
-        base.OnNetworkSpawn();
     }
 }

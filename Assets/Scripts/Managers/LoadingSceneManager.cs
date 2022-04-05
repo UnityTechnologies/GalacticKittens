@@ -4,16 +4,16 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// Important: the names should be the same as the scene
+// Important: the names in the enum value should be the same as the scene you're trying to load
 public enum SceneName : byte
 {
+    Bootstrap,
     Menu,
     CharacterSelection,
+    Controls,
     Gameplay,
     Victory,
     Defeat,
-    Controls,
-    BootStrap,
     //.
     //.
     // Add more scenes states if needed
@@ -21,17 +21,16 @@ public enum SceneName : byte
 
 public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
 {    
-    private SceneName m_sceneActive;  
+    private SceneName m_sceneActive;
 
     public SceneName SceneActive => m_sceneActive;
 
     // Coroutine for the loading effect. It use an alpha in out effect 
     IEnumerator Loading(SceneName sceneToLoad, bool isNetworkSessionActive)
     {
-        // LoadingFadeEffect.fadedIn?.Invoke();
         LoadingFadeEffect.Instance.FadeIn();
 
-        // Wait until i can load
+        // Wait until I can load
         yield return new WaitUntil(() => LoadingFadeEffect.s_canLoad);
 
         // The actual load of the scene, here the player still see a black screen  
@@ -46,15 +45,15 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
             LoadSceneLocal(sceneToLoad);
         }
 
-        // Because the scene are not heavy we can just wait a second and continue with the fade
-        // in case the scene is heavy instead we should use and additive load to wait for the scene to load before continue
+        // Because the scenes are not heavy we can just wait a second and continue with the fade.
+        // In case the scene is heavy instead we should use additive loading to wait for the
+        // scene to load before we continue
         yield return new WaitForSeconds(1f);
 
         LoadingFadeEffect.Instance.FadeOut();
-
     }
 
-    // Load the scene using the SceneManager, here there is not network session active
+    // Load the scene using the regular SceneManager, use this while there's no active networked session
     void LoadSceneLocal(SceneName sceneToLoad)
     {
         SceneManager.LoadScene(sceneToLoad.ToString());
@@ -67,21 +66,24 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
         }
     }
 
-    // Load the scene using the SceneManager from NetworkManager, here the network session is active
+    // Load the scene using the SceneManager from NetworkManager. Use this when there is an active network session
     void LoadSceneNetwork(SceneName sceneToLoad)
     {
-        NetworkManager.Singleton.SceneManager.LoadScene(sceneToLoad.ToString(), LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene(
+            sceneToLoad.ToString(),
+            LoadSceneMode.Single);
     }
 
-    // The event when the scene finish loading
+    // The callback function triggered when the scene is finished loading
     // Here we set up what to do on each scene and change the music
     void OnLoadComplete(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
     {
-        // We only care the host catch the loading 'cause every manager handles on the server the sync info
+        // We only care the host/server is loading because every manager handles
+        // their information and behavior on the server runtime
         if (!NetworkManager.Singleton.IsServer)
             return;
 
-        Enum.TryParse<SceneName>(sceneName, out m_sceneActive);
+        Enum.TryParse(sceneName, out m_sceneActive);
 
         if (!ClientConnection.Instance.CanClientConnect(clientId))
             return;
@@ -93,17 +95,16 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
             case SceneName.CharacterSelection:
                 CharacterSelectionManager.Instance.ServerSceneInit(clientId);
                 break;
+
             // When a client/host connects tell the manager to create the ship and change de music
             case SceneName.Gameplay:
-                //print($"Gameplay -> {clientId}");
                 GameplayManager.Instance.ServerSceneInit(clientId);
-                // AudioManager.Instance.CrossPlayGameplay();
                 break;
+
             // When a client/host connects tell the manager to create the player score ships and change the music
             case SceneName.Victory:
             case SceneName.Defeat:
                 EndGameManager.Instance.ServerSceneInit(clientId);
-                // AudioManager.Instance.CrossPlayIntro();
                 break;
         }
     }
@@ -115,8 +116,8 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
         StartCoroutine(Loading(sceneToLoad, isNetworkSessionActive));
     }
 
-    // The menu scene will make me subscribe to the network events, 'cause for some reason
-    // when a network session ends i cannot longer listen to the events.
+    // The menu scene will make me subscribe to the network events, because for some reason
+    // when a network session ends it cannot longer listen to the events.
     public void Init()
     {
         NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnLoadComplete;

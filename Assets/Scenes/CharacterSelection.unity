@@ -1089,6 +1089,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8439189722569535348, guid: 960221fdd06821142a5a6ee95014ca63, type: 3}
+      propertyPath: m_nextScene
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8439189722569535348, guid: 960221fdd06821142a5a6ee95014ca63, type: 3}
       propertyPath: m_readyButton
       value: 
       objectReference: {fileID: 1362876911}

@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Bootstrap.unity
     guid: 88e9c3b76d8ed0bcdb2a6be062b6f929
   - enabled: 1
-    path: Assets/Scenes/Netcode Bootcamp #1/FinishedScene.unity
-    guid: a3654ca7e9d86d34f969b6b92afa2907
-  - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: 965c3cd41339c5ceea91a08df2a9fed7
   - enabled: 1

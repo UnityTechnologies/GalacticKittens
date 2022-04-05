@@ -73,7 +73,6 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
         }
     }
 
-
     [ServerRpc]
     void ActivateShieldServerRpc()
     {

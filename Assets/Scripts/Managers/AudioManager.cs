@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class AudioManager : SingletonPersistent<AudioManager>
 {
-    public enum MusicName { intro, gameplay };
+    public enum MusicName
+    {
+        intro,
+        gameplay
+    };
 
     [Header("Music")]
     [SerializeField]

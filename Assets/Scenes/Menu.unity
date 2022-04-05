@@ -319,7 +319,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 46bead526ee126640bf9e9a4191f22e5, type: 2}
   - {fileID: 11400000, guid: 0add8b549180b4c4eafc5a644ee571ea, type: 2}
   m_confirmClip: {fileID: 8300000, guid: 81b6a58e8437cdc48b5bb4908d8ff2bd, type: 3}
-  nextScene: 1
+  nextScene: 2
 --- !u!4 &688075089
 Transform:
   m_ObjectHideFlags: 0
