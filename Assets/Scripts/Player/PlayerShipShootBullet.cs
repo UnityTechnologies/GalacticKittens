@@ -38,11 +38,15 @@ public class PlayerShipShootBullet : NetworkBehaviour
     void FireServerRpc()
     {
         // Spawn the bullet and set the damage and character for stats
-        NetworkObjectSpawner.SpawnNewNetworkObject(m_shootVfx, m_cannonPosition.position);
+        NetworkObjectSpawner.SpawnNewNetworkObject(
+            m_shootVfx,
+            m_cannonPosition.position,
+            Quaternion.identity);
 
         GameObject newBullet = NetworkObjectSpawner.SpawnNewNetworkObject(
             m_bulletPrefab,
-            m_cannonPosition.position);
+            m_cannonPosition.position,
+            Quaternion.identity);
 
         BulletController bulletController = newBullet.GetComponent<BulletController>();
         bulletController.damage = m_fireDamage;

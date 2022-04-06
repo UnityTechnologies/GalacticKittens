@@ -63,7 +63,7 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
     protected override void UpdateDefeatedAnimation()
     {
         PowerUpSpawnController.instance.OnPowerUpSpawn(transform.position);
-        NetworkObjectSpawner.SpawnNewNetworkObject(m_VfxExplosion, this.transform.position);
+        NetworkObjectSpawner.SpawnNewNetworkObject(m_VfxExplosion, transform.position, Quaternion.identity);
 
         m_EnemyState.Value = EnemyState.defeated;
     }

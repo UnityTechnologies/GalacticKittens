@@ -280,10 +280,9 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
         GameObject go = NetworkObjectSpawner.SpawnNewNetworkObject(
             m_playerPrefab,
             transform.position,
-            null,
-            true,
-            true,
-            clientId);
+            Quaternion.identity,
+            clientId,
+            true);
         //print(clientId);
         // go.name = $"Player{clientId}";
 

@@ -182,10 +182,9 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
                     GameObject spaceShip = NetworkObjectSpawner.SpawnNewNetworkObject(
                         data.spaceshipPrefab,
                         m_shipStartingPositions[m_numberOfPlayerConnected].position,
-                        null,
-                        true,
-                        true,
-                        data.clientId);
+                        Quaternion.identity,
+                        data.clientId,
+                        true);
 
                     PlayerShipController playerShipController = spaceShip.GetComponent<PlayerShipController>();
                     playerShipController.characterData = data;

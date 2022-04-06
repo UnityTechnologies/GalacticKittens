@@ -1,40 +1,65 @@
 using Unity.Netcode;
 using UnityEngine;
 
-
 public class NetworkObjectSpawner
-{  
-    //TODO: TEST function, evaluate if needed
+{
     public static GameObject SpawnNewNetworkObject(
         GameObject prefab,
-        Vector3? position = null,
-        Quaternion? rotation = null,
-        bool destroyWithScene = true,
-        bool changeOwnershipToClient = false,
-        ulong newClientOwnerId = 0UL)
+        bool destroyWithScene = true)
     {
-        if (position == null)
-            position = Vector3.zero;
-
-        if (rotation == null)
-            rotation = Quaternion.identity;
-
-        if (NetworkManager.Singleton.IsServer)
+#if UNITY_EDITOR
+        if (!NetworkManager.Singleton.IsServer)
         {
-            GameObject newGameObject = Object.Instantiate(prefab, position.Value, rotation.Value);
-
-            NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
-            newGameObjectNetworkObject.Spawn(destroyWithScene);
-
-            if (changeOwnershipToClient && newClientOwnerId != 0UL)
-            {
-                //TODO: NOT THIS, BECAUSE IT WORKS DUE TO A CURRENT BUG IN NETCODE!!
-                newGameObjectNetworkObject.ChangeOwnership(newClientOwnerId);
-            }
-
-            return newGameObject;
+            Debug.LogError("ERROR: Spawning not happening in the server!");
         }
+#endif
+        GameObject newGameObject = Object.Instantiate(prefab, Vector3.zero, Quaternion.identity);
 
-        return null;
+        NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
+        newGameObjectNetworkObject.Spawn(destroyWithScene);
+
+        return newGameObject;
+    }
+
+    public static GameObject SpawnNewNetworkObject(
+        GameObject prefab,
+        Vector3 position,
+        Quaternion rotation,
+        bool destroyWithScene = true)
+    {
+#if UNITY_EDITOR
+        if (!NetworkManager.Singleton.IsServer)
+        {
+            Debug.LogError("ERROR: Spawning not happening in the server!");
+        }
+#endif
+        GameObject newGameObject = Object.Instantiate(prefab, position, rotation);
+
+        NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
+        newGameObjectNetworkObject.Spawn(destroyWithScene);
+
+        return newGameObject;
+    }
+
+    public static GameObject SpawnNewNetworkObject(
+        GameObject prefab,
+        Vector3 position,
+        Quaternion rotation,
+        ulong newClientOwnerId,
+        bool destroyWithScene = true)
+    {
+#if UNITY_EDITOR
+        if (!NetworkManager.Singleton.IsServer)
+        {
+            Debug.LogError("ERROR: Spawning not happening in the server!");
+        }
+#endif
+        GameObject newGameObject = Object.Instantiate(prefab, position, rotation);
+
+        NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
+        newGameObjectNetworkObject.Spawn(destroyWithScene);
+        newGameObjectNetworkObject.ChangeOwnership(newClientOwnerId);
+
+        return newGameObject;
     }
 }

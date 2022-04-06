@@ -108,7 +108,7 @@ public class Meteor : NetworkBehaviour, IDamagable
         if (m_health <= 0)
         {
             PowerUpSpawnController.instance.OnPowerUpSpawn(transform.position);
-            NetworkObjectSpawner.SpawnNewNetworkObject(m_vfxExplosion, transform.position);
+            NetworkObjectSpawner.SpawnNewNetworkObject(m_vfxExplosion, transform.position, Quaternion.identity);
 
             Despawn();
         }
