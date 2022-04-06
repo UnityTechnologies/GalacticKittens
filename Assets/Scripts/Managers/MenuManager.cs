@@ -21,6 +21,19 @@ public class MenuManager : MonoBehaviour
 
     IEnumerator Start()
     {
+        // -- To test with latency on development builds --
+        // To set the latency, jitter and packet-loss percentage values for develop builds we need
+        // the following code to execute before NetworkManager attempts to connect (changing the
+        // values of the parameters as desired):
+        //
+        // More information here:
+        // https://docs-multiplayer.unity3d.com/docs/tutorials/testing/testing_with_artificial_conditions#debug-builds
+#if DEVELOPMENT_BUILD && !UNITY_EDITOR
+        UnityTransport.ClientPacketDelayMs = 120;
+        UnityTransport.ClientPacketJitterMs = 5;
+        UnityTransport.ClientPacketDropRate = 3;
+#endif
+
         // Clean the all the data of the characters so we can start with a clean state
         foreach (CharacterDataSO data in m_characterDatas)
         {
