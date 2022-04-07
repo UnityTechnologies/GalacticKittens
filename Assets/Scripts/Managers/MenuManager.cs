@@ -29,12 +29,13 @@ public class MenuManager : MonoBehaviour
         // More information here:
         // https://docs-multiplayer.unity3d.com/docs/tutorials/testing/testing_with_artificial_conditions#debug-builds
 #if DEVELOPMENT_BUILD && !UNITY_EDITOR
-        UnityTransport.ClientPacketDelayMs = 120;
-        UnityTransport.ClientPacketJitterMs = 5;
-        UnityTransport.ClientPacketDropRate = 3;
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetDebugSimulatorParameters(
+            packetDelay: 50,
+            packetJitter: 5,
+            dropRate: 3);
 #endif
 
-        // Clean the all the data of the characters so we can start with a clean state
+        // Clean the all the data of the characters so we can start with a clean slate
         foreach (CharacterDataSO data in m_characterDatas)
         {
             data.EmptyData();
@@ -55,6 +56,7 @@ public class MenuManager : MonoBehaviour
             if (Input.anyKey)
             {
                 ToMenu();
+
                 m_pressAnyKeyActive = false;
             }
         }
