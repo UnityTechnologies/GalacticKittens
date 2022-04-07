@@ -17,12 +17,16 @@ Galactic Kittens uses basic [Network Manager](https://docs-multiplayer.unity3d.c
 <br>
 <br>
 
+## Requirements: 
+ - Unity Version 2020.3.XX and higher
+ - Enable the use of preview packages
+
 ---------------
-## Services Used:
+## Main Services Covered:
   * [Netcode for GameObjects](https://unity.com/products/netcode)
 
 ---------------
-## Running the Project for the First Time
+## Usage
 **From the Editor:**
 
 1. Open the project. You can start with the latest **Unity Editor ver. 2020.3.XX**
@@ -42,7 +46,7 @@ Galactic Kittens uses basic [Network Manager](https://docs-multiplayer.unity3d.c
 <br>
 
 ---------------
-## Exploring the project
+## Project Structure
 Galactic Kittens is a 4-player co-op action game experience, where players try to take down robot enemies, and then a dangerous boss that can launch missles! Players can select between the 4 space explorers that can fire lasers, and collect power ups that let them activate a spaceship shield that protects against 1 hit.
 
 One of the four clients acts as the host/server. The game is mostly server-authoritative, with the exception of the main spaceships that the players control. Position updates are done through [ClientNetworkTransform](https://docs-multiplayer.unity3d.com/docs/components/networktransform#clientnetworktransform) components for the main characters, and regular [NetworkTransform](https://docs-multiplayer.unity3d.com/docs/components/networktransform) components for the other objects (enemies, power-ups, boss, etc.).
@@ -59,3 +63,7 @@ For an overview of the project's architecture please check out our [ARCHITECTURE
 * For further discussion points and to connect with the team, join us on the Unity Multiplayer Networking Discord Server - Channel #dev-samples
 
 [![Discord](https://img.shields.io/discord/449263083769036810.svg?label=discord&logo=discord&color=informational)](https://discord.gg/FM8SE9E)
+
+## Examples of other repositories:
+ - [Boss Room](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop)
+ - [Game Lobby Sample](https://github.com/Unity-Technologies/com.unity.services.samples.game-lobby)
