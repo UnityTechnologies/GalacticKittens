@@ -1,4 +1,5 @@
 using Unity.Netcode;
+
 using UnityEngine;
 using System.Collections;
 
@@ -24,15 +25,18 @@ public class MenuManager : MonoBehaviour
         // -- To test with latency on development builds --
         // To set the latency, jitter and packet-loss percentage values for develop builds we need
         // the following code to execute before NetworkManager attempts to connect (changing the
-        // values of the parameters as desired):
+        // values of the parameters as desired).
+        //
+        // If you'd like to test without the simulated latency, just set all parameters below to zero(0).
         //
         // More information here:
         // https://docs-multiplayer.unity3d.com/docs/tutorials/testing/testing_with_artificial_conditions#debug-builds
 #if DEVELOPMENT_BUILD && !UNITY_EDITOR
-        NetworkManager.Singleton.GetComponent<UnityTransport>().SetDebugSimulatorParameters(
-            packetDelay: 50,
-            packetJitter: 5,
-            dropRate: 3);
+        NetworkManager.Singleton.GetComponent<Unity.Netcode.Transports.UTP.UnityTransport>().
+            SetDebugSimulatorParameters(
+                packetDelay: 50,
+                packetJitter: 5,
+                dropRate: 3);
 #endif
 
         // Clean the all the data of the characters so we can start with a clean slate

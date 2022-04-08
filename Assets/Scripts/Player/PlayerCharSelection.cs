@@ -9,10 +9,12 @@ public class PlayerCharSelection : NetworkBehaviour
     private const int k_noCharacterSelectedValue = -1;
 
     [SerializeField]
-    private NetworkVariable<int> m_charSelected = new NetworkVariable<int>(k_noCharacterSelectedValue);
+    private NetworkVariable<int> m_charSelected =
+        new NetworkVariable<int>(k_noCharacterSelectedValue);
 
     [SerializeField]
-    private NetworkVariable<int> m_playerId = new NetworkVariable<int>(k_noCharacterSelectedValue);
+    private NetworkVariable<int> m_playerId =
+        new NetworkVariable<int>(k_noCharacterSelectedValue);
 
     [SerializeField]
     private AudioClip _changedCharacterClip;
@@ -23,16 +25,19 @@ public class PlayerCharSelection : NetworkBehaviour
         {
             m_playerId.Value = CharacterSelectionManager.Instance.GetPlayerId(OwnerClientId);
         }
-        else if (!IsOwner && hasAcharacterSelected())
+        else if (!IsOwner && HasAcharacterSelected())
         {
-            CharacterSelectionManager.Instance.SetPlayebleChar(m_playerId.Value, m_charSelected.Value, IsOwner);
+            CharacterSelectionManager.Instance.SetPlayebleChar(
+                m_playerId.Value,
+                m_charSelected.Value,
+                IsOwner);
         }
 
         // Assign the name of the object base on the player id on every instance
         gameObject.name = $"Player{m_playerId.Value + 1}";
     }
 
-    private bool hasAcharacterSelected()
+    private bool HasAcharacterSelected()
     {
         return m_playerId.Value != k_noCharacterSelectedValue;
     }
@@ -56,6 +61,7 @@ public class PlayerCharSelection : NetworkBehaviour
         // print($"OnPlayerChanged {OwnerClientId} -> old {oldValue} : new {newValue}");
         // print($"Set player Id -> OwnerId {OwnerClientId} : {oldValue} : {newValue}");
         CharacterSelectionManager.Instance.SetPlayebleChar(newValue, newValue, IsOwner);
+
         if (IsServer)
             m_charSelected.Value = newValue;
     }
@@ -63,11 +69,8 @@ public class PlayerCharSelection : NetworkBehaviour
     // Event call when server changes the network variable
     private void OnCharacterChanged(int oldValue, int newValue)
     {
-        // print($"OnCharacterChanged {OwnerClientId} -> old {oldValue} : new {newValue}");
-        // print($"OncharChange -> Owner:: {OwnerClientId} : {oldValue} : {newValue} : PlayerId:: {_playerId.Value}");        
-
-        // If i am not the owner, update the character selection UI
-        if (!IsOwner && hasAcharacterSelected())
+        // If I am not the owner, update the character selection UI
+        if (!IsOwner && HasAcharacterSelected())
             CharacterSelectionManager.Instance.SetCharacterUI(m_playerId.Value, newValue);
     }
 
@@ -104,7 +107,7 @@ public class PlayerCharSelection : NetworkBehaviour
                     // if selected check if is selected by me
                     if (CharacterSelectionManager.Instance.IsSelectedByPlayer(m_playerId.Value, m_charSelected.Value))
                     {
-                        // If it's selected by me, deselect
+                        // If it's selected by me, de-select
                         CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(false, m_charSelected.Value);
                         NotReadyServerRpc();
                     }
