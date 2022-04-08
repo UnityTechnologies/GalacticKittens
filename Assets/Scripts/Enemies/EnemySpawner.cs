@@ -23,11 +23,11 @@ public class EnemySpawner : NetworkBehaviour
     [Header("Enemies")]
     [SerializeField]
     private NetworkVariable<float> m_EnemySpawnTime =
-        new NetworkVariable<float>(NetworkVariableReadPermission.Everyone, 5f);
+        new NetworkVariable<float>(5f, NetworkVariableReadPermission.Everyone);
 
     [SerializeField]
     private NetworkVariable<float> _bossSpawnTime =
-        new NetworkVariable<float>(NetworkVariableReadPermission.Everyone, 10f);
+        new NetworkVariable<float>(10f, NetworkVariableReadPermission.Everyone);
 
     [Header("Meteors")]
     [SerializeField]

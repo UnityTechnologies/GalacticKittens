@@ -26,20 +26,20 @@ public class BaseEnemyBehavior : NetworkBehaviour, IDamagable
 
     [SerializeField]
     protected NetworkVariable<float> m_EnemyLifetime =
-        new NetworkVariable<float>(NetworkVariableReadPermission.Everyone, 20f);
+        new NetworkVariable<float>(20f, NetworkVariableReadPermission.Everyone);
 
     [SerializeField]
     protected bool m_UsesEnemyLifetime = true;
 
     [SerializeField]
     protected NetworkVariable<int> m_EnemyHealthPoints =
-        new NetworkVariable<int>(NetworkVariableReadPermission.Everyone, 3);
+        new NetworkVariable<int>(3, NetworkVariableReadPermission.Everyone);
 
     [SerializeField]
     protected GameObject m_VfxExplosion;
 
     protected NetworkVariable<EnemyState> m_EnemyState =
-        new NetworkVariable<EnemyState>(NetworkVariableReadPermission.Everyone, EnemyState.active);
+        new NetworkVariable<EnemyState>(EnemyState.active, NetworkVariableReadPermission.Everyone);
 
     protected EnemyMovementType m_EnemyMovementType;
 

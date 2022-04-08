@@ -8,7 +8,7 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
 
     [SerializeField]
     private NetworkVariable<float> m_ShootingCooldown =
-        new NetworkVariable<float>(NetworkVariableReadPermission.Everyone, 3.5f);
+        new NetworkVariable<float>(3.5f, NetworkVariableReadPermission.Everyone);
         
     [SerializeField]
     private AudioClip _shootClip;
