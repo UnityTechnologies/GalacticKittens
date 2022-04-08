@@ -4,32 +4,37 @@ using UnityEngine;
 
 public class PlayerCharSelection : NetworkBehaviour
 {
-    [SerializeField]
-    private NetworkVariable<int> m_charSelected = new NetworkVariable<int>(-1);
+    public int CharSelected => m_charSelected.Value;
+
+    private const int k_noCharacterSelectedValue = -1;
 
     [SerializeField]
-    private NetworkVariable<int> m_playerId = new NetworkVariable<int>(-1);
+    private NetworkVariable<int> m_charSelected = new NetworkVariable<int>(k_noCharacterSelectedValue);
+
+    [SerializeField]
+    private NetworkVariable<int> m_playerId = new NetworkVariable<int>(k_noCharacterSelectedValue);
 
     [SerializeField]
     private AudioClip _changedCharacterClip;
-
-    public int CharSelected => m_charSelected.Value;
 
     private void Start()
     {
         if (IsServer)
         {
             m_playerId.Value = CharacterSelectionManager.Instance.GetPlayerId(OwnerClientId);
-            // _charSelected.Value = _playerId.Value;
         }
-        else if (!IsOwner && m_playerId.Value != -1)
+        else if (!IsOwner && hasAcharacterSelected())
         {
-            // print($"player {_playerId.Value} char {_charSelected.Value}");
             CharacterSelectionManager.Instance.SetPlayebleChar(m_playerId.Value, m_charSelected.Value, IsOwner);
         }
 
         // Assign the name of the object base on the player id on every instance
         gameObject.name = $"Player{m_playerId.Value + 1}";
+    }
+
+    private bool hasAcharacterSelected()
+    {
+        return m_playerId.Value != k_noCharacterSelectedValue;
     }
 
     private void OnEnable()
@@ -61,8 +66,8 @@ public class PlayerCharSelection : NetworkBehaviour
         // print($"OnCharacterChanged {OwnerClientId} -> old {oldValue} : new {newValue}");
         // print($"OncharChange -> Owner:: {OwnerClientId} : {oldValue} : {newValue} : PlayerId:: {_playerId.Value}");        
 
-        // If i am not the owner update the character selection UI
-        if (!IsOwner && m_playerId.Value != -1)
+        // If i am not the owner, update the character selection UI
+        if (!IsOwner && hasAcharacterSelected())
             CharacterSelectionManager.Instance.SetCharacterUI(m_playerId.Value, newValue);
     }
 

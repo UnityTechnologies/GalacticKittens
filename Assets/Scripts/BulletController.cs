@@ -55,24 +55,17 @@ public class BulletController : NetworkBehaviour
         if (!IsServer)
             return;
 
-        if (m_owner == BulletOwner.player)
+        if (collider.TryGetComponent(out IDamagable damagable))
         {
-            if (collider.TryGetComponent(out IDamagable damagable))
+            if (m_owner == BulletOwner.player)
             {
-                damagable.Hit(damage);
-
                 // For the final score
                 characterData.enemiesDestroyed++;
-                Despawn();
             }
-        }
-        else
-        {
-            if (collider.TryGetComponent(out IDamagable damagable))
-            {
-                damagable.Hit(damage);
-                Despawn();
-            }
+
+            damagable.Hit(damage);
+
+            Despawn();
         }
     }
 

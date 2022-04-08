@@ -144,7 +144,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
             // If the collider hit a power-up
             if (collider.TryGetComponent(out PowerUpSpecial powerUp))
             {
-                // Check if i have space to take the special
+                // Check if I have space to take the special
                 if (m_specials.Value < m_maxSpecialPower)
                 {
                     // Update var
