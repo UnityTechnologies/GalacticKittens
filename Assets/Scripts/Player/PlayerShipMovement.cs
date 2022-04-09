@@ -26,7 +26,7 @@ public class PlayerShipMovement : NetworkBehaviour
     }
 
     [SerializeField]
-    MoveType m_moveType;
+    MoveType m_moveType = MoveType.momentum;
 
     [SerializeField]
     PlayerLimits m_verticalLimits;
@@ -71,8 +71,7 @@ public class PlayerShipMovement : NetworkBehaviour
 
         UpdateVerticalMovementSprite();
 
-        // Check the limits of the ship
-        CheckLimits();
+        AdjustInputValuesBasedOnPositionLimits();
 
         MovePlayerShip();
     }
@@ -88,38 +87,60 @@ public class PlayerShipMovement : NetworkBehaviour
         */
         if (m_moveType == MoveType.constant)
         {
-            m_inputX = 0f;
-            m_inputY = 0f;
-
-            // Horizontal input
-            if (Input.GetKey(KeyCode.D))
-            {
-                m_inputX = 1f;
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                m_inputX = -1f;
-            }
-
-            // Vertical input and set the ship sprite
-            if (Input.GetKey(KeyCode.W))
-            {
-                m_inputY = 1f;
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                m_inputY = -1f;
-            }
+            HandleMoveTypeConstant();
         }
         else if (m_moveType == MoveType.momentum)
         {
-            // Get the inputs 
-            m_inputX = Input.GetAxis(k_horizontalAxis);
-            m_inputY = Input.GetAxis(k_verticalAxis);
+            HandleMoveTypeMomentum();
         }
     }
 
+    private void HandleMoveTypeConstant()
+    {
+        m_inputX = 0f;
+        m_inputY = 0f;
+
+        // Horizontal input
+        if (Input.GetKey(KeyCode.D))
+        {
+            m_inputX = 1f;
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            m_inputX = -1f;
+        }
+
+        // Vertical input and set the ship sprite
+        if (Input.GetKey(KeyCode.W))
+        {
+            m_inputY = 1f;
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            m_inputY = -1f;
+        }
+    }
+
+    private void HandleMoveTypeMomentum()
+    {
+        m_inputX = Input.GetAxis(k_horizontalAxis);
+        m_inputY = Input.GetAxis(k_verticalAxis);
+    }
+
     private void UpdateVerticalMovementSprite()
+    {
+        m_previousVerticalMovementType = m_currentVerticalMovementType;
+
+        UpdateCurrentVerticalMovementType();
+
+        if (m_currentVerticalMovementType != m_previousVerticalMovementType)
+        {
+            // inform the server of the update to vertical movement type
+            NewVerticalMovementServerRPC(m_currentVerticalMovementType);
+        }
+    }
+
+    private void UpdateCurrentVerticalMovementType()
     {
         // Change the ship sprites base on the input value
         if (m_inputY > 0f)
@@ -137,22 +158,12 @@ public class PlayerShipMovement : NetworkBehaviour
             m_shipRenderer.sprite = m_normalSprite;
             m_currentVerticalMovementType = VerticalMovementType.none;
         }
-
-        bool changeInVerticalMovement =
-            m_currentVerticalMovementType != m_previousVerticalMovementType;
-
-        m_previousVerticalMovementType = m_currentVerticalMovementType;
-
-        //inform the server of any updates to vertical movement sprites
-        if (changeInVerticalMovement)
-        {
-            NewVerticalMovementServerRPC(m_currentVerticalMovementType);
-        }
     }
 
     [ServerRpc]
     private void NewVerticalMovementServerRPC(VerticalMovementType newVerticalMovementType)
     {
+        // The server lets all other clients of this ship's new vertical movement
         NewVerticalMovementClientRPC(newVerticalMovementType);
     }
 
@@ -174,27 +185,15 @@ public class PlayerShipMovement : NetworkBehaviour
     }
 
     // Check the limits of the player and adjust the input
-    private void CheckLimits()
+    private void AdjustInputValuesBasedOnPositionLimits()
     {
-        // Vertical limits
-        if (transform.position.y <= m_verticalLimits.minLimit)
-        {
-            // Check if the inputs goes on that direction -> vertical min is negative
-            if (Mathf.Approximately(Mathf.Sign(m_inputY), -1f))
-            {
-                m_inputY = 0f;
-            }
-        }
-        else if (transform.position.y >= m_verticalLimits.maxLimit)
-        {
-            // Check if the inputs goes on that direction -> vertical max is positive
-            if (Mathf.Approximately(Mathf.Sign(m_inputY), 1f))
-            {
-                m_inputY = 0f;
-            }
-        }
+        AdjustXinput();
 
-        // Horizontal limits
+        AdjustYinput();
+    }
+
+    private void AdjustXinput()
+    {
         if (transform.position.x <= m_hortizontalLimits.minLimit)
         {
             // Check if the inputs goes on that direction -> horizontal min is negative
@@ -213,15 +212,35 @@ public class PlayerShipMovement : NetworkBehaviour
         }
     }
 
+    private void AdjustYinput()
+    {
+        if (transform.position.y <= m_verticalLimits.minLimit)
+        {
+            // Check if the inputs goes on that direction -> vertical min is negative
+            if (Mathf.Approximately(Mathf.Sign(m_inputY), -1f))
+            {
+                m_inputY = 0f;
+            }
+        }
+        else if (transform.position.y >= m_verticalLimits.maxLimit)
+        {
+            // Check if the inputs goes on that direction -> vertical max is positive
+            if (Mathf.Approximately(Mathf.Sign(m_inputY), 1f))
+            {
+                m_inputY = 0f;
+            }
+        }
+    }
+
     private void MovePlayerShip()
     {
         // Take the value from the input and multiply by speed and time
         float speedTimesDeltaTime = m_speed * Time.deltaTime;
 
-        float yPos = m_inputY * speedTimesDeltaTime;
-        float xPos = m_inputX * speedTimesDeltaTime;
+        float newYposition = m_inputY * speedTimesDeltaTime;
+        float newXposition = m_inputX * speedTimesDeltaTime;
 
         // move the ship
-        transform.Translate(xPos, yPos, 0f);
+        transform.Translate(newXposition, newYposition, 0f);
     }
 }

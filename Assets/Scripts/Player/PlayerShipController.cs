@@ -34,10 +34,13 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     SpriteRenderer m_shipRenderer;
 
     [Header("Runtime set")]
+    [HideInInspector]
     public PlayerUI playerUI;
 
+    [HideInInspector]
     public CharacterDataSO characterData;
 
+    [HideInInspector]
     public GameplayManager gameplayManager;
 
     NetworkVariable<int> m_specials = new NetworkVariable<int>(0);

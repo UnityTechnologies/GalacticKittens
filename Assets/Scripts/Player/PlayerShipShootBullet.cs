@@ -24,42 +24,54 @@ public class PlayerShipShootBullet : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (IsOwner)
+        if (!IsOwner)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                // Tell the server to spawn the bullet
-                FireServerRpc();
-            }
+            FireNewBulletServerRpc();
         }
     }
 
     [ServerRpc]
-    void FireServerRpc()
+    void FireNewBulletServerRpc()
     {
-        // Spawn the bullet and set the damage and character for stats
-        NetworkObjectSpawner.SpawnNewNetworkObject(
-            m_shootVfx,
-            m_cannonPosition.position,
-            Quaternion.identity);
+        SpawnNewBulletVfx();
 
-        GameObject newBullet = NetworkObjectSpawner.SpawnNewNetworkObject(
-            m_bulletPrefab,
-            m_cannonPosition.position,
-            Quaternion.identity);
+        GameObject newBullet = GetNewBullet();
 
-        BulletController bulletController = newBullet.GetComponent<BulletController>();
-        bulletController.damage = m_fireDamage;
-        bulletController.characterData = m_characterData;
+        PrepareNewlySpawnedBulltet(newBullet);
 
         // Tell the clients to reproduce the shoot sound
         PlayShootBulletSoundClientRpc();
     }
 
+    private void SpawnNewBulletVfx()
+    {
+        NetworkObjectSpawner.SpawnNewNetworkObject(
+            m_shootVfx,
+            m_cannonPosition.position,
+            Quaternion.identity);
+    }
+
+    private GameObject GetNewBullet()
+    {
+        return NetworkObjectSpawner.SpawnNewNetworkObject(
+                    m_bulletPrefab,
+                    m_cannonPosition.position,
+                    Quaternion.identity);
+    }
+
+    private void PrepareNewlySpawnedBulltet(GameObject newBullet)
+    {
+        BulletController bulletController = newBullet.GetComponent<BulletController>();
+        bulletController.damage = m_fireDamage;
+        bulletController.characterData = m_characterData;
+    }
+
     [ClientRpc]
     void PlayShootBulletSoundClientRpc()
     {
-        // Reproduce the ssfx on shoot on all clients
         AudioManager.Instance?.PlaySound(m_shootClip);
     }
 }

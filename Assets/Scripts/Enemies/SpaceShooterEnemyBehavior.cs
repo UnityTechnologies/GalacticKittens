@@ -71,7 +71,6 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
     [ServerRpc]
     private void ShootLaserServerRpc()
     {
-        // print($"Fire:: {NetworkObject.OwnerClientId}");
         var newEnemyLaser = NetworkObjectSpawner.SpawnNewNetworkObject(m_EnemyBulletPrefab);
         PlayShootAudioClientRpc();
 
