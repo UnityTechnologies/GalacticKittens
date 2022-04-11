@@ -5,27 +5,28 @@ using UnityEngine;
 public class HomingMisile : NetworkBehaviour
 {
     [SerializeField]
-    int m_damage;
+    int m_damage = 1;
 
     [SerializeField]
-    float m_startingSpeed;
+    float m_startingSpeed = 4f;
 
     [SerializeField]
-    float m_followSpeed;
+    float m_followSpeed = 8f;
 
     [SerializeField]
-    float m_startingTime;
+    float m_startingTime = 0.5f;
 
     [SerializeField]
-    float m_followTime;
+    float m_followTime = 2f;
 
     [Header("Set in runtime")]
+    [HideInInspector]
     [SerializeField]
     Transform m_targetToHit;
 
     private IEnumerator MisileHoming()
     {
-        float timer = 0;
+        float timer = 0f;
 
         // Important: the axis we are using for the direction of move is the positive X, take this into account were using another prefab
 
@@ -42,7 +43,7 @@ public class HomingMisile : NetworkBehaviour
             }
         }
 
-        timer = 0;
+        timer = 0f;
 
         // Following -> Move towards the target
         while (true)
@@ -55,7 +56,7 @@ public class HomingMisile : NetworkBehaviour
                 Vector2 dir = m_targetToHit.position - transform.position;
                 float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
                 transform.position = Vector2.MoveTowards(transform.position, m_targetToHit.position, Time.deltaTime * m_followSpeed);
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), Time.deltaTime * 5);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, 0f, angle), Time.deltaTime * 5f);
             }
             else
             {

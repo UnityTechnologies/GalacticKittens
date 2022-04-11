@@ -4,32 +4,31 @@ using UnityEngine;
 public class SmallBullet : NetworkBehaviour
 {
     [SerializeField]
-    private float _speed;
-    private int _damage = 1;
+    private float m_speed = 8f;
+    private int m_damage = 1;
 
     private void Update()
     {
-        if (IsServer)
-        {
-            transform.Translate(Vector3.up * _speed * Time.deltaTime, Space.Self);
-        }
+        if (!IsServer)
+            return;
+
+        transform.Translate(Vector3.up * m_speed * Time.deltaTime, Space.Self);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (IsServer)
+        if (IsServer && collider.TryGetComponent(out IDamagable damagable))
         {
-            if (collider.TryGetComponent(out IDamagable damagable))
-            {
-                damagable.Hit(_damage);
-                Despawn();
-            }
+            damagable.Hit(m_damage);
+
+            Despawn();
         }
     }
 
     private void Despawn()
     {
-        NetworkObject.Despawn();
+        if(NetworkObject != null && NetworkObject.IsSpawned)
+            NetworkObject.Despawn();
     }
 
 }

@@ -43,5 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 912e2ec21b6c22647be95a61f5174b21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meteorPrefab: {fileID: 725679874921966097, guid: fe9a10ed4446cb746b91532fd1efc96b, type: 3}
-  _spawingTime: 2
+  m_meteorPrefab: {fileID: 725679874921966097, guid: fe9a10ed4446cb746b91532fd1efc96b, type: 3}
+  m_spawingTime: 2

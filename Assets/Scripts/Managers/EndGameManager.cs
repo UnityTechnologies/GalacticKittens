@@ -102,8 +102,7 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
                 // Spawn the spaceship                
                 GameObject go = NetworkObjectSpawner.SpawnNewNetworkObject(
                     m_charactersData[i].spaceshipScorePrefab,
-                    m_shipsPositions[m_shipPositionindex].position,
-                    Quaternion.identity);
+                    m_shipsPositions[m_shipPositionindex].position);
 
                 // Check who has the best score
                 // The score is calculated base on the enemies destroyed minus the power-ups the player used

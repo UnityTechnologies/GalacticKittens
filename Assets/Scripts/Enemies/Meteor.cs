@@ -41,7 +41,8 @@ public class Meteor : NetworkBehaviour, IDamagable
     private void Start()
     {
         // Randomly select the sprite to use 
-        m_spriteRenderer.GetComponent<SpriteRenderer>().sprite = m_meteors[Random.Range(0, m_meteors.Length)];
+        m_spriteRenderer.GetComponent<SpriteRenderer>().sprite = 
+            m_meteors[Random.Range(0, m_meteors.Length)];
 
         // Randomly scale the meteor
         float randomScale = Random.Range(m_scaleMin, m_scaleMax);
@@ -54,21 +55,22 @@ public class Meteor : NetworkBehaviour, IDamagable
             return;
 
         m_meteorSprite.transform.Rotate(Vector3.forward * m_rotationSpeed * Time.deltaTime);
+
         transform.Translate(Vector3.left * m_speed * Time.deltaTime, Space.Self);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (IsServer)
-        {
-            if (collider.TryGetComponent(out IDamagable damagable))
-            {
-                // Hit the object that collide with me
-                damagable.Hit(m_damage);
+        if (!IsServer)
+            return;
 
-                // Hit me too!
-                Hit(m_damage);
-            }
+        if (collider.TryGetComponent(out IDamagable damagable))
+        {
+            // Hit the object that collide with me
+            damagable.Hit(m_damage);
+
+            // Hit me too!
+            Hit(m_damage);
         }
     }
 
@@ -95,7 +97,7 @@ public class Meteor : NetworkBehaviour, IDamagable
         if (m_health <= 0)
         {
             PowerUpSpawnController.instance.OnPowerUpSpawn(transform.position);
-            NetworkObjectSpawner.SpawnNewNetworkObject(m_vfxExplosion, transform.position, Quaternion.identity);
+            NetworkObjectSpawner.SpawnNewNetworkObject(m_vfxExplosion, transform.position);
 
             Despawn();
         }

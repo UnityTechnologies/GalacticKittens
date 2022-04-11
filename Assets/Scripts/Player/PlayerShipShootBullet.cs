@@ -48,18 +48,14 @@ public class PlayerShipShootBullet : NetworkBehaviour
 
     private void SpawnNewBulletVfx()
     {
-        NetworkObjectSpawner.SpawnNewNetworkObject(
-            m_shootVfx,
-            m_cannonPosition.position,
-            Quaternion.identity);
+        NetworkObjectSpawner.SpawnNewNetworkObject(m_shootVfx, m_cannonPosition.position);
     }
 
     private GameObject GetNewBullet()
     {
         return NetworkObjectSpawner.SpawnNewNetworkObject(
-                    m_bulletPrefab,
-                    m_cannonPosition.position,
-                    Quaternion.identity);
+            m_bulletPrefab,
+            m_cannonPosition.position);
     }
 
     private void PrepareNewlySpawnedBulltet(GameObject newBullet)

@@ -63,7 +63,7 @@ public class BossDeathState : BaseBossState
         {
             Vector3 randPosition = explosionPositions[Random.Range(0, explosionPositions.Count)].position;
 
-            NetworkObjectSpawner.SpawnNewNetworkObject(m_explosionVfx, randPosition, Quaternion.identity);
+            NetworkObjectSpawner.SpawnNewNetworkObject(m_explosionVfx, randPosition);
 
             yield return new WaitForSeconds(stepDuration);
 

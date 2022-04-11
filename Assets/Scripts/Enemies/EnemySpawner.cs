@@ -88,7 +88,7 @@ public class EnemySpawner : NetworkBehaviour
         float randomYpos = Random.Range(-5f, 6f);
         Vector3 meteorSpawnPosition = new Vector3(transform.position.x, randomYpos, 0f);
 
-        NetworkObjectSpawner.SpawnNewNetworkObject(m_meteorPrefab, meteorSpawnPosition, Quaternion.identity);
+        NetworkObjectSpawner.SpawnNewNetworkObject(m_meteorPrefab, meteorSpawnPosition);
     }
 
     IEnumerator BossAppear()
@@ -106,8 +106,7 @@ public class EnemySpawner : NetworkBehaviour
 
         GameObject boss = NetworkObjectSpawner.SpawnNewNetworkObject(
             m_bossPrefabToSpawn,
-            transform.position,
-            Quaternion.identity);
+            transform.position);
 
         BossController bossController = boss.GetComponent<BossController>();
         bossController.StartBoss(m_bossPosition.position);

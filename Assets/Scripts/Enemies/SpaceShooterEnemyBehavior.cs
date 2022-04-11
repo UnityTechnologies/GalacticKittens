@@ -8,7 +8,7 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
 
     [SerializeField]
     private NetworkVariable<float> m_ShootingCooldown =
-        new NetworkVariable<float>(3.5f, NetworkVariableReadPermission.Everyone);
+        new NetworkVariable<float>(2f, NetworkVariableReadPermission.Everyone);
         
     [SerializeField]
     private AudioClip _shootClip;
@@ -42,20 +42,12 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
 
     protected override void UpdateActive()
     {
-        m_CurrentCooldownTime += Time.deltaTime;
-        if (m_CurrentCooldownTime >= m_EnemyLifetime.Value)
-        {
-            DespawnEnemy();
-        }
-        else
-        {
-            MoveEnemy();
-        }
+        MoveEnemy();
 
-        m_ShootingCooldown.Value -= Time.deltaTime;
-        if (m_ShootingCooldown.Value <= 0f)
+        m_CurrentCooldownTime += Time.deltaTime;
+        if (m_CurrentCooldownTime >= m_ShootingCooldown.Value)
         {
-            m_ShootingCooldown.Value = m_CurrentCooldownTime;
+            m_CurrentCooldownTime = 0f;
             ShootLaserServerRpc();
         }
     }
@@ -63,7 +55,7 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
     protected override void UpdateDefeatedAnimation()
     {
         PowerUpSpawnController.instance.OnPowerUpSpawn(transform.position);
-        NetworkObjectSpawner.SpawnNewNetworkObject(m_VfxExplosion, transform.position, Quaternion.identity);
+        NetworkObjectSpawner.SpawnNewNetworkObject(m_VfxExplosion, transform.position);
 
         m_EnemyState.Value = EnemyState.defeated;
     }

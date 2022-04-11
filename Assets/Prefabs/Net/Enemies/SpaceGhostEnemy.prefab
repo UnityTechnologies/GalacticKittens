@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: -6316768478016898980}
   - component: {fileID: 9164393908041808244}
   - component: {fileID: 7361109656067508664}
+  - component: {fileID: -7417358200842695480}
   m_Layer: 6
   m_Name: SpaceGhostEnemy
   m_TagString: Enemy
@@ -131,7 +132,6 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
-  CanCommitToTransform: 0
 --- !u!50 &4567805413435945189
 Rigidbody2D:
   serializedVersion: 4
@@ -192,8 +192,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EnemySpeed: 5
-  m_EnemyLifetime:
-    m_InternalValue: 40
   m_UsesEnemyLifetime: 1
   m_EnemyHealthPoints:
     m_InternalValue: 3
@@ -309,3 +307,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-7417358200842695480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4567805413435945178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71946a3cd82aa8d49ba0d1ebc8a380f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_autoDestroyTime: 15

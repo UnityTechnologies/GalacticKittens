@@ -4,20 +4,21 @@ using UnityEngine;
 public class MeteorSpawner : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _meteorPrefab;
-    [SerializeField]
-    private float _spawingTime;
+    private GameObject m_meteorPrefab;
 
-    private float _timer;
+    [SerializeField]
+    private float m_spawingTime = 2f;
+
+    private float m_timer;
 
     private void Update()
     {
         if (NetworkManager.Singleton.IsServer)
         {
-            _timer += Time.deltaTime;
-            if (_timer > _spawingTime)
+            m_timer += Time.deltaTime;
+            if (m_timer > m_spawingTime)
             {
-                _timer = 0;
+                m_timer = 0f;
                 SpawnMeteor();
             }
         }
@@ -27,8 +28,9 @@ public class MeteorSpawner : MonoBehaviour
     {
         // The min and max Y pos for spawning the meteors
         float randomYpos = Random.Range(-5.0f, 6.0f);
-        Vector3 pos = new Vector3(transform.position.x, randomYpos, 0);
-        NetworkObjectSpawner.SpawnNewNetworkObject(_meteorPrefab, pos, Quaternion.identity);
+        Vector3 newMeteorPosition = new Vector3(transform.position.x, randomYpos, 0f);
+
+        NetworkObjectSpawner.SpawnNewNetworkObject(m_meteorPrefab, newMeteorPosition);
     }
 
 }

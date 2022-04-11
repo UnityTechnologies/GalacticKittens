@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8284240678217698503}
   - component: {fileID: 3494035740985395362}
   - component: {fileID: 1224872062522874916}
+  - component: {fileID: 5613452216450201705}
   m_Layer: 6
   m_Name: SpaceShooterEnemy
   m_TagString: Enemy
@@ -131,7 +132,6 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
-  CanCommitToTransform: 0
 --- !u!50 &5848059733458262133
 Rigidbody2D:
   serializedVersion: 4
@@ -192,8 +192,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EnemySpeed: 6
-  m_EnemyLifetime:
-    m_InternalValue: 40
   m_UsesEnemyLifetime: 1
   m_EnemyHealthPoints:
     m_InternalValue: 1
@@ -312,3 +310,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5613452216450201705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5848059733458262090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71946a3cd82aa8d49ba0d1ebc8a380f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_autoDestroyTime: 15

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5605503099686895695}
   - component: {fileID: 4686488592954146570}
   - component: {fileID: 3947887347139645043}
+  - component: {fileID: 467437988432744427}
   m_Layer: 6
   m_Name: SpaceShooterEnemyBullet
   m_TagString: Enemy
@@ -79,7 +80,6 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
-  CanCommitToTransform: 0
 --- !u!114 &4098781124134726323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +94,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   m_speed: 12
-  m_timeToLive: 6
   m_owner: 0
   characterData: {fileID: 0}
 --- !u!70 &3108039366544907229
@@ -197,3 +196,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &467437988432744427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411154881606408662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71946a3cd82aa8d49ba0d1ebc8a380f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_autoDestroyTime: 6

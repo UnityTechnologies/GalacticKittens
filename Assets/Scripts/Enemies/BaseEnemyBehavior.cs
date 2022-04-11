@@ -24,9 +24,6 @@ public class BaseEnemyBehavior : NetworkBehaviour, IDamagable
     [SerializeField]
     protected float m_EnemySpeed = 4f;
 
-    [SerializeField]
-    protected NetworkVariable<float> m_EnemyLifetime =
-        new NetworkVariable<float>(20f, NetworkVariableReadPermission.Everyone);
 
     [SerializeField]
     protected bool m_UsesEnemyLifetime = true;
@@ -118,8 +115,11 @@ public class BaseEnemyBehavior : NetworkBehaviour, IDamagable
 
     public virtual void Hit(int damage)
     {
-        if (!IsServer) return;
+        if (!IsServer)
+            return;
+
         m_EnemyHealthPoints.Value -= 1;
+
         StopCoroutine(HitEffect());
         StartCoroutine(HitEffect());
     }
@@ -127,7 +127,8 @@ public class BaseEnemyBehavior : NetworkBehaviour, IDamagable
     public IEnumerator HitEffect()
     {
         bool active = false;
-        float timer = 0;
+        float timer = 0f;
+
         while (timer < m_hitEffectDuration)
         {
             active = !active;

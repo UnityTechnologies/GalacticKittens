@@ -182,7 +182,6 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
                     GameObject spaceShip = NetworkObjectSpawner.SpawnNewNetworkObject(
                         data.spaceshipPrefab,
                         m_shipStartingPositions[m_numberOfPlayerConnected].position,
-                        Quaternion.identity,
                         data.clientId,
                         true);
 

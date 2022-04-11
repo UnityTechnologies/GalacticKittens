@@ -4,7 +4,7 @@ using UnityEngine;
 public class CircularBullet : NetworkBehaviour
 {
     [SerializeField]
-    private float _speed;
+    private float _speed = 3f;
 
     [SerializeField]
     private GameObject _smallBulletPrefab;
@@ -14,10 +14,10 @@ public class CircularBullet : NetworkBehaviour
 
     private void Update()
     {
-        if (IsServer)
-        {
-            transform.Translate(Vector3.left * _speed * Time.deltaTime);
-        }
+        if (!IsServer)
+            return;
+
+        transform.Translate(Vector3.left * _speed * Time.deltaTime);
     }
 
     private void SpawnBullets()
@@ -25,7 +25,11 @@ public class CircularBullet : NetworkBehaviour
         // Spawn the bullets
         foreach (Transform firePosition in _firePositions)
         {
-            GameObject go = Instantiate(_smallBulletPrefab, firePosition.position, firePosition.rotation);
+            GameObject go = Instantiate(
+                _smallBulletPrefab,
+                firePosition.position,
+                firePosition.rotation);
+
             go.GetComponent<NetworkObject>().Spawn();
         }
 
@@ -35,12 +39,13 @@ public class CircularBullet : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (IsServer)
-        {
-            // After x time blow up and spawn small bullets
-            float randomSpawn = Random.Range(1.5f, 3f);
-            Invoke(nameof(SpawnBullets), randomSpawn);
-        }
+        if (!IsServer)
+            return;
+
+        // After a random time amount, blow up and spawn small bullets
+        float randomSpawn = Random.Range(1.5f, 3f);
+        Invoke(nameof(SpawnBullets), randomSpawn);
+
         base.OnNetworkSpawn();
     }
 }

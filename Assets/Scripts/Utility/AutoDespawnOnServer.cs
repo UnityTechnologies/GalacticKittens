@@ -6,7 +6,7 @@ public class AutoDespawnOnServer : NetworkBehaviour
 {
     [Min(0f)]
     [SerializeField]
-    [Header("in seconds")]
+    [Header("Time alive in seconds (s)")]
     private float m_autoDestroyTime;
 
     private void Update()

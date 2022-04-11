@@ -14,10 +14,6 @@ public class BulletController : NetworkBehaviour
     [SerializeField]
     private float m_speed = 12f;
 
-    [Header("Time alive in seconds (s)")]
-    [SerializeField]
-    private float m_timeToLive = 6f;
-
     [SerializeField]
     private BulletOwner m_owner;
 
@@ -42,10 +38,6 @@ public class BulletController : NetworkBehaviour
     {
         if (IsServer)
         {
-            m_timeToLive -= Time.deltaTime;
-            if(m_timeToLive <= 0f)
-                Despawn();
-
             transform.Translate(direction * m_speed * Time.deltaTime);
         }
     }

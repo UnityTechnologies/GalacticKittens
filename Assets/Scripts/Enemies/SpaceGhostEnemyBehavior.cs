@@ -36,30 +36,22 @@ public class SpaceGhostEnemyBehavior : BaseEnemyBehavior
 
     protected override void UpdateActive()
     {
-        m_EnemyLifetime.Value -= Time.deltaTime;
-        if (m_EnemyLifetime.Value <= 0f)
+        if (m_IsFlashingFromHit)
         {
-            DespawnEnemy();
-        }
-        else
-        {
-            if (m_IsFlashingFromHit)
+            m_FlashFromHitTime -= Time.deltaTime;
+            if (m_FlashFromHitTime <= 0f)
             {
-                m_FlashFromHitTime -= Time.deltaTime;
-                if (m_FlashFromHitTime <= 0f)
-                {
-                    ToggleEnemyHitStatusClientRpc();
-                }
+                ToggleEnemyHitStatusClientRpc();
             }
-
-            MoveEnemy();
         }
+
+        MoveEnemy();
     }
 
     protected override void UpdateDefeatedAnimation()
     {
         PowerUpSpawnController.instance.OnPowerUpSpawn(transform.position);
-        NetworkObjectSpawner.SpawnNewNetworkObject(m_VfxExplosion, transform.position, Quaternion.identity);
+        NetworkObjectSpawner.SpawnNewNetworkObject(m_VfxExplosion, transform.position);
 
         m_EnemyState.Value = EnemyState.defeated;
     }
@@ -108,9 +100,8 @@ public class SpaceGhostEnemyBehavior : BaseEnemyBehavior
     public override void Hit(int damage)
     {
         base.Hit(damage);
+
         PlayEnemyDamageSoundClientRpc();
         ToggleEnemyHitStatusClientRpc();
     }
-
-
 }
