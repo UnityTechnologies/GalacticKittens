@@ -17,9 +17,6 @@ public class Meteor : NetworkBehaviour, IDamagable
     private int m_health = 1;
 
     [SerializeField]
-    private float m_timeToLive = 8f;
-
-    [SerializeField]
     private GameObject m_vfxExplosion;
 
     [SerializeField]
@@ -29,7 +26,7 @@ public class Meteor : NetworkBehaviour, IDamagable
     private GameObject m_meteorSprite;
 
     [SerializeField]
-    SpriteRenderer m_sprite;
+    SpriteRenderer m_spriteRenderer;
 
     [SerializeField]
     float m_hitEffectDuration = 0.2f;
@@ -44,7 +41,7 @@ public class Meteor : NetworkBehaviour, IDamagable
     private void Start()
     {
         // Randomly select the sprite to use 
-        m_sprite.GetComponent<SpriteRenderer>().sprite = m_meteors[Random.Range(0, m_meteors.Length)];
+        m_spriteRenderer.GetComponent<SpriteRenderer>().sprite = m_meteors[Random.Range(0, m_meteors.Length)];
 
         // Randomly scale the meteor
         float randomScale = Random.Range(m_scaleMin, m_scaleMax);
@@ -53,21 +50,11 @@ public class Meteor : NetworkBehaviour, IDamagable
 
     private void Update()
     {
-        if (IsServer)
-        {
-            m_timeToLive -= Time.deltaTime;
-            if (m_timeToLive <= 0f)
-                Despawn();
+        if (!IsServer)
+            return;
 
-            m_meteorSprite.transform.Rotate(Vector3.forward * m_rotationSpeed * Time.deltaTime);
-            transform.Translate(Vector3.left * m_speed * Time.deltaTime, Space.Self);
-        }
-    }
-
-    private void Despawn()
-    {
-        if (NetworkObject != null && NetworkObject.IsSpawned)
-            NetworkObject.Despawn();
+        m_meteorSprite.transform.Rotate(Vector3.forward * m_rotationSpeed * Time.deltaTime);
+        transform.Translate(Vector3.left * m_speed * Time.deltaTime, Space.Self);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -92,14 +79,14 @@ public class Meteor : NetworkBehaviour, IDamagable
         while (timer < m_hitEffectDuration)
         {
             active = !active;
-            m_sprite.material.SetInt("_Hit", active ? 1 : 0);
+            m_spriteRenderer.material.SetInt("_Hit", active ? 1 : 0);
 
             yield return new WaitForEndOfFrame();
 
             timer += Time.deltaTime;
         }
 
-        m_sprite.material.SetInt("_Hit", 0);
+        m_spriteRenderer.material.SetInt("_Hit", 0);
     }
 
     public void Hit(int damage)
@@ -115,5 +102,11 @@ public class Meteor : NetworkBehaviour, IDamagable
 
         StopCoroutine(HitEffect());
         StartCoroutine(HitEffect());
+    }
+
+    private void Despawn()
+    {
+        if (NetworkObject != null && NetworkObject.IsSpawned)
+            NetworkObject.Despawn();
     }
 }

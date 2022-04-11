@@ -38,5 +38,4 @@ public class PowerUpSpecial : NetworkBehaviour
 
         base.OnNetworkSpawn();
     }
-
 }

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3702470210555407801}
   - component: {fileID: -3134518297853274822}
   - component: {fileID: -1601595711673747187}
+  - component: {fileID: -8826989987528207239}
   m_Layer: 6
   m_Name: Meteors
   m_TagString: Enemy
@@ -116,7 +117,6 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
-  CanCommitToTransform: 0
 --- !u!114 &-3134518297853274822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,14 +133,13 @@ MonoBehaviour:
   m_speed: 5
   m_rotationSpeed: 90
   m_health: 1
-  m_timeToLive: 8
   m_vfxExplosion: {fileID: 891729954413761739, guid: 57043e97584ceda4a951bca5a5216bd1, type: 3}
   m_meteors:
   - {fileID: 21300000, guid: 3ab69feb94450ca8487c26ce598fd3ad, type: 3}
   - {fileID: 21300000, guid: 2043cefaaaf560729a0e0add8125c68e, type: 3}
   - {fileID: 21300000, guid: 3372ee62b47d0033aaad979ef49af036, type: 3}
   m_meteorSprite: {fileID: 3814097183250432388}
-  m_sprite: {fileID: 4471921374155204335}
+  m_spriteRenderer: {fileID: 4471921374155204335}
   m_hitEffectDuration: 0.2
   m_scaleMin: 0.8
   m_scaleMax: 1.5
@@ -156,6 +155,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-8826989987528207239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725679874921966097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71946a3cd82aa8d49ba0d1ebc8a380f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_autoDestroyTime: 8
 --- !u!1 &3814097183250432388
 GameObject:
   m_ObjectHideFlags: 0
