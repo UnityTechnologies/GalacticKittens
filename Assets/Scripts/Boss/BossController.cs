@@ -97,7 +97,8 @@ public class BossController : NetworkBehaviour
     // Set the boss UI
     public void SetUI(BossUI bossUI)
     {
-        if (!IsServer) return;
+        if (!IsServer)
+            return;
 
         BossHealth bossHealth = GetComponentInChildren<BossHealth>();
         this.bossUI = bossUI;

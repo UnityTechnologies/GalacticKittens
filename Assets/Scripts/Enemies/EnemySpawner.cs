@@ -134,15 +134,6 @@ public class EnemySpawner : NetworkBehaviour
         m_warningUI.SetActive(false);
     }
 
-    [ClientRpc]
-    void RemoveWarningClientRpc()
-    {
-        if (IsServer)
-            return;
-
-        m_warningUI.SetActive(false);
-    }
-
     Vector3 GetNextRandomEnemyPrefabPosition()
     {
         float randomYvalue = Random.Range(-5f, 5f);
