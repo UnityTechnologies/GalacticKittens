@@ -23,11 +23,11 @@ public class EnemySpawner : NetworkBehaviour
     [Header("Enemies")]
     [SerializeField]
     private NetworkVariable<float> m_EnemySpawnTime =
-        new NetworkVariable<float>(5f, NetworkVariableReadPermission.Everyone);
+        new NetworkVariable<float>(1.8f, NetworkVariableReadPermission.Everyone);
 
     [SerializeField]
-    private NetworkVariable<float> _bossSpawnTime =
-        new NetworkVariable<float>(10f, NetworkVariableReadPermission.Everyone);
+    private NetworkVariable<float> m_bossSpawnTime =
+        new NetworkVariable<float>(75f, NetworkVariableReadPermission.Everyone);
 
     [Header("Meteors")]
     [SerializeField]
@@ -43,52 +43,95 @@ public class EnemySpawner : NetworkBehaviour
     [SerializeField]
     GameObject m_warningUI;
 
-    private float m_CurrentSpawnTime = 0f;
-    private float _currentBossSpawnTime = 0f;
-    private bool isSpawning = true;
-    private float m_meteorTimer = 0f;
+    private Vector3 m_CurrentNewEnemyPosition = new Vector3();
+    private float m_CurrentEnemySpawnTime = 0f;
+    private Vector3 m_CurrentNewMeteorPosition = new Vector3();
+    private float m_CurrentMeteorSpawnTime = 0f;
+    private float m_CurrentBossSpawnTime = 0f;
+    private bool m_IsSpawning = true;
+
+    private void Start()
+    {
+        // Initialize the enemy and meteor spawn position based on my owning GO's x position
+        m_CurrentNewEnemyPosition.x = transform.position.x;
+        m_CurrentNewEnemyPosition.z = 0f;
+
+        m_CurrentNewMeteorPosition.x = transform.position.x;
+        m_CurrentNewMeteorPosition.z = 0f;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (IsServer && isSpawning)
+        if (!(IsServer && m_IsSpawning))
+            return;
+
+        UpdateEnemySpawning();
+
+        UpdateMeteorSpawning();
+
+        UpdateBossSpawning();
+    }
+
+    private void UpdateEnemySpawning()
+    {
+        m_CurrentEnemySpawnTime += Time.deltaTime;
+        if (m_CurrentEnemySpawnTime >= m_EnemySpawnTime.Value)
         {
-            m_CurrentSpawnTime += Time.deltaTime;
-            _currentBossSpawnTime += Time.deltaTime;
-            if (m_CurrentSpawnTime >= m_EnemySpawnTime.Value)
-            {
-                Vector3 position = GetNextRandomEnemyPrefabPosition();
+            // update the new enemy's spawn position(y value). This way we don't have to allocate
+            // a new Vector3 each time.
+            m_CurrentNewEnemyPosition.y = Random.Range(-5f, 5f);
 
-                var nextPrefabToSpawn = GetNextRandomEnemyPrefabToSpawn();
+            var nextPrefabToSpawn = GetNextRandomEnemyPrefabToSpawn();
 
-                var newEnemy = NetworkObjectSpawner.SpawnNewNetworkObject(nextPrefabToSpawn);
-                newEnemy.transform.position = position;
+            NetworkObjectSpawner.SpawnNewNetworkObject(
+                nextPrefabToSpawn,
+                m_CurrentNewEnemyPosition);
 
-                m_CurrentSpawnTime = 0f;
-            }
-
-            m_meteorTimer += Time.deltaTime;
-            if (m_meteorTimer > m_meteorSpawningTime)
-            {
-                m_meteorTimer = 0f;
-                SpawnMeteor();
-            }
-
-            if (_currentBossSpawnTime >= _bossSpawnTime.Value)
-            {
-                isSpawning = false;
-                StartCoroutine(BossAppear());
-            }
+            m_CurrentEnemySpawnTime = 0f;
         }
     }
 
-    void SpawnMeteor()
+    GameObject GetNextRandomEnemyPrefabToSpawn()
+    {
+        int randomPick = Random.Range(0, 99);
+
+        if (randomPick < 50)
+        {
+            return spaceGhostEnemyPrefabToSpawn;
+        }
+
+        // randomPick >= 50
+        return spaceShooterEnemyPrefabToSpawn;
+    }
+
+    private void UpdateMeteorSpawning()
+    {
+        m_CurrentMeteorSpawnTime += Time.deltaTime;
+        if (m_CurrentMeteorSpawnTime > m_meteorSpawningTime)
+        {
+            SpawnNewMeteor();
+
+            m_CurrentMeteorSpawnTime = 0f;
+        }
+    }
+
+    void SpawnNewMeteor()
     {
         // The min and max Y pos for spawning the meteors
-        float randomYpos = Random.Range(-5f, 6f);
-        Vector3 meteorSpawnPosition = new Vector3(transform.position.x, randomYpos, 0f);
+        m_CurrentNewMeteorPosition.y = Random.Range(-5f, 6f);
 
-        NetworkObjectSpawner.SpawnNewNetworkObject(m_meteorPrefab, meteorSpawnPosition);
+        NetworkObjectSpawner.SpawnNewNetworkObject(m_meteorPrefab, m_CurrentNewMeteorPosition);
+    }
+
+    private void UpdateBossSpawning()
+    {
+        m_CurrentBossSpawnTime += Time.deltaTime;
+        if (m_CurrentBossSpawnTime >= m_bossSpawnTime.Value)
+        {
+            m_IsSpawning = false;
+            StartCoroutine(BossAppear());
+        }
     }
 
     IEnumerator BossAppear()
@@ -132,25 +175,5 @@ public class EnemySpawner : NetworkBehaviour
             return;
 
         m_warningUI.SetActive(false);
-    }
-
-    Vector3 GetNextRandomEnemyPrefabPosition()
-    {
-        float randomYvalue = Random.Range(-5f, 5f);
-
-        return new Vector3(transform.position.x, randomYvalue, 0f);
-    }
-
-    GameObject GetNextRandomEnemyPrefabToSpawn()
-    {
-        int randomPick = Random.Range(0, 99);
-
-        if (randomPick < 50)
-        {
-            return spaceGhostEnemyPrefabToSpawn;
-        }
-
-        // randomPick >= 50
-        return spaceShooterEnemyPrefabToSpawn;
     }
 }

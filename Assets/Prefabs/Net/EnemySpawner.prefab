@@ -69,7 +69,7 @@ MonoBehaviour:
   m_EnemySpawnTime:
     m_InternalValue: 1.8
   _bossSpawnTime:
-    m_InternalValue: 90
+    m_InternalValue: 75
   m_meteorPrefab: {fileID: 725679874921966097, guid: fe9a10ed4446cb746b91532fd1efc96b, type: 3}
   m_meteorSpawningTime: 1.2
   m_warningClip: {fileID: 8300000, guid: 31ac21d465ea4964ba9ac4cc001e29ab, type: 3}
@@ -100,4 +100,3 @@ MonoBehaviour:
   ScaleThreshold: 0
   InLocalSpace: 0
   Interpolate: 1
-  CanCommitToTransform: 0
