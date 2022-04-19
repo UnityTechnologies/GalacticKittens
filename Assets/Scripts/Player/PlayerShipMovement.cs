@@ -80,8 +80,8 @@ public class PlayerShipMovement : NetworkBehaviour
     {
         /*
             There two types of movement:
-            constant -> linear move, there are no time aceleration
-            momentum -> move with aceleration at the start
+            constant -> linear move, there are no time acceleration
+            momentum -> move with acceleration at the start
 
             Note: feel free to add your own type as well
         */

@@ -67,7 +67,7 @@ public class BulletController : NetworkBehaviour
         GetComponent<SpriteRenderer>().color = newColor;
     }
 
-    public void Despawn()
+    private void Despawn()
     {
         if(NetworkObject != null && NetworkObject.IsSpawned)
             NetworkObject.Despawn();

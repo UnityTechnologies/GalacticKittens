@@ -41,8 +41,7 @@ public class PlayerShipShootBullet : NetworkBehaviour
         GameObject newBullet = GetNewBullet();
 
         PrepareNewlySpawnedBulltet(newBullet);
-
-        // Tell the clients to reproduce the shoot sound
+        
         PlayShootBulletSoundClientRpc();
     }
 
