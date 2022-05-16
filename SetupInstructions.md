@@ -3,8 +3,8 @@
 **From the Editor:**
 
 1. Open the project. You can start with the latest **Unity Editor ver. 2020.3**
+
 2. Open the scene called `Bootstrap`. This scene sets up the NetworkManager Singleton.
-<br>
 ![Banner](Documentation/Images/listOfMainScenes.png)
 
 3. Play the scene.
