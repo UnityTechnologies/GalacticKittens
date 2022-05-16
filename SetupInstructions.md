@@ -7,11 +7,11 @@
 2. Open the scene called `Bootstrap`. This scene sets up the NetworkManager Singleton.
 <img src="Documentation/Images/listOfMainScenes.png" style="width:70%;height:70%">
 
-1. Play the scene.
+3. Play the scene.
 
-2. Press any key on the title screen.
+4. Press any key on the title screen.
 
-3. When you reach the main menu, click on the **Host** button:
+5. When you reach the main menu, click on the **Host** button:
 <img src="Documentation/Images/MainMenu.png" style="width:70%;height:70%">
 
 
