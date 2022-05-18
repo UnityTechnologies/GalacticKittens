@@ -717,11 +717,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: 
+  cloudProjectId: 68cfa702-35ab-45fa-a91d-d53a8e1521b6
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: Galactic Kittens
+  organizationId: developer-advocates-ugs
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 
