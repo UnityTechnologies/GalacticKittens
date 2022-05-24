@@ -14,11 +14,14 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     AudioClip m_confirmClip;
 
-    bool m_pressAnyKeyActive = true;
-    const string k_enterMenuTriggerAnim = "enter_menu";
-
     [SerializeField]
     SceneName nextScene = SceneName.CharacterSelection;
+
+    [SerializeField]
+    private TMPro.TMP_InputField m_joinCodeInput;
+
+    bool m_pressAnyKeyActive = true;
+    const string k_enterMenuTriggerAnim = "enter_menu";
 
     IEnumerator Start()
     {
@@ -83,17 +86,34 @@ public class MenuManager : MonoBehaviour
         NetworkManager.Singleton.StartClient();
     }
 
-    public void OnClickHost()
+    public async void OnClickHost()
     {
+        if (RelayManager.Instance.IsRelayEnabled)
+            await RelayManager.Instance.SetupRelayAsync();
+
         NetworkManager.Singleton.StartHost();
         AudioManager.Instance.PlaySound(m_confirmClip);
+
         LoadingSceneManager.Instance.LoadScene(nextScene);
     }
 
-    public void OnClickJoin()
-    {        
+    public async void OnClickJoin()
+    {
+        System.Threading.Tasks.Task<RelayJoinData> joinRelayTask = null;
+        if (RelayManager.Instance.IsRelayEnabled && !string.IsNullOrEmpty(m_joinCodeInput.text))
+        {
+            joinRelayTask = RelayManager.Instance.JoinRelay(m_joinCodeInput.text);
+        }
+
+        if (joinRelayTask == null)
+            return;
+
+        await joinRelayTask;
+
         AudioManager.Instance.PlaySound(m_confirmClip);
-        StartCoroutine(Join());
+
+        if(joinRelayTask.Result.AllocationID != System.Guid.Empty)
+            StartCoroutine(Join());
     }
 
     public void OnClickQuit()

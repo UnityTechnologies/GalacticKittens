@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -9,26 +10,21 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
 
-public class RelayManager : Singleton<MonoBehaviour>
+public class RelayManager : Singleton<RelayManager>
 {
-    [SerializeField]
-    private string m_Environment = "production";
-
-    [SerializeField]
-    private int m_MaxConnections = 4;
-
     public bool IsRelayEnabled => Transport != null &&
         Transport.Protocol == UnityTransport.ProtocolType.RelayUnityTransport;
 
     private UnityTransport Transport =>
         NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
 
-    public override void Awake()
-    {
-        base.Awake();
-    }
+    [SerializeField]
+    private string m_Environment = "production";
 
-    public async Task<RelayHostData> SetupRelay()
+    [SerializeField]
+    private int m_MaxConnections = 4;
+
+    public async Task<RelayHostData> SetupRelayAsync()
     {
         Debug.Log("Relay setup starting!");
         InitializationOptions options = await GetInitializationOptionsAsync();
@@ -47,11 +43,14 @@ public class RelayManager : Singleton<MonoBehaviour>
 
         relayHostData.JoinCode = await Relay.Instance.GetJoinCodeAsync(relayHostData.AllocationID);
 
-        Transport.SetRelayServerData(relayHostData.IPv4Address,
+        Transport.SetRelayServerData(
+            relayHostData.IPv4Address,
             relayHostData.Port,
             relayHostData.AllocationIDBytes,
             relayHostData.Key,
-            relayHostData.ConnectionData);
+            relayHostData.ConnectionData,
+            null,
+            true);
 
         Debug.Log($"Relay setup started with code: {relayHostData.JoinCode} ");
 
@@ -66,7 +65,7 @@ public class RelayManager : Singleton<MonoBehaviour>
 
             JoinAllocation allocation = await Relay.Instance.JoinAllocationAsync(joinCode);
 
-            RelayJoinData relayJoinData = new RelayJoinData
+            RelayJoinData relayJoinData = new()
             {
                 Key = allocation.Key,
                 Port = (ushort)allocation.RelayServer.Port,
@@ -78,17 +77,20 @@ public class RelayManager : Singleton<MonoBehaviour>
                 JoinCode = joinCode
             };
 
-            Transport.SetRelayServerData(relayJoinData.IPv4Address,
+            Transport.SetRelayServerData(
+                relayJoinData.IPv4Address,
                 relayJoinData.Port,
                 relayJoinData.AllocationIDBytes,
                 relayJoinData.Key,
                 relayJoinData.ConnectionData,
-                relayJoinData.HostConnectionData);
+                relayJoinData.HostConnectionData,
+                true);
 
             return relayJoinData;
         }
         catch(RelayServiceException relayServiceException)
         {
+            Debug.Log(relayServiceException.Message);
             return new RelayJoinData();
         }
     }

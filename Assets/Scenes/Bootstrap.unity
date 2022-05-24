@@ -162,6 +162,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -245,6 +246,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.69725984, y: 0.6107264, z: -0.09202499}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -319,6 +321,10 @@ PrefabInstance:
       propertyPath: NetworkConfig.NetworkTransport
       value: 
       objectReference: {fileID: 891283295}
+    - target: {fileID: 5466296451182135794, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
+      propertyPath: NetworkConfig.EnableSceneManagement
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5466296451182135794, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
       propertyPath: NetworkConfig.NetworkPrefabs.Array.size
       value: 24
@@ -422,6 +428,10 @@ PrefabInstance:
     - target: {fileID: 5466296451182135796, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
       propertyPath: m_Name
       value: NetworkManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6761644560736756648, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
+      propertyPath: m_ProtocolType
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6761644560736756648, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
       propertyPath: DebugSimulator.PacketDelayMS
