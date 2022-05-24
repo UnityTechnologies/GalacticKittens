@@ -4,7 +4,7 @@
 
 1. Open the project. You can start with the latest **Unity Editor ver. 2020.3**
 
-2. Open the scene called `Bootstrap`. This scene sets up the NetworkManager Singleton.
+2. Open the scene called `Bootstrap`. This scene sets up the [NetworkManager](https://docs-multiplayer.unity3d.com/netcode/current/components/networkmanager) Singleton.
 <img src="Documentation/Images/listOfMainScenes.png" style="width:70%;height:70%">
 
 3. Play the scene.
