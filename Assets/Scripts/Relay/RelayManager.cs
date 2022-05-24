@@ -1,22 +1,17 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
+﻿using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 
-public class RelayManager : Singleton<RelayManager>
+public class RelayManager : MonoBehaviour
 {
-    public bool IsRelayEnabled => Transport != null &&
-        Transport.Protocol == UnityTransport.ProtocolType.RelayUnityTransport;
-
-    private UnityTransport Transport =>
-        NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
+    public static RelayManager Instance => s_instance;
+    private static RelayManager s_instance = null;
 
     [SerializeField]
     private string m_Environment = "production";
@@ -24,14 +19,37 @@ public class RelayManager : Singleton<RelayManager>
     [SerializeField]
     private int m_MaxConnections = 4;
 
-    public async Task<RelayHostData> SetupRelayAsync()
+    public bool IsRelayEnabled => Transport != null &&
+        Transport.Protocol == UnityTransport.ProtocolType.RelayUnityTransport;
+
+    public UnityTransport Transport => NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
+
+    public Task<string> JoinCodeAsyncTask => 
+        m_hostAllocationID != System.Guid.Empty ?
+            RelayService.Instance.GetJoinCodeAsync(m_hostAllocationID) : null;
+
+    private System.Guid m_hostAllocationID;
+
+    private void Awake()
+    {
+        if (s_instance == null)
+        {
+            s_instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public async Task<RelayHostData> SetupRelay()
     {
         Debug.Log("Relay setup starting!");
         InitializationOptions options = await GetInitializationOptionsAsync();
 
-        Allocation allocation = await Relay.Instance.CreateAllocationAsync(m_MaxConnections);
+        Allocation allocation = await RelayService.Instance.CreateAllocationAsync(m_MaxConnections);
 
-        RelayHostData relayHostData = new RelayHostData
+        var relayHostData = new RelayHostData()
         {
             Key = allocation.Key,
             Port = (ushort)allocation.RelayServer.Port,
@@ -41,7 +59,8 @@ public class RelayManager : Singleton<RelayManager>
             ConnectionData = allocation.ConnectionData
         };
 
-        relayHostData.JoinCode = await Relay.Instance.GetJoinCodeAsync(relayHostData.AllocationID);
+        relayHostData.JoinCode = await RelayService.Instance.GetJoinCodeAsync(relayHostData.AllocationID);
+        m_hostAllocationID = relayHostData.AllocationID;
 
         Transport.SetRelayServerData(
             relayHostData.IPv4Address,
@@ -63,9 +82,9 @@ public class RelayManager : Singleton<RelayManager>
         {
             InitializationOptions options = await GetInitializationOptionsAsync();
 
-            JoinAllocation allocation = await Relay.Instance.JoinAllocationAsync(joinCode);
+            JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
-            RelayJoinData relayJoinData = new()
+            RelayJoinData relayJoinData = new RelayJoinData
             {
                 Key = allocation.Key,
                 Port = (ushort)allocation.RelayServer.Port,
@@ -88,7 +107,7 @@ public class RelayManager : Singleton<RelayManager>
 
             return relayJoinData;
         }
-        catch(RelayServiceException relayServiceException)
+        catch (RelayServiceException relayServiceException)
         {
             Debug.Log(relayServiceException.Message);
             return new RelayJoinData();
@@ -97,8 +116,13 @@ public class RelayManager : Singleton<RelayManager>
 
     private async Task<InitializationOptions> GetInitializationOptionsAsync()
     {
+        string profileName = "default" + (ParrelSync.ClonesManager.IsClone() ? "_clone" : "");
+
         InitializationOptions options = new InitializationOptions()
-            .SetEnvironmentName(m_Environment);
+            .SetEnvironmentName(m_Environment)
+            .SetProfile(profileName);
+
+        Debug.Log($"Profile name: {profileName}");
 
         await UnityServices.InitializeAsync(options);
 

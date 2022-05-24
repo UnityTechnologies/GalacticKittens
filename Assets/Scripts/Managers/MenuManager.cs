@@ -89,7 +89,7 @@ public class MenuManager : MonoBehaviour
     public async void OnClickHost()
     {
         if (RelayManager.Instance.IsRelayEnabled)
-            await RelayManager.Instance.SetupRelayAsync();
+            await RelayManager.Instance.SetupRelay();
 
         NetworkManager.Singleton.StartHost();
         AudioManager.Instance.PlaySound(m_confirmClip);
