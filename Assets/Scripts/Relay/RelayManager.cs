@@ -116,13 +116,13 @@ public class RelayManager : MonoBehaviour
 
     private async Task<InitializationOptions> GetInitializationOptionsAsync()
     {
-        string profileName = "default" + (ParrelSync.ClonesManager.IsClone() ? "_clone" : "");
+        //string profileName = "default" + (ParrelSync.ClonesManager.IsClone() ? "_clone" : "");
 
         InitializationOptions options = new InitializationOptions()
-            .SetEnvironmentName(m_Environment)
-            .SetProfile(profileName);
+            .SetEnvironmentName(m_Environment);
+            //.SetProfile(profileName);
 
-        Debug.Log($"Profile name: {profileName}");
+        //Debug.Log($"Profile name: {profileName}");
 
         await UnityServices.InitializeAsync(options);
 
