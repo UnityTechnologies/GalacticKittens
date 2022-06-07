@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
@@ -49,26 +50,28 @@ public class RelayManager : MonoBehaviour
 
         Allocation allocation = await RelayService.Instance.CreateAllocationAsync(m_MaxConnections);
 
+        var dtlsEndpoint = allocation.ServerEndpoints.First(
+            relayServerEndPoint => relayServerEndPoint.ConnectionType == "dtls");
+        
         var relayHostData = new RelayHostData()
         {
             Key = allocation.Key,
-            Port = (ushort)allocation.RelayServer.Port,
+            Port = (ushort)dtlsEndpoint.Port,
             AllocationID = allocation.AllocationId,
             AllocationIDBytes = allocation.AllocationIdBytes,
-            IPv4Address = allocation.RelayServer.IpV4,
+            IPv4Address = dtlsEndpoint.Host,
             ConnectionData = allocation.ConnectionData
         };
 
         relayHostData.JoinCode = await RelayService.Instance.GetJoinCodeAsync(relayHostData.AllocationID);
         m_hostAllocationID = relayHostData.AllocationID;
 
-        Transport.SetRelayServerData(
+        Transport.SetHostRelayData(
             relayHostData.IPv4Address,
             relayHostData.Port,
             relayHostData.AllocationIDBytes,
             relayHostData.Key,
             relayHostData.ConnectionData,
-            null,
             true);
 
         Debug.Log($"Relay setup started with code: {relayHostData.JoinCode} ");
@@ -84,19 +87,22 @@ public class RelayManager : MonoBehaviour
 
             JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
+            var dtlsEndpoint = allocation.ServerEndpoints.First(
+                relayServerEndPoint => relayServerEndPoint.ConnectionType == "dtls");
+            
             RelayJoinData relayJoinData = new RelayJoinData
             {
                 Key = allocation.Key,
-                Port = (ushort)allocation.RelayServer.Port,
+                Port = (ushort)dtlsEndpoint.Port,
                 AllocationID = allocation.AllocationId,
                 AllocationIDBytes = allocation.AllocationIdBytes,
                 ConnectionData = allocation.ConnectionData,
                 HostConnectionData = allocation.HostConnectionData,
-                IPv4Address = allocation.RelayServer.IpV4,
+                IPv4Address = dtlsEndpoint.Host,
                 JoinCode = joinCode
             };
 
-            Transport.SetRelayServerData(
+            Transport.SetClientRelayData(
                 relayJoinData.IPv4Address,
                 relayJoinData.Port,
                 relayJoinData.AllocationIDBytes,
