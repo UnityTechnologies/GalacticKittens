@@ -23,13 +23,16 @@ public class RelayManager : MonoBehaviour
     public bool IsRelayEnabled => Transport != null &&
         Transport.Protocol == UnityTransport.ProtocolType.RelayUnityTransport;
 
-    public UnityTransport Transport => NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
+    public UnityTransport Transport =>
+        NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
 
     public Task<string> JoinCodeAsyncTask => 
         m_hostAllocationID != System.Guid.Empty ?
             RelayService.Instance.GetJoinCodeAsync(m_hostAllocationID) : null;
 
     private System.Guid m_hostAllocationID;
+
+    private readonly string k_dtlsConnectionType = "dtls";
 
     private void Awake()
     {
@@ -45,38 +48,49 @@ public class RelayManager : MonoBehaviour
 
     public async Task<RelayHostData> SetupRelay()
     {
-        Debug.Log("Relay setup starting!");
-        InitializationOptions options = await GetInitializationOptionsAsync();
-
-        Allocation allocation = await RelayService.Instance.CreateAllocationAsync(m_MaxConnections);
-
-        var dtlsEndpoint = allocation.ServerEndpoints.First(
-            relayServerEndPoint => relayServerEndPoint.ConnectionType == "dtls");
-        
-        var relayHostData = new RelayHostData()
+        try
         {
-            Key = allocation.Key,
-            Port = (ushort)dtlsEndpoint.Port,
-            AllocationID = allocation.AllocationId,
-            AllocationIDBytes = allocation.AllocationIdBytes,
-            IPv4Address = dtlsEndpoint.Host,
-            ConnectionData = allocation.ConnectionData
-        };
+            Debug.Log("Relay setup starting!");
+            InitializationOptions options = await GetInitializationOptionsAsync();
 
-        relayHostData.JoinCode = await RelayService.Instance.GetJoinCodeAsync(relayHostData.AllocationID);
-        m_hostAllocationID = relayHostData.AllocationID;
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(
+                m_MaxConnections);
 
-        Transport.SetHostRelayData(
-            relayHostData.IPv4Address,
-            relayHostData.Port,
-            relayHostData.AllocationIDBytes,
-            relayHostData.Key,
-            relayHostData.ConnectionData,
-            true);
+            var dtlsEndpoint = allocation.ServerEndpoints.First(
+                relayServerEndPoint => relayServerEndPoint.ConnectionType == k_dtlsConnectionType);
 
-        Debug.Log($"Relay setup started with code: {relayHostData.JoinCode} ");
+            var relayHostData = new RelayHostData()
+            {
+                Key = allocation.Key,
+                Port = (ushort)dtlsEndpoint.Port,
+                AllocationID = allocation.AllocationId,
+                AllocationIDBytes = allocation.AllocationIdBytes,
+                IPv4Address = dtlsEndpoint.Host,
+                ConnectionData = allocation.ConnectionData
+            };
 
-        return relayHostData;
+            m_hostAllocationID = relayHostData.AllocationID;
+
+            relayHostData.JoinCode = await RelayService.Instance.GetJoinCodeAsync(m_hostAllocationID);
+
+            Transport.SetHostRelayData(
+                relayHostData.IPv4Address,
+                relayHostData.Port,
+                relayHostData.AllocationIDBytes,
+                relayHostData.Key,
+                relayHostData.ConnectionData,
+                true);
+
+            Debug.Log($"Relay setup started with code: {relayHostData.JoinCode} ");
+
+            return relayHostData;
+        }
+        catch (RelayServiceException relayServiceException)
+        {
+            Debug.Log(relayServiceException.Message);
+
+            return new RelayHostData();
+        }
     }
 
     public async Task<RelayJoinData> JoinRelay(string joinCode)
@@ -88,9 +102,9 @@ public class RelayManager : MonoBehaviour
             JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
             var dtlsEndpoint = allocation.ServerEndpoints.First(
-                relayServerEndPoint => relayServerEndPoint.ConnectionType == "dtls");
+                relayServerEndPoint => relayServerEndPoint.ConnectionType == k_dtlsConnectionType);
             
-            RelayJoinData relayJoinData = new RelayJoinData
+            var relayJoinData = new RelayJoinData
             {
                 Key = allocation.Key,
                 Port = (ushort)dtlsEndpoint.Port,
@@ -116,19 +130,15 @@ public class RelayManager : MonoBehaviour
         catch (RelayServiceException relayServiceException)
         {
             Debug.Log(relayServiceException.Message);
+
             return new RelayJoinData();
         }
     }
 
     private async Task<InitializationOptions> GetInitializationOptionsAsync()
     {
-        //string profileName = "default" + (ParrelSync.ClonesManager.IsClone() ? "_clone" : "");
-
         InitializationOptions options = new InitializationOptions()
             .SetEnvironmentName(m_Environment);
-            //.SetProfile(profileName);
-
-        //Debug.Log($"Profile name: {profileName}");
 
         await UnityServices.InitializeAsync(options);
 
