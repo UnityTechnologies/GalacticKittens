@@ -203,13 +203,11 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
     public bool IsReady(int playerId)
     {
-        // print($"IsReady Player {playerId} {charactersData[playerId].isSelected}");
         return charactersData[playerId].isSelected;
     }
 
     public void SetCharacterColor(int playerId, int characterSelected)
     {
-        // print($"SetCharacterColor -> playerId: {playerId} Char: {characterSelected} Selected: {charactersData[characterSelected].isSelected}");
         if (charactersData[characterSelected].isSelected)
         {
             m_charactersContainers[playerId].imageContainer.color = k_selectedColor;
@@ -224,7 +222,6 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
     public void SetCharacterUI(int playerId, int characterSelected)
     {
-        // print($"SetCharacterUI -> playerId:: {playerId} charSelected {characterSelected}");
         m_charactersContainers[playerId].imageContainer.sprite =
             charactersData[characterSelected].characterSprite;
 
@@ -245,7 +242,6 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
     public void SetPlayebleChar(int playerId, int characterSelected, bool isClientOwner)
     {
-        // print($"SetPlayableChar -> playerId:: {playerId} charSelected {characterSelected}");
         SetCharacterUI(playerId, characterSelected);
         m_charactersContainers[playerId].playerIcon.gameObject.SetActive(true);
         if (isClientOwner)
@@ -282,8 +278,6 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
             transform.position,
             clientId,
             true);
-        //print(clientId);
-        // go.name = $"Player{clientId}";
 
         for (int i = 0; i < m_playerStates.Length; i++)
         {
@@ -324,7 +318,6 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
         if (state != ConnectionState.disconnected)
         {
-            // print($"PlayerConnection -> clientId: {clientId} {playerName} stateIndex: {stateIndex} state: {state}");
             m_playerStates[stateIndex].playerState = state;
             m_playerStates[stateIndex].clientId = clientId;
 
@@ -340,7 +333,7 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
             return;
 
         PlayerNotReady(clientId, isDisconected: true);
-        // print($"PlayerDisconnect {clientId}");
+
         m_playerStates[GetPlayerId(clientId)].playerObject.Despawn();
 
         // The client disconnected is the host
@@ -417,7 +410,6 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
     [ClientRpc]
     void PlayerReadyClientRpc(ulong clientId, int playerId, int characterSelected)
     {
-        // print($"Client {clientId}");
         charactersData[characterSelected].isSelected = true;
         charactersData[characterSelected].clientId = clientId;
         charactersData[characterSelected].playerId = playerId;
@@ -434,7 +426,6 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
             m_charactersContainers[playerId].borderReady.SetActive(true);
             m_charactersContainers[playerId].backgroundShip.SetActive(false);
             m_charactersContainers[playerId].backgroundShipReady.SetActive(true);
-            // print($"Playercolor -> {clientId} CharClientId: {charactersData[characterSelected].clientId}");           
         }
 
         for (int i = 0; i < m_playerStates.Length; i++)
@@ -442,7 +433,6 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
             // Only changes the ones on clients that are not selected            
             if (m_playerStates[i].playerState == ConnectionState.connected)
             {
-                // print($" state index {i} CharacterState {m_playerStates[i].playerObject.CharSelected}  charSelected {characterSelected}");
                 if (m_playerStates[i].playerObject.CharSelected == characterSelected)
                 {
                     SetCharacterColor(i, characterSelected);
@@ -460,8 +450,6 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
         charactersData[characterSelected].clientId = 0UL;
         charactersData[characterSelected].playerId = -1;
 
-        // Checa si es la instancia del cliente
-        // print($"Player not ready -> clientId {clientId} LocalClientId {NetworkManager.Singleton.LocalClientId}");
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
             m_charactersContainers[playerId].borderClient.SetActive(true);
@@ -480,10 +468,9 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
         AudioManager.Instance.PlaySound(m_cancelClip);
         for (int i = 0; i < m_playerStates.Length; i++)
         {
-            // Only changes the ones on clients that are not selected            
+            // Only changes the ones on clients that are not selected
             if (m_playerStates[i].playerState == ConnectionState.connected)
             {
-                // print($" state index {i} CharacterState {m_playerStates[i].playerObject.CharSelected}  charSelected {characterSelected}");
                 if (m_playerStates[i].playerObject.CharSelected == characterSelected)
                 {
                     SetCharacterColor(i, characterSelected);
