@@ -42,13 +42,11 @@ public class BossFireState : BaseBossState
             shootTimer += Time.deltaTime;
             if (shootTimer >= _normalShootRateOfFire)
             {
-                // trio -> 7/10, circular -> 3/10
-                int randomFire = Random.Range(0, 10);
+                GameObject nextBulletPrefabToShoot = GetNextBulletPrefabToShoot();
 
-                // print($"RandomFire:: {randomFire}");
-                Fire(randomFire < 7 ? _trioBulletPrefab : _circularBulletPrefab);
+                FireBulletPrefab(nextBulletPrefabToShoot);
 
-                shootTimer = 0;
+                shootTimer = 0f;
             }
 
             yield return new WaitForEndOfFrame();
@@ -61,18 +59,30 @@ public class BossFireState : BaseBossState
         m_controller.SetState(BossState.misileBarrage);
     }
 
-
-    private void Fire(GameObject firePrefab)
+    private GameObject GetNextBulletPrefabToShoot()
     {
-        // Because the cannon positions are lower on the sprite with increase the rotation up 
-        float randomRotation = Random.Range(-25f, 45f);
+        int randomBulletChoice = Random.Range(0, 10);
 
-        foreach (Transform laseCannon in _fireCannonSpawningArea)
+        // trio -> 7/10, circular -> 3/10
+        if (randomBulletChoice < 7)
+        {
+            return _trioBulletPrefab;
+        }
+
+        return _circularBulletPrefab;
+    }
+
+    private void FireBulletPrefab(GameObject bulletPrefab)
+    {
+        // Because the cannon positions are lower on the sprite with increase the rotation up
+        float randomZrotation = Random.Range(-25f, 45f);
+
+        foreach (Transform laserCannon in _fireCannonSpawningArea)
         {
             NetworkObjectSpawner.SpawnNewNetworkObject(
-                firePrefab,
-                laseCannon.position,
-                Quaternion.Euler(0f, 0f, randomRotation)
+                bulletPrefab,
+                laserCannon.position,
+                Quaternion.Euler(0f, 0f, randomZrotation)
             );
         }
     }
