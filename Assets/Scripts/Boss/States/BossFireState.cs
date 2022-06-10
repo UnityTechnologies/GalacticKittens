@@ -4,21 +4,26 @@ using UnityEngine;
 public class BossFireState : BaseBossState
 {
     [SerializeField]
-    Transform[] _fireCannonSpawningArea;
+    private Transform[] _fireCannonSpawningArea;
 
     [SerializeField]
-    GameObject _trioBulletPrefab;
+    private GameObject _trioBulletPrefab;
 
     [SerializeField]
-    GameObject _circularBulletPrefab;
+    private GameObject _circularBulletPrefab;
 
     [SerializeField]
-    float _normalShootRateOfFire;
+    private float _normalShootRateOfFire;
 
     [SerializeField]
-    float _idleSpeed;
+    private float _idleSpeed;
 
-    IEnumerator FireState()
+    public override void RunState()
+    {
+        StartCoroutine(FireState());
+    }
+
+    private IEnumerator FireState()
     {
         // Setup initial vars
         float shootTimer = 0f;
@@ -29,7 +34,9 @@ public class BossFireState : BaseBossState
         while (normalStateTimer <= normalStateExitTime)
         {
             // Small movement on the boss
-            transform.position = new Vector2(transform.position.x, Mathf.Sin(Time.time) * _idleSpeed);
+            transform.position = new Vector2(
+                transform.position.x,
+                Mathf.Sin(Time.time) * _idleSpeed);
 
             // every x time shoot (trio or circular)
             shootTimer += Time.deltaTime;
@@ -49,16 +56,17 @@ public class BossFireState : BaseBossState
             normalStateTimer += Time.deltaTime;
         }
         
-        // When we end the time on this state call the special attack, it can be a different state or 
-        // a random for different states
+        // When we end the time on this state call the special attack, it can be a different state
+        // or a random for different states
         m_controller.SetState(BossState.misileBarrage);
     }
 
 
-    void Fire(GameObject firePrefab)
+    private void Fire(GameObject firePrefab)
     {
         // Because the cannon positions are lower on the sprite with increase the rotation up 
         float randomRotation = Random.Range(-25f, 45f);
+
         foreach (Transform laseCannon in _fireCannonSpawningArea)
         {
             NetworkObjectSpawner.SpawnNewNetworkObject(
@@ -67,10 +75,5 @@ public class BossFireState : BaseBossState
                 Quaternion.Euler(0f, 0f, randomRotation)
             );
         }
-    }
-
-    public override void RunState()
-    {
-        StartCoroutine(FireState());
     }
 }

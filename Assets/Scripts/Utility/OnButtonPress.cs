@@ -16,6 +16,7 @@ public enum ButtonActions : byte
 public class OnButtonPress : MonoBehaviour
 {
     public static Action<ButtonActions> a_OnButtonPress;
+
     [SerializeField]
     private ButtonActions _buttonAction;
 

@@ -7,7 +7,7 @@ public class DefenseMatrix : NetworkBehaviour, IDamagable
     [SerializeField]
     private float m_rotationSpeed;
 
-    void Update()
+    private void Update()
     {
         if (IsServer)
         {
@@ -19,7 +19,6 @@ public class DefenseMatrix : NetworkBehaviour, IDamagable
     {
         if (IsServer)
         {
-            // print($"DefenseMatrix collide with:: {collider.tag}");
             if (collider.TryGetComponent(out IDamagable damagable))
             {
                 damagable.Hit(1);
@@ -28,19 +27,19 @@ public class DefenseMatrix : NetworkBehaviour, IDamagable
         }
     }
 
+    public void Hit(int damage)
+    {
+        TurnOffMatrixClientRpc();
+    }
+
     [ClientRpc]
     private void TurnOffMatrixClientRpc()
     {
         gameObject.SetActive(false);
     }
 
-    public void Hit(int damage)
+    IEnumerator IDamagable.HitEffect()
     {
-        TurnOffMatrixClientRpc();
-    }
-
-    public IEnumerator HitEffect()
-    {
-        throw new System.NotImplementedException();
+        return null;
     }
 }

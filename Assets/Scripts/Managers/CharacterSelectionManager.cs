@@ -273,11 +273,12 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
     public void ServerSceneInit(ulong clientId)
     {
-        GameObject go = NetworkObjectSpawner.SpawnNewNetworkObject(
-            m_playerPrefab,
-            transform.position,
-            clientId,
-            true);
+        GameObject go =
+            NetworkObjectSpawner.SpawnNewNetworkObjectChangeOwnershipToClient(
+                m_playerPrefab,
+                transform.position,
+                clientId,
+                true);
 
         for (int i = 0; i < m_playerStates.Length; i++)
         {

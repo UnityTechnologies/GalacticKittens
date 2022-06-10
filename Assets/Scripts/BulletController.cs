@@ -11,14 +11,14 @@ public class BulletController : NetworkBehaviour
 
     public int damage = 1;
 
+    [HideInInspector]
+    public CharacterDataSO characterData;
+
     [SerializeField]
     private float m_speed = 12f;
 
     [SerializeField]
     private BulletOwner m_owner;
-
-    [HideInInspector]
-    public CharacterDataSO characterData;
 
     [HideInInspector]
     public Vector3 direction { get; set; } = Vector3.right;

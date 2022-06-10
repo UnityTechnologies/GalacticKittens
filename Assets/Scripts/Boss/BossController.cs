@@ -27,8 +27,8 @@ public class BossController : NetworkBehaviour
 
     [SerializeField]
     BaseBossState m_deathState;
-    [Header("For testing the boss states -> false for production")]
 
+    [Header("For testing the boss states -> false for production")]
     [SerializeField]
     bool m_isTesting;
 
@@ -83,7 +83,7 @@ public class BossController : NetworkBehaviour
                 break;
             case BossState.death:
                 // Stop all coroutines from other state
-                // because the death can override any state                                        
+                // because the death can override any state
                 m_enterState.StopState();
                 m_fireState.StopState();
                 m_misileBarrageState.StopState();

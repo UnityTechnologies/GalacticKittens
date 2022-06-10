@@ -4,38 +4,45 @@ using UnityEngine;
 
 public class BossHealth : NetworkBehaviour, IDamagable
 {    
-    [Header("Health is multiply by BaseHealth for the number of clients")]
-    [SerializeField] private int baseHealth;
-    private NetworkVariable<int> m_health = new NetworkVariable<int>();
+    [Header("Health is multiplied by BaseHealth for the number of clients")]
+    [Min(1)]
+    [SerializeField]
+    private int m_baseHealth = 15;
+    
+    private readonly NetworkVariable<int> m_health = new NetworkVariable<int>();
 
-    public int Health
-    {
-        get { return m_health.Value; }
-    }
+    public int Health => m_health.Value;
 
     [SerializeField]
-    SpriteRenderer[] m_sprites;
+    private SpriteRenderer[] m_sprites;
 
     [SerializeField]
     [Range(0f, 1f)]
-    float m_hitEffectDuration;
+    private float m_hitEffectDuration;
 
     [SerializeField]
-    Animator m_animator;
+    private Animator m_animator;
 
     [SerializeField]
-    BossController m_bossController;
+    private BossController m_bossController;
 
-    bool m_isInmmune;
+    private bool m_isInmmune;
 
-    const string k_effectHit = "_Hit";
-    const string k_animHit = "hit";
+    private const string k_effectHit = "_Hit";
+    private const string k_animHit = "hit";
 
-    [ClientRpc]
-    void HitEffectClientRpc()
+    public override void OnNetworkSpawn()
     {
-        StopCoroutine(HitEffect());
-        StartCoroutine(HitEffect());
+        if (IsServer)
+        {
+            // check the number of players connected
+            int playersConnected = NetworkManager.Singleton.ConnectedClientsList.Count;
+
+            // The health is based on the number of clients for a better balance
+            m_health.Value = playersConnected * m_baseHealth;
+        }
+
+        base.OnNetworkSpawn();
     }
 
     // For when someone hits me
@@ -51,10 +58,17 @@ public class BossHealth : NetworkBehaviour, IDamagable
         HitEffectClientRpc();
 
         if (m_health.Value <= 0)
-        {                      
+        {
             // If health is below or equal to 0 change to death state
             m_bossController.SetState(BossState.death);
         }
+    }
+
+    [ClientRpc]
+    private void HitEffectClientRpc()
+    {
+        StopCoroutine(HitEffect());
+        StartCoroutine(HitEffect());
     }
 
     // The hit effect use in the game
@@ -64,6 +78,7 @@ public class BossHealth : NetworkBehaviour, IDamagable
         m_animator.SetBool(k_animHit, true);
         bool active = false;
         float timer = 0f;
+
         while (timer < m_hitEffectDuration)
         {
             active = !active;
@@ -84,19 +99,5 @@ public class BossHealth : NetworkBehaviour, IDamagable
 
         yield return new WaitForSeconds(0.2f);
         m_isInmmune = false;
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        if (IsServer)
-        {
-            // check the number of players connected
-            int playersConnected = NetworkManager.Singleton.ConnectedClientsList.Count;
-
-            // The health is based on the number of clients for a better balance
-            m_health.Value = playersConnected * baseHealth;
-        }
-
-        base.OnNetworkSpawn();
     }
 }

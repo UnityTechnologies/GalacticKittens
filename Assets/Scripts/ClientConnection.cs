@@ -7,58 +7,39 @@ public class ClientConnection : SingletonNetwork<ClientConnection>
     private int m_maxConnections;
 
     [SerializeField]
-    private CharacterDataSO[] m_characterDatas;    
+    private CharacterDataSO[] m_characterDatas;
 
-    [ClientRpc]
-    void ShutdownClientRpc(ClientRpcParams clientRpcParams = default)
-    {        
-        Shutdown();
-    }
-    
-    void Shutdown()
+    // This is a check for some script that depend on the client where it leaves 
+    // to check if this was a client that should no be allow an there for the code should no run
+    public bool IsExtraClient(ulong clientId)
     {
-        NetworkManager.Singleton.Shutdown();
-        LoadingSceneManager.Instance.LoadScene(SceneName.Menu, false);
+        return CanConnect(clientId);
     }
 
-    // Check if the client exist on the characters data
-    bool ItHasACharacterSelected(ulong clientId)
+    // Check if a client can connect to the scene, this is call on every load of a scene.
+    public bool CanClientConnect(ulong clientId)
     {
-        foreach (var data in m_characterDatas)
+        if (!IsServer)
+            return false;
+
+        // Check if the client can connect
+        bool canConnect = CanConnect(clientId);
+        if (!canConnect)
         {
-            if (data.clientId == clientId)
-            {
-                return true;
-            }
+            RemoveClient(clientId);
         }
 
-        return false;
+        return canConnect;
     }
 
-    // In case the client is not allowed to enter, remove the client for the session
-    void RemoveClient(ulong clientId)
-    {
-        // Client should shutdown
-        ClientRpcParams clientRpcParams = new ClientRpcParams
-        {
-            Send = new ClientRpcSendParams
-            {
-                TargetClientIds = new ulong[] { clientId }
-            }
-        };
-
-        // Only send the rpc to the client that wiil be shutdown
-        ShutdownClientRpc(clientRpcParams);
-    }
-
-    // Check if client can connect, there two diferents ways to check
-    // 1. on the selection screen always check the network manager for the numbers of clients connencted
+    // Check if client can connect, there are two different ways to check
+    // 1. on the selection screen always check the network manager for the numbers of clients connected
     // 2. when the game start after the character selection a new client should never be allowed to enter
-    // so we check the data of the characters beacause there we now witch character is selected and by who
-    bool CanConnect(ulong clientId)
-    {            
+    // so we check the data of the characters because there we now witch character is selected and by who
+    private bool CanConnect(ulong clientId)
+    {
         if (LoadingSceneManager.Instance.SceneActive == SceneName.CharacterSelection)
-        {            
+        {
             int playersConnected = NetworkManager.Singleton.ConnectedClientsList.Count;
 
             if (playersConnected > m_maxConnections)
@@ -85,26 +66,45 @@ public class ClientConnection : SingletonNetwork<ClientConnection>
         }
     }
 
-    // This is a check for some script that depend on the client where it leaves 
-    // to check if this was a client that should no be allow an there for the code should no run
-    public bool IsExtraClient(ulong clientId)
+    // In case the client is not allowed to enter, remove the client for the session
+    private void RemoveClient(ulong clientId)
     {
-        return CanConnect(clientId);
+        // Client should shutdown
+        ClientRpcParams clientRpcParams = new ClientRpcParams
+        {
+            Send = new ClientRpcSendParams
+            {
+                TargetClientIds = new ulong[] { clientId }
+            }
+        };
+
+        // Only send the rpc to the client that will be shutdown
+        ShutdownClientRpc(clientRpcParams);
     }
 
-    // Check if a client can connect to the scene, this is call on every load of a scene.
-    public bool CanClientConnect(ulong clientId)
+    // Check if the client exist on the characters data
+    private bool ItHasACharacterSelected(ulong clientId)
     {
-        if (!IsServer)
-            return false;
-
-        // Check if the client can connect
-        bool canConnect = CanConnect(clientId);
-        if (!canConnect)
+        foreach (var data in m_characterDatas)
         {
-            RemoveClient(clientId);
+            if (data.clientId == clientId)
+            {
+                return true;
+            }
         }
 
-        return canConnect;
+        return false;
+    }
+
+    [ClientRpc]
+    private void ShutdownClientRpc(ClientRpcParams clientRpcParams = default)
+    {        
+        Shutdown();
+    }
+
+    private void Shutdown()
+    {
+        NetworkManager.Singleton.Shutdown();
+        LoadingSceneManager.Instance.LoadScene(SceneName.Menu, false);
     }
 }

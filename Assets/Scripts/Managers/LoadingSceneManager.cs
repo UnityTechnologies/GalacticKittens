@@ -20,13 +20,28 @@ public enum SceneName : byte
 };
 
 public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
-{    
-    private SceneName m_sceneActive;
-
+{
     public SceneName SceneActive => m_sceneActive;
 
+    private SceneName m_sceneActive;
+
+    // The menu scene will make me subscribe to the network events, because for some reason
+    // when a network session ends it cannot longer listen to the events.
+    public void Init()
+    {
+        NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnLoadComplete;
+        NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
+    }
+
+    // Load scene and if the loading is local or network -> isNetworkSessionActive
+    public void LoadScene(SceneName sceneToLoad, bool isNetworkSessionActive = true)
+    {
+        // Start the load process
+        StartCoroutine(Loading(sceneToLoad, isNetworkSessionActive));
+    }
+
     // Coroutine for the loading effect. It use an alpha in out effect 
-    IEnumerator Loading(SceneName sceneToLoad, bool isNetworkSessionActive)
+    private IEnumerator Loading(SceneName sceneToLoad, bool isNetworkSessionActive)
     {
         LoadingFadeEffect.Instance.FadeIn();
 
@@ -54,7 +69,7 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
     }
 
     // Load the scene using the regular SceneManager, use this while there's no active networked session
-    void LoadSceneLocal(SceneName sceneToLoad)
+    private void LoadSceneLocal(SceneName sceneToLoad)
     {
         SceneManager.LoadScene(sceneToLoad.ToString());
         switch (sceneToLoad)
@@ -67,7 +82,7 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
     }
 
     // Load the scene using the SceneManager from NetworkManager. Use this when there is an active network session
-    void LoadSceneNetwork(SceneName sceneToLoad)
+    private void LoadSceneNetwork(SceneName sceneToLoad)
     {
         NetworkManager.Singleton.SceneManager.LoadScene(
             sceneToLoad.ToString(),
@@ -76,7 +91,7 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
 
     // The callback function triggered when the scene is finished loading
     // Here we set up what to do on each scene and change the music
-    void OnLoadComplete(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
+    private void OnLoadComplete(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
     {
         // We only care the host/server is loading because every manager handles
         // their information and behavior on the server runtime
@@ -96,7 +111,7 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
                 CharacterSelectionManager.Instance.ServerSceneInit(clientId);
                 break;
 
-            // When a client/host connects tell the manager to create the ship and change de music
+            // When a client/host connects tell the manager to create the ship and change the music
             case SceneName.Gameplay:
                 GameplayManager.Instance.ServerSceneInit(clientId);
                 break;
@@ -107,20 +122,5 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
                 EndGameManager.Instance.ServerSceneInit(clientId);
                 break;
         }
-    }
-
-    // Load scene and if the loading is local or network -> isNetworkSessionActive
-    public void LoadScene(SceneName sceneToLoad, bool isNetworkSessionActive = true)
-    {
-        // Start the load process
-        StartCoroutine(Loading(sceneToLoad, isNetworkSessionActive));
-    }
-
-    // The menu scene will make me subscribe to the network events, because for some reason
-    // when a network session ends it cannot longer listen to the events.
-    public void Init()
-    {
-        NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnLoadComplete;
-        NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
     }
 }
