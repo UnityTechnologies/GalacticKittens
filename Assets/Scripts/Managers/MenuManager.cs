@@ -6,24 +6,24 @@ using System.Collections;
 public class MenuManager : MonoBehaviour
 {
     [SerializeField]
-    Animator m_menu;
+    private Animator m_menuAnimator;
 
     [SerializeField]
-    CharacterDataSO[] m_characterDatas;
+    private CharacterDataSO[] m_characterDatas;
 
     [SerializeField]
-    AudioClip m_confirmClip;
+    private AudioClip m_confirmClip;
 
     [SerializeField]
-    SceneName nextScene = SceneName.CharacterSelection;
+    private SceneName nextScene = SceneName.CharacterSelection;
 
     [SerializeField]
     private TMPro.TMP_InputField m_joinCodeInput;
 
-    bool m_pressAnyKeyActive = true;
-    const string k_enterMenuTriggerAnim = "enter_menu";
+    private bool m_pressAnyKeyActive = true;
+    private const string k_enterMenuTriggerAnim = "enter_menu";
 
-    IEnumerator Start()
+    private IEnumerator Start()
     {
         // -- To test with latency on development builds --
         // To set the latency, jitter and packet-loss percentage values for develop builds we need
@@ -56,34 +56,17 @@ public class MenuManager : MonoBehaviour
         LoadingSceneManager.Instance.Init();
     }
 
-    void Update()
+    private void Update()
     {
         if (m_pressAnyKeyActive)
         {
             if (Input.anyKey)
             {
-                ToMenu();
+                TriggerMainMenuTransitionAnimation();
 
                 m_pressAnyKeyActive = false;
             }
         }
-    }
-
-    void ToMenu()
-    {
-        m_menu.SetTrigger(k_enterMenuTriggerAnim);
-        AudioManager.Instance.PlaySound(m_confirmClip);
-    }
-
-    // We use a coroutine because the server is the one who makes the load
-    // we need to make a fade first before calling the start client
-    IEnumerator Join()
-    {
-        LoadingFadeEffect.Instance.FadeAll();
-
-        yield return new WaitUntil(() => LoadingFadeEffect.s_canLoad);
-
-        NetworkManager.Singleton.StartClient();
     }
 
     public async void OnClickHost()
@@ -120,5 +103,22 @@ public class MenuManager : MonoBehaviour
     {
         AudioManager.Instance.PlaySound(m_confirmClip);
         Application.Quit();
+    }
+
+    private void TriggerMainMenuTransitionAnimation()
+    {
+        m_menuAnimator.SetTrigger(k_enterMenuTriggerAnim);
+        AudioManager.Instance.PlaySound(m_confirmClip);
+    }
+
+    // We use a coroutine because the server is the one who makes the load
+    // we need to make a fade first before calling the start client
+    private IEnumerator Join()
+    {
+        LoadingFadeEffect.Instance.FadeAll();
+
+        yield return new WaitUntil(() => LoadingFadeEffect.s_canLoad);
+
+        NetworkManager.Singleton.StartClient();
     }
 }

@@ -58,8 +58,6 @@ public class PlayerCharSelection : NetworkBehaviour
 
     private void OnPlayerIdSet(int oldValue, int newValue)
     {
-        // print($"OnPlayerChanged {OwnerClientId} -> old {oldValue} : new {newValue}");
-        // print($"Set player Id -> OwnerId {OwnerClientId} : {oldValue} : {newValue}");
         CharacterSelectionManager.Instance.SetPlayebleChar(newValue, newValue, IsOwner);
 
         if (IsServer)
@@ -74,7 +72,6 @@ public class PlayerCharSelection : NetworkBehaviour
             CharacterSelectionManager.Instance.SetCharacterUI(m_playerId.Value, newValue);
     }
 
-    // TODO: For production is better to use the new Unity Input system
     private void Update()
     {
         if (IsOwner && CharacterSelectionManager.Instance.GetConnectionState(m_playerId.Value) != ConnectionState.ready)
@@ -99,16 +96,23 @@ public class PlayerCharSelection : NetworkBehaviour
                 // Check that the character is not selected
                 if (!CharacterSelectionManager.Instance.IsReady(m_charSelected.Value))
                 {
-                    CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(true, m_charSelected.Value);
+                    CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(
+                        true,
+                        m_charSelected.Value);
+
                     ReadyServerRpc();
                 }
                 else
                 {
                     // if selected check if is selected by me
-                    if (CharacterSelectionManager.Instance.IsSelectedByPlayer(m_playerId.Value, m_charSelected.Value))
+                    if (CharacterSelectionManager.Instance.IsSelectedByPlayer(
+                            m_playerId.Value, m_charSelected.Value))
                     {
                         // If it's selected by me, de-select
-                        CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(false, m_charSelected.Value);
+                        CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(
+                            false,
+                            m_charSelected.Value);
+
                         NotReadyServerRpc();
                     }
                 }
@@ -205,18 +209,23 @@ public class PlayerCharSelection : NetworkBehaviour
     // The arrows on the player are not meant to works as buttons
     private void OnUIButtonPress(ButtonActions buttonAction)
     {
-        // print($"ClientId {OwnerClientId} IsServer {IsServer} IsOwner {IsOwner} buttonAction {buttonAction}");
         if (IsOwner)
         {
             switch (buttonAction)
             {
                 case ButtonActions.lobby_ready:
-                    CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(true, m_charSelected.Value);
+                    CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(
+                        true,
+                        m_charSelected.Value);
+
                     ReadyServerRpc();
                     break;
 
                 case ButtonActions.lobby_not_ready:
-                    CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(false, m_charSelected.Value);
+                    CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(
+                        false,
+                        m_charSelected.Value);
+
                     NotReadyServerRpc();
                     break;
             }

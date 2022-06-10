@@ -6,29 +6,29 @@ using UnityEngine;
 
 public class GameplayManager : SingletonNetwork<GameplayManager>
 {
-    public static Action<ulong> playerDead;
+    public static Action<ulong> OnPlayerDefeated;
 
     [SerializeField]
-    CharacterDataSO[] m_charactersData;
+    private CharacterDataSO[] m_charactersData;
 
     [SerializeField]
-    PlayerUI[] m_playersUI;
+    private PlayerUI[] m_playersUI;
 
     [SerializeField]
-    GameObject m_deathUI;
+    private GameObject m_deathUI;
 
     [SerializeField]
-    Transform[] m_shipStartingPositions;
+    private Transform[] m_shipStartingPositions;
 
-    int m_numberOfPlayerConnected;
-    List<ulong> m_connectedClients = new List<ulong>();
-    List<PlayerShipController> m_playerShips = new List<PlayerShipController>();
+    private int m_numberOfPlayerConnected;
+    private List<ulong> m_connectedClients = new List<ulong>();
+    private List<PlayerShipController> m_playerShips = new List<PlayerShipController>();
 
     void OnEnable()
     {
         if (IsServer)
         {
-            playerDead += PlayerDeath;
+            OnPlayerDefeated += PlayerDeath;
             NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
         }
     }
@@ -37,7 +37,7 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
     {
         if (IsServer)
         {
-            playerDead -= PlayerDeath;
+            OnPlayerDefeated -= PlayerDeath;
             NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnect;
         }
     }
@@ -53,12 +53,12 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
         }
         else
         {
-            // Send a client rpc to check which client was defeated, and activate the death UI
+            // Send a client rpc to check which client was defeated, and activate their death UI
             ActivateDeathUIClientRpc(clientId);
         }
     }
 
-    // Event to check when a player disconnect
+    // Event to check when a player disconnects
     void OnClientDisconnect(ulong clientId)
     {
         foreach (var player in m_playerShips)
@@ -96,8 +96,10 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
     {
         // Not optimal, but this is only called one time per ship
         // We do this because we can not pass a GameObject in an RPC
-        GameObject go = GameObject.Find(playerShipName);
-        PlayerShipController playerShipController = go.GetComponent<PlayerShipController>();
+        GameObject playerSpaceship = GameObject.Find(playerShipName);
+
+        PlayerShipController playerShipController =
+            playerSpaceship.GetComponent<PlayerShipController>();
 
         m_playersUI[m_charactersData[charIndex].playerId].SetUI(
             m_charactersData[charIndex].playerId,
@@ -156,9 +158,9 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
         }
     }
 
-    // So this method is call on the server each time a player enter the scene,
-    // because of that if we create the ship when a player connects we could have a sync error
-    // with the other clients because maybe the scene on the client is no yet load.
+    // So this method is called on the server each time a player enters the scene.
+    // Because of that, if we create the ship when a player connects we could have a sync error
+    // with the other clients because maybe the scene on the client is no yet loaded.
     // To fix this problem we wait until all clients call this method then we create the ships
     // for every client connected 
     public void ServerSceneInit(ulong clientId)
@@ -179,18 +181,20 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
             {
                 if (data.isSelected && data.clientId == client)
                 {
-                    GameObject spaceShip = NetworkObjectSpawner.SpawnNewNetworkObject(
-                        data.spaceshipPrefab,
-                        m_shipStartingPositions[m_numberOfPlayerConnected].position,
-                        data.clientId,
-                        true);
+                    GameObject playerSpaceship =
+                        NetworkObjectSpawner.SpawnNewNetworkObjectChangeOwnershipToClient(
+                            data.spaceshipPrefab,
+                            m_shipStartingPositions[m_numberOfPlayerConnected].position,
+                            data.clientId,
+                            true);
 
-                    PlayerShipController playerShipController = spaceShip.GetComponent<PlayerShipController>();
+                    PlayerShipController playerShipController =
+                        playerSpaceship.GetComponent<PlayerShipController>();
                     playerShipController.characterData = data;
                     playerShipController.gameplayManager = this;
 
                     m_playerShips.Add(playerShipController);
-                    SetPlayerUIClientRpc(index, spaceShip.name);
+                    SetPlayerUIClientRpc(index, playerSpaceship.name);
 
                     m_numberOfPlayerConnected++;
                 }

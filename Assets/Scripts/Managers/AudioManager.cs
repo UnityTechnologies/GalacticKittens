@@ -11,22 +11,22 @@ public class AudioManager : SingletonPersistent<AudioManager>
 
     [Header("Music")]
     [SerializeField]
-    AudioSource m_introSource;
+    private AudioSource m_introSource;
 
     [SerializeField]
-    AudioSource m_gameplaySource;
+    private AudioSource m_gameplaySource;
 
     [SerializeField]
     [Range(0f, 1f)]
-    float m_maxMusicVolume;
+    private float m_maxMusicVolume;
 
     [Header("SFX")]
     [SerializeField]
-    AudioSource m_sfxSource;
+    private AudioSource m_sfxSource;
 
-    float m_volumeSteps = 0.01f;
+    private readonly float k_volumeSteps = 0.01f;
 
-    void Start()
+    private void Start()
     {
         // We now that the menu scene if the first to start
         PlayMusic(MusicName.intro);
@@ -78,15 +78,15 @@ public class AudioManager : SingletonPersistent<AudioManager>
         {
             if (musicToPlay == MusicName.intro)
             {
-                m_introSource.volume += m_volumeSteps;
-                m_gameplaySource.volume -= m_volumeSteps;
+                m_introSource.volume += k_volumeSteps;
+                m_gameplaySource.volume -= k_volumeSteps;
             }
             else
             {
-                m_introSource.volume -= m_volumeSteps;
-                m_gameplaySource.volume += m_volumeSteps;
+                m_introSource.volume -= k_volumeSteps;
+                m_gameplaySource.volume += k_volumeSteps;
             }
-            volume += m_volumeSteps;
+            volume += k_volumeSteps;
             yield return new WaitForEndOfFrame();
         }
 

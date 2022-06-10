@@ -5,11 +5,12 @@ using UnityEngine;
 public class ControlsManager : NetworkBehaviour
 {
     [SerializeField]
-    int m_waitingTime;
-    [SerializeField]
-    SceneName m_sceneName;
+    private int m_waitingTime;
 
-    void Start()
+    [SerializeField]
+    private SceneName m_sceneName;
+
+    private void Start()
     {
         // Invoke the next scene, waiting some time
         Invoke(nameof(LoadNextScene), m_waitingTime);
@@ -17,7 +18,7 @@ public class ControlsManager : NetworkBehaviour
         AudioManager.Instance.CrossPlayGameplay();
     }
 
-    void LoadNextScene()
+    private void LoadNextScene()
     {
         // Safety check
         if (LoadingSceneManager.Instance != null)
@@ -31,7 +32,7 @@ public class ControlsManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    void LoadClientRpc()
+    private void LoadClientRpc()
     {
         if (IsServer)
             return;

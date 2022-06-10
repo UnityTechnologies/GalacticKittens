@@ -1,20 +1,8 @@
-# Architecture
+# Architecture of Galactic Kittens
 This document describes the high-level architecture of Galactic Kittens.
 If you want to familiarize yourself with the code base, you are just in the right place!
 
 Galactic Kittens is a 4-player co-op action game experience, where players collaborate to take down some robot enemies, and then a dangerous missle launching boss. Players can select between the 4 space explorers which can fire lasers, and collect power ups that let them activate a spaceship shield that protects against 1 hit.
-
-## Controls
-The game uses WASD keyboard controls, space bar for shooting, and the 'K' key to activata the shield.
-![Bnner](Documentation/Images/controls.png)
-
-## Connection Flow
-The connection of clients starts with the `MenuManager` script where a player can start a new session(host) or join an existing session (client). This script makes the calls to the NetworkManager commands `StartHost()` or `StartClient()`, which come built in with the Netcode library.
-
-<br>
-
-## Data Model
-[TODO: ADD INFO]
 
 <br>
 
@@ -40,6 +28,16 @@ This is how the scenes are laid out, every scene has a manage classr that sets u
 
 
 For that, the `LoadingSceneManager` class has a method that receives a callback every time a client connects, this is only on server/host side. In this callback we call the manager for each scene to set up the initial data.
+
+<br>
+
+## Connection Flow
+The connection of clients starts with the `MenuManager` script where a player can start a new session(host) or join an existing session (client). This script makes the calls to the NetworkManager commands `StartHost()` or `StartClient()`, which come built in with the Netcode library.
+
+<br>
+
+## Data Model
+[TODO: ADD INFO]
 
 ## Important classes
 
@@ -76,12 +74,32 @@ More information about scene management [here](https://docs-multiplayer.unity3d.
 <br>
 
 **`NetworkObjectSpawner`**<br>
-This class lets you spawn a new object on the active networked session, by using the `SpawnNewNetworkObject` method. You just need to pass the following data:
+This class lets you spawn a new `GameObject` on the active networked session. There are 2 main methods which are `SpawnNewNetworkObject` and `SpawnNewNetworkObjectChangeOwnershipToClient`. The 2nd one is used when spawning the player spaceships for each connected player/cient.
+
+**List of Methods and Overloads:**
+
+SpawnNewNetworkObject:
+* `Prefab:` the prefab to spawn.
+* `DestroyWithScene:` default to yes, set if you one the prefab to destroy with the scene.
+
+SpawnNewNetworkObject:
+* `Prefab:` the prefab to spawn.
+* `Position:` set the position to spawn the prefab.
+* `DestroyWithScene:` default to yes, set if you one the prefab to destroy with the scene.
+
+SpawnNewNetworkObject:
 * `Prefab:` the prefab to spawn.
 * `Position:` set the position to spawn the prefab.
 * `Rotation:` set the rotation of the spawned prefab.
 * `DestroyWithScene:` default to yes, set if you one the prefab to destroy with the scene.
-* `ChangeOwnershipToClient:` default to false, set if you one to change the owner of the prefab. For the players we change the owner to the corresponding client.
-* `newClientOwnerId:` the id of the client who will own the object in case we want to change ownership.
 
-Using this method, you instantiate a prefab on the hosting server and replicate it on all clients. More information on object spawning [here](https://docs-multiplayer.unity3d.com/docs/basics/object-spawning).
+SpawnNewNetworkObjectChangeOwnershipToClient:
+
+* `Prefab:` the prefab to spawn.
+* `Position:` set the position to spawn the prefab.
+* `newClientOwnerId:` the id of the client who will own the object
+* `DestroyWithScene:` default to yes, set if you one the prefab to destroy with the scene.
+
+Using these methods, you instantiate a prefab on the hosting server and replicate it on all clients. More information on object spawning [here](https://docs-multiplayer.unity3d.com/docs/basics/object-spawning).
+
+**`AudioManager`**<br>
