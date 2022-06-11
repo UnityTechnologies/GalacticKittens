@@ -78,7 +78,7 @@ public class SpaceGhostEnemyBehavior : BaseEnemyBehavior
     [ClientRpc]
     private void PlayEnemyDamageSoundClientRpc()
     {
-        AudioManager.Instance.PlaySound(m_damageClip);
+        AudioManager.Instance.PlaySoundEffect(m_damageClip);
     }
 
     [ClientRpc]

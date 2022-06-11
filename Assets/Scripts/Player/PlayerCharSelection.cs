@@ -79,12 +79,12 @@ public class PlayerCharSelection : NetworkBehaviour
             if (Input.GetKeyDown(KeyCode.A))
             {
                 ChangeCharacterSelection(-1);
-                AudioManager.Instance.PlaySound(_changedCharacterClip);
+                AudioManager.Instance.PlaySoundEffect(_changedCharacterClip);
             }
             else if (Input.GetKeyDown(KeyCode.D))
             {
                 ChangeCharacterSelection(1);
-                AudioManager.Instance.PlaySound(_changedCharacterClip);
+                AudioManager.Instance.PlaySoundEffect(_changedCharacterClip);
             }
         }
 

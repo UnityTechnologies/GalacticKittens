@@ -75,8 +75,7 @@ public class MenuManager : MonoBehaviour
             await RelayManager.Instance.SetupRelay();
 
         NetworkManager.Singleton.StartHost();
-        AudioManager.Instance.PlaySound(m_confirmClip);
-
+        AudioManager.Instance.PlaySoundEffect(m_confirmClip);
         LoadingSceneManager.Instance.LoadScene(nextScene);
     }
 
@@ -93,7 +92,7 @@ public class MenuManager : MonoBehaviour
 
         await joinRelayTask;
 
-        AudioManager.Instance.PlaySound(m_confirmClip);
+        AudioManager.Instance.PlaySoundEffect(m_confirmClip);
 
         if(joinRelayTask.Result.AllocationID != System.Guid.Empty)
             StartCoroutine(Join());
@@ -101,14 +100,14 @@ public class MenuManager : MonoBehaviour
 
     public void OnClickQuit()
     {
-        AudioManager.Instance.PlaySound(m_confirmClip);
+        AudioManager.Instance.PlaySoundEffect(m_confirmClip);
         Application.Quit();
     }
 
     private void TriggerMainMenuTransitionAnimation()
     {
         m_menuAnimator.SetTrigger(k_enterMenuTriggerAnim);
-        AudioManager.Instance.PlaySound(m_confirmClip);
+        AudioManager.Instance.PlaySoundEffect(m_confirmClip);
     }
 
     // We use a coroutine because the server is the one who makes the load

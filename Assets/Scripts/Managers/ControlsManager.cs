@@ -15,7 +15,7 @@ public class ControlsManager : NetworkBehaviour
         // Invoke the next scene, waiting some time
         Invoke(nameof(LoadNextScene), m_waitingTime);
 
-        AudioManager.Instance.CrossPlayGameplay();
+        AudioManager.Instance.SwitchToGameplayMusic();
     }
 
     private void LoadNextScene()

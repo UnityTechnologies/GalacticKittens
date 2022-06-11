@@ -1,21 +1,21 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public enum BossState 
+public enum BossState
 { 
     fire,
     misileBarrage,
     death,
     idle,
-    enter 
+    enter
 };
 
 [RequireComponent(typeof(BossController))]
 public class BaseBossState : NetworkBehaviour
-{    
+{
     protected BossController m_controller;
 
-    void Start()
+    private void Start()
     {
         m_controller = FindObjectOfType<BossController>();
     }
