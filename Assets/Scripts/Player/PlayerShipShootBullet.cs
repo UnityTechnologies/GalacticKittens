@@ -67,6 +67,6 @@ public class PlayerShipShootBullet : NetworkBehaviour
     [ClientRpc]
     void PlayShootBulletSoundClientRpc()
     {
-        AudioManager.Instance?.PlaySound(m_shootClip);
+        AudioManager.Instance?.PlaySoundEffect(m_shootClip);
     }
 }

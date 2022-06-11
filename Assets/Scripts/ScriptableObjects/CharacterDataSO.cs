@@ -1,11 +1,11 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CharacterData", menuName = "SO/CharacterData", order = 2)]
+[CreateAssetMenu(fileName = "Player Spaceship Variant", menuName = "Galactic Kittens/Character Data", order = 2)]
 public class CharacterDataSO : ScriptableObject
 {
     [Header("Data")]
     public Sprite characterSprite;          // CharacterSprite for the character selection scene
-    public Sprite characterShipSprite;      // The character ship sprite fot the character selection scene
+    public Sprite characterShipSprite;      // The character ship sprite for the character selection scene
     public Sprite iconSprite;               // Sprite use on the player UI on gameplay scene
     public Sprite iconDeathSprite;          // Sprite use on the player UI on gameplay scene for his death
     public string characterName;            // Character name

@@ -18,14 +18,14 @@ Galactic Kittens is a 2D co-op space adventure sample game where players must bl
 ---------------
 ## **Setup**
 
-You can quickly test this game sample by following the [setup instructions](SetupInstructions.md) document.
+You can quickly test this game sample by following the [setup instructions](Documentation/SetupInstructions.md) document.
 
 
 ---------------
 ## **Project Structure**
 Galactic Kittens has 7 main scenes that show each step in the game flow of the samples, and we use different managers to handle major game components (connection management, scene transition, audio, etc.).
 
-For a detailed overview of the project's structure please check out the [ARCHITECTURE](ARCHITECTURE.md) document.
+For a detailed overview of the project's structure please check out the [Project Structure](Documentation/ProjectStructure.md) document.
 <br>
 
 ---------------
@@ -36,6 +36,6 @@ For a detailed overview of the project's structure please check out the [ARCHITE
 
 [![Discord](https://img.shields.io/discord/449263083769036810.svg?label=discord&logo=discord&color=informational)](https://discord.gg/FM8SE9E)
 
-## **Other repositories:**
+## **Similar Repositories:**
  - [Boss Room](https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop)
  - [Game Lobby Sample](https://github.com/Unity-Technologies/com.unity.services.samples.game-lobby)

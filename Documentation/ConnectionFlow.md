@@ -1,0 +1,2 @@
+# Connection Flow
+The connection of clients starts with the `MenuManager` script where a player can start a new session(host) or join an existing session (client). This script makes the calls to the NetworkManager commands `StartHost()` or `StartClient()`, which come built in with the Netcode library.

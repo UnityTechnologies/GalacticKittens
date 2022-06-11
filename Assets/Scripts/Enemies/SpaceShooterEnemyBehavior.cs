@@ -80,7 +80,7 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
     [ClientRpc]
     private void PlayShootAudioClientRpc()
     {
-        AudioManager.Instance.PlaySound(_shootClip);
+        AudioManager.Instance.PlaySoundEffect(_shootClip);
     }
 
     private void OnTriggerEnter2D(Collider2D otherObject)

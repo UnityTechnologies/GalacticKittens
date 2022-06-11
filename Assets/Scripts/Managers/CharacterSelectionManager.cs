@@ -26,7 +26,6 @@ public struct PlayerConnectionState
     public ulong clientId;                          // Id of the client
 }
 
-// TODO: Maybe is better with animation?
 // Struct for better serialization on the container of the character
 [Serializable]
 public struct CharacterContainer
@@ -36,7 +35,7 @@ public struct CharacterContainer
     public GameObject border;                       // The border of the character container when not ready
     public GameObject borderReady;                  // The border of the character container when ready
     public GameObject borderClient;                 // Client border of the character container
-    public Image playerIcon;                        // The background icon of the player (p1, p2)    
+    public Image playerIcon;                        // The background icon of the player (p1, p2)
     public GameObject waitingText;                  // The waiting text on the container were no client connected
     public GameObject backgroundShip;               // The background of the ship when not ready
     public Image backgroundShipImage;               // The image of the ship when not ready
@@ -89,14 +88,6 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
     private readonly Color k_selectedColor = new Color32(74, 74, 74, 255);
 
-    void OnDisable()
-    {
-        if (IsServer)
-        {
-            NetworkManager.Singleton.OnClientDisconnectCallback -= PlayerDisconnects;
-        }
-    }
-
     void Start()
     {
         m_timer = m_timeToStartGame;
@@ -116,6 +107,14 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
                 m_isTimerOn = false;
                 StartGame();
             }
+        }
+    }
+
+    void OnDisable()
+    {
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback -= PlayerDisconnects;
         }
     }
 
@@ -441,7 +440,7 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
             }
         }
 
-        AudioManager.Instance.PlaySound(m_confirmClip);
+        AudioManager.Instance.PlaySoundEffect(m_confirmClip);
     }
 
     [ClientRpc]
@@ -466,7 +465,7 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
             m_charactersContainers[playerId].backgroundShipReady.SetActive(false);
         }
 
-        AudioManager.Instance.PlaySound(m_cancelClip);
+        AudioManager.Instance.PlaySoundEffect(m_cancelClip);
         for (int i = 0; i < m_playerStates.Length; i++)
         {
             // Only changes the ones on clients that are not selected

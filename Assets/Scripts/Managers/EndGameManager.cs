@@ -23,14 +23,14 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
     [SerializeField]
     AudioClip m_endGameClip;                    // The audio clip to reproduce when the scene start
 
-    int m_shipPositionindex;                    // Var to move every player to diferent position
+    int m_shipPositionindex;                    // Var to move every player to different position
 
     PlayerShipScore m_bestPlayer;               // Catch who is the best player -> only on server
     List<ulong> m_connectedClients = new List<ulong>();
 
     void Start()
     {        
-        AudioManager.Instance.PlaySound(m_endGameClip, 1);
+        AudioManager.Instance.PlaySoundEffect(m_endGameClip, 1);
     }
 
     [ClientRpc]
@@ -51,7 +51,7 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
     {
         if (IsServer) return;
 
-        // We use find because we cannot pass a object on RPC   
+        // We use find because we cannot pass a object on RPC
         GameObject spaceShipScore = GameObject.Find(spaceShipScoreName);
         spaceShipScore.GetComponent<PlayerShipScore>().BestShip();
     }
@@ -99,7 +99,7 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
         {
             if (m_charactersData[i].isSelected)
             {
-                // Spawn the spaceship                
+                // Spawn the spaceship
                 GameObject go = NetworkObjectSpawner.SpawnNewNetworkObject(
                     m_charactersData[i].spaceshipScorePrefab,
                     m_shipsPositions[m_shipPositionindex].position);
@@ -119,17 +119,21 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
 
                 // Victory or defeat so turn on the appropriate vfx
                 if (m_status == EndGameStatus.victory)
+                {
                     go.GetComponent<PlayerShipScore>().SetShip(
                         true,
                         m_charactersData[i].enemiesDestroyed,
                         m_charactersData[i].powerUpsUsed,
                         currentFinalScore);
+                }
                 else
+                {
                     go.GetComponent<PlayerShipScore>().SetShip(
                         false,
                         m_charactersData[i].enemiesDestroyed,
                         m_charactersData[i].powerUpsUsed,
                         currentFinalScore);
+                }
 
                 // Set the values of the score on every instance
                 SetShipDataClientRpc(

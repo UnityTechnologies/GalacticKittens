@@ -28,17 +28,16 @@ public class AudioManager : SingletonPersistent<AudioManager>
 
     private void Start()
     {
-        // We now that the menu scene if the first to start
+        // We know that the menu scene if the first to use this script
         PlayMusic(MusicName.intro);
     }
    
-    // Play a sound effect with some volume default 0.8
-    public void PlaySound(AudioClip clip, float volume = 0.8f)
+    public void PlaySoundEffect(AudioClip clip, float volume = 1f)
     {
-        m_sfxSource.PlayOneShot(clip);
+        m_sfxSource.PlayOneShot(clip, volume);
     }
 
-    // Play the music of the game without any effect 
+    // Play the music of the game without any effect
     public void PlayMusic(MusicName musicToPlay)
     {
         if (musicToPlay == MusicName.intro)
@@ -46,6 +45,7 @@ public class AudioManager : SingletonPersistent<AudioManager>
             m_introSource.enabled = true;
             m_introSource.volume = m_maxMusicVolume;
             m_introSource.Play();
+
             m_gameplaySource.Stop();
             m_gameplaySource.enabled = false;
         }
@@ -54,22 +54,29 @@ public class AudioManager : SingletonPersistent<AudioManager>
             m_gameplaySource.enabled = true;
             m_gameplaySource.volume = m_maxMusicVolume;
             m_gameplaySource.Play();
+
             m_introSource.Stop();
             m_introSource.enabled = false;
         }
     }
 
-    // Play the gameplay music using a cross-play effect
-    public void CrossPlayGameplay()
+    public void SwitchToGameplayMusic()
     {        
-        m_gameplaySource.volume = 0;
+        m_gameplaySource.volume = 0f;
         m_gameplaySource.enabled = true;
         m_gameplaySource.Play();
-        StartCoroutine(CrossPlayMusic(MusicName.gameplay));
+
+        StartCoroutine(SwitchMusicToPlay(MusicName.gameplay));
     }
 
-    // The cross-play effect process
-    private IEnumerator CrossPlayMusic(MusicName musicToPlay)
+    private IEnumerator SwitchMusicToPlay(MusicName musicToPlay)
+    {
+        yield return FadeInMusicToPlayFadeOutCurrentMusic(musicToPlay);
+
+        StopAudioOfCurrentMusic(musicToPlay);
+    }
+
+    private IEnumerator FadeInMusicToPlayFadeOutCurrentMusic(MusicName musicToPlay)
     {
         float volume = 0f;
 
@@ -89,8 +96,10 @@ public class AudioManager : SingletonPersistent<AudioManager>
             volume += k_volumeSteps;
             yield return new WaitForEndOfFrame();
         }
+    }
 
-        // Stop the audio of the old music
+    private void StopAudioOfCurrentMusic(MusicName musicToPlay)
+    {
         if (musicToPlay == MusicName.intro)
         {
             m_gameplaySource.Stop();

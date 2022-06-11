@@ -139,7 +139,7 @@ public class EnemySpawner : NetworkBehaviour
         // Warning title and sound
         PlayWarnnigClientRpc();
         m_warningUI.SetActive(true);
-        AudioManager.Instance.PlaySound(m_warningClip);
+        AudioManager.Instance.PlaySoundEffect(m_warningClip);
 
         // Same time as audio length
         yield return new WaitForSeconds(m_warningClip.length);
@@ -165,7 +165,7 @@ public class EnemySpawner : NetworkBehaviour
 
         m_warningUI.SetActive(true);
 
-        AudioManager.Instance.PlaySound(m_warningClip);
+        AudioManager.Instance.PlaySoundEffect(m_warningClip);
     }
 
     [ClientRpc]

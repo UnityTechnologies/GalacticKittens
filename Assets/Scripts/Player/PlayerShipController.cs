@@ -101,7 +101,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     {
         // Activate the special
         m_defenseShield.SetActive(true);
-        AudioManager.Instance?.PlaySound(m_shieldClip);
+        AudioManager.Instance?.PlaySoundEffect(m_shieldClip);
     }
 
     [ClientRpc]
@@ -109,7 +109,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     {
         // Reproduce the sfx hit only on the client instance
         if (NetworkObject.OwnerClientId == clientId)
-            AudioManager.Instance?.PlaySound(m_hitClip);
+            AudioManager.Instance?.PlaySoundEffect(m_hitClip);
     }
 
     IEnumerator HostShutdown()
