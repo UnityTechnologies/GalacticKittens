@@ -10,34 +10,34 @@ using UnityEngine;
 public class BossController : NetworkBehaviour
 {
     [SerializeField]
-    int m_damage;
+    private int m_damage;
 
     [Header("States for the boss")]
     [SerializeField]
-    BossEnterState m_enterState;
+    private BossEnterState m_enterState;
 
     [SerializeField]
-    BaseBossState m_fireState;
+    private BaseBossState m_fireState;
 
     [SerializeField]
-    BaseBossState m_misileBarrageState;
+    private BaseBossState m_misileBarrageState;
 
     [SerializeField]
-    BaseBossState m_idleState;
+    private BaseBossState m_idleState;
 
     [SerializeField]
-    BaseBossState m_deathState;
+    private BaseBossState m_deathState;
 
     [Header("For testing the boss states -> false for production")]
     [SerializeField]
-    bool m_isTesting;
+    private bool m_isTesting;
 
     [SerializeField]
-    BossState m_testState;
+    private BossState m_testState;
 
-    BossUI bossUI;
+    private BossUI bossUI;
 
-    void OnTriggerEnter2D(Collider2D collider)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
         // When the players get close to me do some damage
         if (collider.TryGetComponent(out PlayerShipController playerShip))
@@ -107,11 +107,10 @@ public class BossController : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (IsServer)
+        if (IsServer && m_isTesting)
         {
-            // If you one to test the boss outside of the normal flow of the game
-            if (m_isTesting)
-                SetState(m_testState);
+            // If you want to test the boss outside of the normal flow of the game
+            SetState(m_testState);
         }
         base.OnNetworkSpawn();
     }

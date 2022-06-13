@@ -12,75 +12,25 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
     };
 
     [SerializeField]
-    EndGameStatus m_status;                     // Set the scene status to now if we are on victory o defeat scene
+    private EndGameStatus m_status;                     // Set the scene status to now if we are on victory o defeat scene
 
     [SerializeField]
-    CharacterDataSO[] m_charactersData;         // The characters data use to take some data from there
+    private CharacterDataSO[] m_charactersData;         // The characters data use to take some data from there
 
     [SerializeField]
-    Transform[] m_shipsPositions;               // The final positions of the ships 
+    private Transform[] m_shipsPositions;               // The final positions of the ships 
 
     [SerializeField]
-    AudioClip m_endGameClip;                    // The audio clip to reproduce when the scene start
+    private AudioClip m_endGameClip;                    // The audio clip to reproduce when the scene start
 
-    int m_shipPositionindex;                    // Var to move every player to different position
+    private int m_shipPositionindex;                    // Var to move every player to different position
 
-    PlayerShipScore m_bestPlayer;               // Catch who is the best player -> only on server
-    List<ulong> m_connectedClients = new List<ulong>();
+    private PlayerShipScore m_bestPlayer;               // Catch who is the best player -> only on server
+    private List<ulong> m_connectedClients = new List<ulong>();
 
-    void Start()
+    private void Start()
     {        
-        AudioManager.Instance.PlaySoundEffect(m_endGameClip, 1);
-    }
-
-    [ClientRpc]
-    void SetShipDataClientRpc(int enemiesDestroyed, int powerUpsUsed, int score, string spaceShipScoreName)
-    {
-        // Not optimal, but this is only called one time per ship
-        // We use find because we cannot pass a object on RPC
-        GameObject spaceShipScore = GameObject.Find(spaceShipScoreName);
-
-        if (m_status == EndGameStatus.victory)
-            spaceShipScore.GetComponent<PlayerShipScore>().SetShip(true, enemiesDestroyed, powerUpsUsed, score);
-        else
-            spaceShipScore.GetComponent<PlayerShipScore>().SetShip(false, enemiesDestroyed, powerUpsUsed, score);
-    }
-
-    [ClientRpc]
-    void BestShipClientRpc(string spaceShipScoreName)
-    {
-        if (IsServer) return;
-
-        // We use find because we cannot pass a object on RPC
-        GameObject spaceShipScore = GameObject.Find(spaceShipScoreName);
-        spaceShipScore.GetComponent<PlayerShipScore>().BestShip();
-    }
-
-    IEnumerator HostShutdown()
-    {
-        // Tell all clients to shutdown
-        ShutdownClientRpc();
-
-        // Wait some time for the message to get to clients
-        yield return new WaitForSeconds(0.5f);
-
-        // Shutdown server/host
-        Shutdown();
-    }
-
-    void Shutdown()
-    {
-        NetworkManager.Singleton.Shutdown();
-        LoadingSceneManager.Instance.LoadScene(SceneName.Menu, false);
-    }
-
-    [ClientRpc]
-    void ShutdownClientRpc()
-    {
-        if (IsServer)
-            return;
-
-        Shutdown();
+        AudioManager.Instance.PlaySoundEffect(m_endGameClip, 1f);
     }
 
     public void ServerSceneInit(ulong clientId)
@@ -88,7 +38,7 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
         // Save the clients 
         m_connectedClients.Add(clientId);
 
-        // Check if is the last client        
+        // Check if is the last client
         if (m_connectedClients.Count < NetworkManager.Singleton.ConnectedClients.Count)
             return;
 
@@ -99,8 +49,7 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
         {
             if (m_charactersData[i].isSelected)
             {
-                // Spawn the spaceship
-                GameObject go = NetworkObjectSpawner.SpawnNewNetworkObject(
+                GameObject playerScoreResult = NetworkObjectSpawner.SpawnNewNetworkObject(
                     m_charactersData[i].spaceshipScorePrefab,
                     m_shipsPositions[m_shipPositionindex].position);
 
@@ -111,36 +60,28 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
                 int powerUpsUsedScore = (m_charactersData[i].powerUpsUsed * 50);
                 int currentFinalScore = enemyDestroyedScore - powerUpsUsedScore;
 
+                var playerShipScore = playerScoreResult.GetComponent<PlayerShipScore>();
+
                 if (currentFinalScore > bestScore)
                 {
-                    m_bestPlayer = go.GetComponent<PlayerShipScore>();
+                    m_bestPlayer = playerShipScore;
                     bestScore = currentFinalScore;
                 }
 
                 // Victory or defeat so turn on the appropriate vfx
-                if (m_status == EndGameStatus.victory)
-                {
-                    go.GetComponent<PlayerShipScore>().SetShip(
-                        true,
-                        m_charactersData[i].enemiesDestroyed,
-                        m_charactersData[i].powerUpsUsed,
-                        currentFinalScore);
-                }
-                else
-                {
-                    go.GetComponent<PlayerShipScore>().SetShip(
-                        false,
-                        m_charactersData[i].enemiesDestroyed,
-                        m_charactersData[i].powerUpsUsed,
-                        currentFinalScore);
-                }
+                bool isVictorious = m_status == EndGameStatus.victory;
+                playerShipScore.SetShip(
+                    isVictorious,
+                    m_charactersData[i].enemiesDestroyed,
+                    m_charactersData[i].powerUpsUsed,
+                    currentFinalScore);
 
                 // Set the values of the score on every instance
                 SetShipDataClientRpc(
                     m_charactersData[i].enemiesDestroyed,
                     m_charactersData[i].powerUpsUsed,
                     currentFinalScore,
-                    go.name);
+                    playerScoreResult.name);
 
                 m_shipPositionindex++;
             }
@@ -155,7 +96,7 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
         }
     }
 
-    // When the button is press start the shutdown process
+    // When the button is pressed, start the shutdown process
     public void GoToMenu()
     {
         if (IsServer)
@@ -166,5 +107,62 @@ public class EndGameManager : SingletonNetwork<EndGameManager>
         {
             Shutdown();
         }
+    }
+
+    [ClientRpc]
+    private void SetShipDataClientRpc(
+        int enemiesDestroyed,
+        int powerUpsUsed,
+        int score,
+        string spaceShipScoreName)
+    {
+        // Not optimal, but this is only called one time per ship
+        // We use find because we cannot pass a object on RPC
+        GameObject spaceShipScore = GameObject.Find(spaceShipScoreName);
+
+        bool isVictorious = m_status == EndGameStatus.victory;
+        spaceShipScore.GetComponent<PlayerShipScore>().SetShip(
+            isVictorious,
+            enemiesDestroyed,
+            powerUpsUsed,
+            score);
+    }
+
+    [ClientRpc]
+    private void BestShipClientRpc(string spaceShipScoreName)
+    {
+        if (IsServer)
+            return;
+
+        // We use find because we cannot pass a object on RPC
+        GameObject spaceShipScore = GameObject.Find(spaceShipScoreName);
+        spaceShipScore.GetComponent<PlayerShipScore>().BestShip();
+    }
+
+    private IEnumerator HostShutdown()
+    {
+        // Tell all clients to shutdown
+        ShutdownClientRpc();
+
+        // Wait some time for the message to get to clients
+        yield return new WaitForSeconds(0.5f);
+
+        // Shutdown server/host
+        Shutdown();
+    }
+
+    private void Shutdown()
+    {
+        NetworkManager.Singleton.Shutdown();
+        LoadingSceneManager.Instance.LoadScene(SceneName.Menu, false);
+    }
+
+    [ClientRpc]
+    private void ShutdownClientRpc()
+    {
+        if (IsServer)
+            return;
+
+        Shutdown();
     }
 }
