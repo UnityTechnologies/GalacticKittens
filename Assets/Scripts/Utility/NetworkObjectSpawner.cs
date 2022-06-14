@@ -7,12 +7,6 @@ public class NetworkObjectSpawner
         GameObject prefab,
         bool destroyWithScene = true)
     {
-#if UNITY_EDITOR
-        if (!NetworkManager.Singleton.IsServer)
-        {
-            Debug.LogError("ERROR: Spawning not happening in the server!");
-        }
-#endif
         GameObject newGameObject = Object.Instantiate(prefab, Vector3.zero, Quaternion.identity);
 
         NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
@@ -26,12 +20,6 @@ public class NetworkObjectSpawner
         Vector3 position,
         bool destroyWithScene = true)
     {
-#if UNITY_EDITOR
-        if (!NetworkManager.Singleton.IsServer)
-        {
-            Debug.LogError("ERROR: Spawning not happening in the server!");
-        }
-#endif
         GameObject newGameObject = Object.Instantiate(prefab, position, Quaternion.identity);
 
         NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
@@ -60,18 +48,12 @@ public class NetworkObjectSpawner
         return newGameObject;
     }
 
-    public static GameObject SpawnNewNetworkObjectChangeOwnershipToClient(
+    public static GameObject SpawnNewNetworkObject(
         GameObject prefab,
         Vector3 position,
         ulong newClientOwnerId,
         bool destroyWithScene = true)
     {
-#if UNITY_EDITOR
-        if (!NetworkManager.Singleton.IsServer)
-        {
-            Debug.LogError("ERROR: Spawning not happening in the server!");
-        }
-#endif
         GameObject newGameObject = Object.Instantiate(prefab, position, Quaternion.identity);
 
         NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();

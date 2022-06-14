@@ -11,9 +11,6 @@ public class BulletController : NetworkBehaviour
 
     public int damage = 1;
 
-    [HideInInspector]
-    public CharacterDataSO characterData;
-
     [SerializeField]
     private float m_speed = 12f;
 
@@ -30,7 +27,7 @@ public class BulletController : NetworkBehaviour
     {
         if (m_owner == BulletOwner.player && IsServer)
         {
-            ChangeBulletColorClientRpc(characterData.color);
+            ChangeBulletColorClientRpc(Color.white);
         }
     }
 
@@ -49,12 +46,6 @@ public class BulletController : NetworkBehaviour
 
         if (collider.TryGetComponent(out IDamagable damagable))
         {
-            if (m_owner == BulletOwner.player)
-            {
-                // For the final score
-                characterData.enemiesDestroyed++;
-            }
-
             damagable.Hit(damage);
 
             Despawn();

@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(NetworkObject))]
 public class PlayerShipController : NetworkBehaviour, IDamagable
 {
+    public bool DoesTakeDamage = true;
     public NetworkVariable<int> health = new NetworkVariable<int>();
 
     [SerializeField]
@@ -12,9 +13,6 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
 
     [SerializeField]
     GameObject m_defenseShield;
-
-    [SerializeField]
-    CharacterDataSO m_characterData;
 
     [SerializeField]
     GameObject m_explosionVfxPrefab;
@@ -32,16 +30,6 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     [Header("ShipSprites")]
     [SerializeField]
     SpriteRenderer m_shipRenderer;
-
-    [Header("Runtime set")]
-    [HideInInspector]
-    public PlayerUI playerUI;
-
-    [HideInInspector]
-    public CharacterDataSO characterData;
-
-    [HideInInspector]
-    public GameplayManager gameplayManager;
 
     NetworkVariable<int> m_specials = new NetworkVariable<int>(0);
 
@@ -82,17 +70,11 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
         // Activate the special in case the ship has available
         if (m_specials.Value > 0)
         {
-            // Tell the UI to remove the icon
-            playerUI.UpdatePowerUp(m_specials.Value, false);
-
             // Update the UI on clients, reduce the number of specials available
             m_specials.Value--;
 
             // Activate the special on clients for sync
             ActivateShieldClientRpc();
-
-            // Update the power up use for the final score
-            characterData.powerUpsUsed++;
         }
     }
 
@@ -128,7 +110,6 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     void Shutdown()
     {
         NetworkManager.Singleton.Shutdown();
-        LoadingSceneManager.Instance.LoadScene(SceneName.Menu, false);
     }
 
     [ClientRpc]
@@ -140,32 +121,9 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
         Shutdown();
     }
 
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (IsServer)
-        {
-            // If the collider hit a power-up
-            if (collider.TryGetComponent(out PowerUpSpecial powerUp))
-            {
-                // Check if I have space to take the special
-                if (m_specials.Value < m_maxSpecialPower)
-                {
-                    // Update var
-                    m_specials.Value++;
-
-                    // Update UI
-                    playerUI.UpdatePowerUp(m_specials.Value, true);
-
-                    // Remove the power-up
-                    powerUp.Despawn();
-                }
-            }
-        }
-    }
-
     // Sync the hit effect to all clients
     [ClientRpc]
-    void HitClientRpc()
+    void PlayHitEffectClientRpc()
     {
         // Hit effect sync
         StopCoroutine(HitEffect());
@@ -178,13 +136,11 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
             return;
 
         // Update health var
-        health.Value -= damage;
-
-        // Update UI
-        playerUI.UpdateHealth(health.Value);
+        if(DoesTakeDamage)
+            health.Value -= damage;
 
         // Sync on client
-        HitClientRpc();
+        PlayHitEffectClientRpc();
 
         if (health.Value > 0)
         {
@@ -200,9 +156,6 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
                 m_explosionVfxPrefab,
                 transform.position,
                 Quaternion.identity);
-
-            // Tell the Gameplay manager that I've been defeated
-            gameplayManager.PlayerDeath(m_characterData.clientId);
 
             // Safety check
             if (NetworkObject != null && NetworkObject.IsSpawned)

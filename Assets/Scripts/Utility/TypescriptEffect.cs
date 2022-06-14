@@ -6,13 +6,10 @@ public class TypescriptEffect : MonoBehaviour
 {
     [SerializeField]
     private string _text;                       // Text to animate
-
     [SerializeField]
     private float _typescriptWaitingTime;       // The waiting time between char animations on typescript
-
     [SerializeField]
     private float _scaleAnimationTime;          // Time to animate the scale
-
     [SerializeField]
     private AnimationCurve _scaleCurve;         // Curve for the scale animation
 
@@ -20,8 +17,8 @@ public class TypescriptEffect : MonoBehaviour
 
     private void OnEnable()
     {        
-        // Get the components needed for animating the text
-        _textUI = GetComponent<TextMeshProUGUI>();
+        // Get the componente needed for animating the text
+        _textUI = GetComponent<TextMeshProUGUI>();        
         StartCoroutine(Effect()); 
     }
 
@@ -30,13 +27,13 @@ public class TypescriptEffect : MonoBehaviour
         The animation is two parts:
         1) Char by char animation
         2) Scale animation
-        This animation is a loop
+        This animation is a loop    
     */
     private IEnumerator Effect()
     {
         while (true)
         {
-            string animText = string.Empty;
+            string animText = "";
             _textUI.text = animText;
 
             // With a loop we create a typescript effect assigning character per character
@@ -64,7 +61,7 @@ public class TypescriptEffect : MonoBehaviour
                 scaleValues = new Vector2(scaleCurve, scaleCurve);
                 transform.localScale = scaleValues;
                 yield return new WaitForEndOfFrame();
-            }
+            }            
         }
     }
 }

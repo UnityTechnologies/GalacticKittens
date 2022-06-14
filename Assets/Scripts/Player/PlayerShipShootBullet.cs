@@ -13,9 +13,6 @@ public class PlayerShipShootBullet : NetworkBehaviour
     Transform m_cannonPosition;
 
     [SerializeField]
-    CharacterDataSO m_characterData;
-
-    [SerializeField]
     GameObject m_shootVfx;
 
     [SerializeField]
@@ -61,7 +58,6 @@ public class PlayerShipShootBullet : NetworkBehaviour
     {
         BulletController bulletController = newBullet.GetComponent<BulletController>();
         bulletController.damage = m_fireDamage;
-        bulletController.characterData = m_characterData;
     }
 
     [ClientRpc]
