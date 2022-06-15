@@ -35,7 +35,7 @@ public class BaseEnemyBehavior : NetworkBehaviour, IDamagable
     [SerializeField]
     protected GameObject m_VfxExplosion;
 
-    protected NetworkVariable<EnemyState> m_EnemyState =
+    protected readonly NetworkVariable<EnemyState> m_EnemyState =
         new NetworkVariable<EnemyState>(EnemyState.active, NetworkVariableReadPermission.Everyone);
 
     protected EnemyMovementType m_EnemyMovementType;
@@ -45,13 +45,16 @@ public class BaseEnemyBehavior : NetworkBehaviour, IDamagable
     protected float m_WaveAmplitude;
 
     [SerializeField]
-    SpriteRenderer m_sprite;
+    private SpriteRenderer m_sprite;
+
     [SerializeField]
-    float m_hitEffectDuration;
+    private float m_hitEffectDuration;
 
     public override void OnNetworkSpawn()
     {
         m_WaveAmplitude = Random.Range(2f, 6f);
+
+        m_EnemyMovementType = GetRandomEnemyMovementType();
 
         base.OnNetworkSpawn();
     }
