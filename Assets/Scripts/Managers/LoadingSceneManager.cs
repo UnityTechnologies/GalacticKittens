@@ -36,7 +36,6 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
     // Load scene and if the loading is local or network -> isNetworkSessionActive
     public void LoadScene(SceneName sceneToLoad, bool isNetworkSessionActive = true)
     {
-        // Start the load process
         StartCoroutine(Loading(sceneToLoad, isNetworkSessionActive));
     }
 
@@ -105,7 +104,7 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
 
         // What to initially do on every scene.
         switch (m_sceneActive)
-        {            
+        {
             // When a client/host connects tell the manager
             case SceneName.CharacterSelection:
                 CharacterSelectionManager.Instance.ServerSceneInit(clientId);

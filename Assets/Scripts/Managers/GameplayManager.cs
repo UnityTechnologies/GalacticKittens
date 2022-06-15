@@ -24,7 +24,7 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
     private List<ulong> m_connectedClients = new List<ulong>();
     private List<PlayerShipController> m_playerShips = new List<PlayerShipController>();
 
-    void OnEnable()
+    private void OnEnable()
     {
         if (IsServer)
         {
@@ -33,7 +33,7 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
         }
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         if (IsServer)
         {
@@ -59,7 +59,7 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
     }
 
     // Event to check when a player disconnects
-    void OnClientDisconnect(ulong clientId)
+    private void OnClientDisconnect(ulong clientId)
     {
         foreach (var player in m_playerShips)
         {
@@ -74,7 +74,7 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
     }
 
     [ClientRpc]
-    void ActivateDeathUIClientRpc(ulong clientId)
+    private void ActivateDeathUIClientRpc(ulong clientId)
     {
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
@@ -83,7 +83,7 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
     }
 
     [ClientRpc]
-    void LoadClientRpc()
+    private void LoadClientRpc()
     {
         if (IsServer)
             return;
@@ -92,7 +92,7 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
     }
 
     [ClientRpc]
-    void SetPlayerUIClientRpc(int charIndex, string playerShipName)
+    private void SetPlayerUIClientRpc(int charIndex, string playerShipName)
     {
         // Not optimal, but this is only called one time per ship
         // We do this because we can not pass a GameObject in an RPC
@@ -112,7 +112,7 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
         playerShipController.playerUI = m_playersUI[m_charactersData[charIndex].playerId];
     }
 
-    IEnumerator HostShutdown()
+    private IEnumerator HostShutdown()
     {
         // Tell the clients to shutdown
         ShutdownClientRpc();
@@ -124,14 +124,14 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
         Shutdown();
     }
 
-    void Shutdown()
+    private void Shutdown()
     {
         NetworkManager.Singleton.Shutdown();
         LoadingSceneManager.Instance.LoadScene(SceneName.Menu, false);
     }
 
     [ClientRpc]
-    void ShutdownClientRpc()
+    private void ShutdownClientRpc()
     {
         if (IsServer)
             return;

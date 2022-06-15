@@ -42,17 +42,14 @@ public class MenuManager : MonoBehaviour
                 dropRate: 3);
 #endif
 
-        // Clean the all the data of the characters so we can start with a clean slate
-        foreach (CharacterDataSO data in m_characterDatas)
-        {
-            data.EmptyData();
-        }
+        ClearAllCharacterData();
 
         // Wait for the network Scene Manager to start
         yield return new WaitUntil(() => NetworkManager.Singleton.SceneManager != null);
 
-        //  Set the events on the loading manager
-        // Doing this because every time the network session ends the loading manager stops detecting the events
+        // Set the events on the loading manager
+        // Doing this because every time the network session ends the loading manager stops
+        // detecting the events
         LoadingSceneManager.Instance.Init();
     }
 
@@ -102,6 +99,15 @@ public class MenuManager : MonoBehaviour
     {
         AudioManager.Instance.PlaySoundEffect(m_confirmClip);
         Application.Quit();
+    }
+
+    private void ClearAllCharacterData()
+    {
+        // Clean the all the data of the characters so we can start with a clean slate
+        foreach (CharacterDataSO data in m_characterDatas)
+        {
+            data.EmptyData();
+        }
     }
 
     private void TriggerMainMenuTransitionAnimation()
