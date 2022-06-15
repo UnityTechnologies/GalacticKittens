@@ -53,7 +53,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     {
         if (IsOwner)
         {
-            if (!m_defenseShield.activeSelf && 
+            if (!m_defenseShield.activeSelf &&
                 (Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.LeftShift)))
             {
                 // Tell the server to activate the shield

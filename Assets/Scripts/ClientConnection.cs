@@ -9,8 +9,8 @@ public class ClientConnection : SingletonNetwork<ClientConnection>
     [SerializeField]
     private CharacterDataSO[] m_characterDatas;
 
-    // This is a check for some script that depend on the client where it leaves 
-    // to check if this was a client that should no be allow an there for the code should no run
+    // This is a check for some script that depends on the client where it leaves
+    // to check if this was a client that should no be allowed an there for the code should not run
     public bool IsExtraClient(ulong clientId)
     {
         return CanConnect(clientId);
@@ -33,9 +33,9 @@ public class ClientConnection : SingletonNetwork<ClientConnection>
     }
 
     // Check if client can connect, there are two different ways to check
-    // 1. on the selection screen always check the network manager for the numbers of clients connected
-    // 2. when the game start after the character selection a new client should never be allowed to enter
-    // so we check the data of the characters because there we now witch character is selected and by who
+    // 1. On the selection screen, always check the network manager for the numbers of clients connected
+    // 2. When the game starts after the character selection a new client should never be allowed to enter
+    //    so we check the data of the characters because there we now witch character is selected and by who
     private bool CanConnect(ulong clientId)
     {
         if (LoadingSceneManager.Instance.SceneActive == SceneName.CharacterSelection)

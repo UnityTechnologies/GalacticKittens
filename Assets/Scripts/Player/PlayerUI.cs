@@ -34,11 +34,14 @@ public class PlayerUI : NetworkBehaviour
     }
         
     [SerializeField]
-    HealthUI m_healthUI;                // A struct for all the data relate to the health ui
+    HealthUI m_healthUI;                // A struct for all the data relate to the health UI
+
     [SerializeField]
-    DeathUI m_deathUI;                  // A struct for all the data relate to the death ui    
+    DeathUI m_deathUI;                  // A struct for all the data relate to the death UI
+
     [Header("Set in runtime")]
-    public int maxHealth;               // Max health the player has, use for the convertion to the slider and the coloring of the bar
+    public int maxHealth;               // Max health the player has, use for the conversion to the
+                                        // slider and the coloring of the bar
     
     [ClientRpc]
     void UpdateHealthClientRpc(float currentHealth)
@@ -49,7 +52,6 @@ public class PlayerUI : NetworkBehaviour
         m_healthUI.healthSlider.value = currentHealth;
         m_healthUI.healthImage.color = m_healthUI.healthColor.GetHealthColor(currentHealth);
 
-        // print($"{gameObject.name} {currentHealth}");
         if (currentHealth <= 0f)
         {
             // Turn off lifeUI
@@ -57,16 +59,22 @@ public class PlayerUI : NetworkBehaviour
 
             // Turn on deathUI
             m_deathUI.deathUI.SetActive(true);
-        }        
+        }
     }
      
     // TODO: check if the initial values are set on client
     // Set the initial values of the UI
-    public void SetUI(int playerId, Sprite playerIcon, Sprite playerDeathIcon, int maxHealth, Color color)
+    public void SetUI(
+        int playerId,
+        Sprite playerIcon,
+        Sprite playerDeathIcon,
+        int maxHealth,
+        Color color)
     {
         m_healthUI.playerIconImage.sprite = playerIcon;
         m_healthUI.playerIdText.color = color;
         m_healthUI.playerIdText.text = $"P{(playerId + 1)}";
+
         m_deathUI.playerIdDeathText.color = color;
         m_deathUI.playerIconDeathImage.sprite = playerDeathIcon;
 
@@ -93,7 +101,6 @@ public class PlayerUI : NetworkBehaviour
         m_healthUI.healthSlider.value = convertedHealth;
         m_healthUI.healthImage.color = m_healthUI.healthColor.GetHealthColor(convertedHealth);
 
-        // print($"{gameObject.name} {currentHealth}");
         if (currentHealth <= 0)
         {
             // Turn off lifeUI
@@ -112,7 +119,6 @@ public class PlayerUI : NetworkBehaviour
         if (!IsServer)
             return;
 
-        //print($"PlayerUI server -> {index} {gameObject.name}");
         m_healthUI.powerUp[index - 1].SetActive(hasSpecial);
 
         UpdatePowerUpClientRpc(index, hasSpecial);
@@ -124,7 +130,6 @@ public class PlayerUI : NetworkBehaviour
         if (IsServer)
             return;
 
-        //print($"PlayerUI PowerUp client -> {index} {gameObject.name}");
         m_healthUI.powerUp[index - 1].SetActive(hasSpecial);
     }
 }

@@ -41,7 +41,7 @@ public class Meteor : NetworkBehaviour, IDamagable
     private void Start()
     {
         // Randomly select the sprite to use 
-        m_spriteRenderer.GetComponent<SpriteRenderer>().sprite = 
+        m_spriteRenderer.GetComponent<SpriteRenderer>().sprite =
             m_meteors[Random.Range(0, m_meteors.Length)];
 
         // Randomly scale the meteor

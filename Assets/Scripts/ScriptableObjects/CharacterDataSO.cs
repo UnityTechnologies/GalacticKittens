@@ -35,8 +35,3 @@ public class CharacterDataSO : ScriptableObject
         powerUpsUsed = 0;
     }
 }
-
-
-
-
-
