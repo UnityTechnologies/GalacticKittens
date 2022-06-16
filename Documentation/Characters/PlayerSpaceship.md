@@ -19,25 +19,31 @@ There are 4 characters to choose from:
   <tr>
     <th>
       <p style="text-align:center;">Kat</p>
+      <img src="..\Images\spaceship_P1.png"/>
     </th>
     <th>
       <p style="text-align:center;">Dante</p>
+      <img src="..\Images\spaceship_P2.png"/>
     </th>
     <th>
       <p style="text-align:center;">Sabrina</p>
+      <img src="..\Images\spaceship_P3.png"/>
     </th>
     <th>
       <p style="text-align:center;">Muyu</p>
+      <img src="..\Images\spaceship_P4.png"/>
     </th>
   </tr>
 </table>
 
 Because of this, we create a scriptableobject for setting the data of every character, in this system you can create more characters or edit the ones created:
+
 ![](../Images/DataFolder.png)
 
 <br>
 
 The player ship has different values that can be modified from the inspector:
+
 ![](../Images/PlayerVariants.png)
 
 ### Data

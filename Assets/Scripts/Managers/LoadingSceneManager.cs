@@ -25,30 +25,27 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
 
     private SceneName m_sceneActive;
 
-    // The menu scene will make me subscribe to the network events, because for some reason
-    // when a network session ends it cannot longer listen to the events.
+    // After running the menu scene, which initiates this manager, we subscribe to these events
+    // due to the fact that when a network session ends it cannot longer listen to them.
     public void Init()
     {
         NetworkManager.Singleton.SceneManager.OnLoadComplete -= OnLoadComplete;
         NetworkManager.Singleton.SceneManager.OnLoadComplete += OnLoadComplete;
     }
 
-    // Load scene and if the loading is local or network -> isNetworkSessionActive
     public void LoadScene(SceneName sceneToLoad, bool isNetworkSessionActive = true)
     {
         StartCoroutine(Loading(sceneToLoad, isNetworkSessionActive));
     }
 
-    // Coroutine for the loading effect. It use an alpha in out effect 
+    // Coroutine for the loading effect. It use an alpha in out effect
     private IEnumerator Loading(SceneName sceneToLoad, bool isNetworkSessionActive)
     {
         LoadingFadeEffect.Instance.FadeIn();
 
-        // Wait until I can load
+        // Here the player still sees the black screen
         yield return new WaitUntil(() => LoadingFadeEffect.s_canLoad);
 
-        // The actual load of the scene, here the player still see a black screen  
-        // Check if the networking session is active
         if (isNetworkSessionActive)
         {
             if (NetworkManager.Singleton.IsServer)
@@ -67,7 +64,7 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
         LoadingFadeEffect.Instance.FadeOut();
     }
 
-    // Load the scene using the regular SceneManager, use this while there's no active networked session
+    // Load the scene using the regular SceneManager, use this if there's no active network session
     private void LoadSceneLocal(SceneName sceneToLoad)
     {
         SceneManager.LoadScene(sceneToLoad.ToString());
@@ -80,7 +77,8 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
         }
     }
 
-    // Load the scene using the SceneManager from NetworkManager. Use this when there is an active network session
+    // Load the scene using the SceneManager from NetworkManager. Use this when there is an active
+    // network session
     private void LoadSceneNetwork(SceneName sceneToLoad)
     {
         NetworkManager.Singleton.SceneManager.LoadScene(
@@ -88,8 +86,8 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
             LoadSceneMode.Single);
     }
 
-    // The callback function triggered when the scene is finished loading
-    // Here we set up what to do on each scene and change the music
+    // This callback function gets triggered when a scene is finished loading
+    // Here we set up what to do for each scene, like changing the music
     private void OnLoadComplete(ulong clientId, string sceneName, LoadSceneMode loadSceneMode)
     {
         // We only care the host/server is loading because every manager handles
@@ -102,7 +100,7 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
         if (!ClientConnection.Instance.CanClientConnect(clientId))
             return;
 
-        // What to initially do on every scene.
+        // What to initially do on every scene when it finishes loading
         switch (m_sceneActive)
         {
             // When a client/host connects tell the manager
@@ -115,7 +113,8 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
                 GameplayManager.Instance.ServerSceneInit(clientId);
                 break;
 
-            // When a client/host connects tell the manager to create the player score ships and change the music
+            // When a client/host connects tell the manager to create the player score ships and
+            // play the right SFX
             case SceneName.Victory:
             case SceneName.Defeat:
                 EndGameManager.Instance.ServerSceneInit(clientId);

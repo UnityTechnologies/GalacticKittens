@@ -3,15 +3,15 @@ using Unity.Netcode;
 using UnityEngine;
 
 public class BossHealth : NetworkBehaviour, IDamagable
-{    
+{
+    public int Health => m_health.Value;
+
     [Header("Health is multiplied by BaseHealth for the number of clients")]
     [Min(1)]
     [SerializeField]
     private int m_baseHealth = 15;
     
     private readonly NetworkVariable<int> m_health = new NetworkVariable<int>();
-
-    public int Health => m_health.Value;
 
     [SerializeField]
     private SpriteRenderer[] m_sprites;
