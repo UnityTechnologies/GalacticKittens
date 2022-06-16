@@ -14,8 +14,6 @@ public class SpaceGhostEnemyBehavior : BaseEnemyBehavior
         if (IsServer)
             m_EnemyHealthPoints.OnValueChanged += OnEnemyHealthPointsChange;
 
-        m_EnemyMovementType = GetRandomEnemyMovementType();
-
         base.OnNetworkSpawn();
     }
 

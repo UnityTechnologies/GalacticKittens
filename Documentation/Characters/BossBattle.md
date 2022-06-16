@@ -1,5 +1,8 @@
 # Boss Battle
 
+The boss battle is the last challenge that players must face and defeat in other to come out victorious in Galactic Kittens.
+![](../Images/bossBattle.png)
+
 The boss is made of a state machine where every state defines either a pattern of attack, or the idle state. Every state is a script that inherits from the base class `BaseBossState`:
 
 `BaseBossState:` This script should be the parent for all the states created for the boss.It is a simple base class that has two methods for overriding RunState() forrunning the state and StopState() for stopping all the coroutines, the last is used only when changing to death state because it can happen when the boss is already in another state:
@@ -170,4 +173,3 @@ public class BossController : NetworkBehaviour
     ...
 }
 ```
-

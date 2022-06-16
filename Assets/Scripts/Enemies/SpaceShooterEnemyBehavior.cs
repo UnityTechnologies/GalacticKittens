@@ -11,7 +11,7 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
         new NetworkVariable<float>(2f, NetworkVariableReadPermission.Everyone);
 
     [SerializeField]
-    private AudioClip _shootClip;
+    private AudioClip m_shootClip;
 
     private float m_CurrentCooldownTime = 0f;
 
@@ -19,8 +19,6 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
     {
         if (IsServer)
             m_EnemyHealthPoints.OnValueChanged += OnEnemyHealthPointsChange;
-
-        m_EnemyMovementType = GetRandomEnemyMovementType();
 
         base.OnNetworkSpawn();
     }
@@ -73,13 +71,12 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
         }
 
         newEnemyLaser.transform.position = this.gameObject.transform.position;
-        
     }
 
     [ClientRpc]
     private void PlayShootAudioClientRpc()
     {
-        AudioManager.Instance.PlaySoundEffect(_shootClip);
+        AudioManager.Instance.PlaySoundEffect(m_shootClip);
     }
 
     private void OnTriggerEnter2D(Collider2D otherObject)
