@@ -4,7 +4,7 @@ using UnityEngine;
 public class SimpleMenuController : MonoBehaviour
 {    
     [SerializeField]
-    private Animator _menu;
+    private Animator m_menuAnimator;
 
     [SerializeField]
     private GameObject m_MenuContainer;
@@ -14,7 +14,7 @@ public class SimpleMenuController : MonoBehaviour
 
     public SimpleEnemySpawner m_SimpleEnemySpawner;
     
-    private bool _pressAnyKeyActive = true;
+    private bool m_pressAnyKeyActive = true;
 
     public void OnClickHost()
     {
@@ -51,26 +51,26 @@ public class SimpleMenuController : MonoBehaviour
     
     private void Update()
     {
-        if (_pressAnyKeyActive)
+        if (m_pressAnyKeyActive)
         {
             if (Input.anyKey)
             {
                 ToMenu();
-                _pressAnyKeyActive = false;
+                m_pressAnyKeyActive = false;
             }
         }
     }
 
     private void HideMenu()
     {
-        _menu.enabled = false;
+        m_menuAnimator.enabled = false;
         m_MenuContainer.SetActive(false);
         m_Logo.SetActive(false);
     }
 
     private void ToMenu()
     {        
-        _menu.SetTrigger("enter_menu");
+        m_menuAnimator.SetTrigger("enter_menu");
     }
 
     private void EnableSimpleEnemySpawner()
