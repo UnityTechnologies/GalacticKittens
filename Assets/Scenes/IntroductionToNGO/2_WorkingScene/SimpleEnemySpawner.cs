@@ -1,15 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 public class SimpleEnemySpawner : NetworkBehaviour
 {
     public GameObject spaceGhostEnemyPrefabToSpawn;
+
     public GameObject spaceShooterEnemyPrefabToSpawn;
 
     [Header("Enemies")]
-    [SerializeField] 
+    [SerializeField]
     private float m_EnemySpawnTime = 1.8f;
 
     [Header("Meteors")]
@@ -21,6 +20,7 @@ public class SimpleEnemySpawner : NetworkBehaviour
 
     private Vector3 m_CurrentNewEnemyPosition = new Vector3();
     private float m_CurrentEnemySpawnTime = 0f;
+
     private Vector3 m_CurrentNewMeteorPosition = new Vector3();
     private float m_CurrentMeteorSpawnTime = 0f;
 
