@@ -18,14 +18,14 @@ Galactic Kittens is a 2D co-op space adventure sample game where players must bl
 ---------------
 ## **Setup**
 
-You can quickly test this game sample by following the [setup instructions](Documentation/SetupInstructions.md) document.
+You can quickly test this game sample by following the [setup instructions](https://github.com/UnityTechnologies/GalacticKittens/wiki/Setup-Instructions) wiki page.
 
 
 ---------------
 ## **Project Structure**
 Galactic Kittens has 7 main scenes that show each step in the game flow of the samples, and we use different managers to handle major game components (connection management, scene transition, audio, etc.).
 
-For a detailed overview of the project's structure please check out the [Project Structure](Documentation/ProjectStructure.md) document.
+For a detailed overview of the project's structure please check out the [Galactic Kittens wiki](https://github.com/UnityTechnologies/GalacticKittens/wiki).
 <br>
 
 ---------------
