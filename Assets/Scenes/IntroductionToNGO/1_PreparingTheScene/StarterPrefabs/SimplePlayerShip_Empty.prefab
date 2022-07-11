@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 3978557816035460912}
   - component: {fileID: 1684946712877303145}
   - component: {fileID: 1981932153629498484}
+  - component: {fileID: -6393526127827161912}
+  - component: {fileID: -5302563205349514511}
   m_Layer: 7
   m_Name: SimplePlayerShip_Empty
   m_TagString: Player
@@ -29,6 +31,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1104227356267911013}
   - {fileID: 4449351954685944054}
@@ -180,6 +183,52 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-6393526127827161912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084804095329500508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a9a9ff2dd945824d800933f3a93d90e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_moveType: 1
+  m_verticalLimits:
+    minLimit: -5
+    maxLimit: 5
+  m_hortizontalLimits:
+    minLimit: -8
+    maxLimit: 8
+  m_shipRenderer: {fileID: 2267680677488502791}
+  m_normalSprite: {fileID: 21300000, guid: bccc3a49e6ce9f449a454cb0c3521dc4, type: 3}
+  m_upSprite: {fileID: 21300000, guid: d990a526815f0b136a7840469d8e7027, type: 3}
+  m_downSprite: {fileID: 21300000, guid: 5e113a0ccd42d067c82a2763bf5ce7b7, type: 3}
+  m_speed: 10
+--- !u!114 &-5302563205349514511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084804095329500508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 825e1532d3f103143bdd29964ae4cbc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DoesTakeDamage: 0
+  health:
+    m_InternalValue: 10
+  m_maxSpecialPower: 2
+  m_defenseShield: {fileID: 2653629122577882071}
+  m_explosionVfxPrefab: {fileID: 891729954413761739, guid: 57043e97584ceda4a951bca5a5216bd1, type: 3}
+  m_hitEffectDuration: 0.2
+  m_hitClip: {fileID: 8300000, guid: a6863a3e6babcfe44ab0470a2325153b, type: 3}
+  m_shieldClip: {fileID: 8300000, guid: f20db210d68a13c4cbe5b8194b58c79d, type: 3}
+  m_shipRenderer: {fileID: 2267680677488502791}
 --- !u!1 &2653629122577882071
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,6 +258,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1084804095329500496}
   m_RootOrder: 1
@@ -224,6 +274,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -329,6 +380,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1084804095329500496}
   m_RootOrder: 3
@@ -344,6 +396,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -506,6 +559,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1084804095329500496}
   m_RootOrder: 0
