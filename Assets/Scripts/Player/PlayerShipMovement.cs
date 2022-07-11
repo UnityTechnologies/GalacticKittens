@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using Unity.Netcode;
 
-[RequireComponent(typeof(NetworkObject))]
 public class PlayerShipMovement : NetworkBehaviour
 {
     enum MoveType
