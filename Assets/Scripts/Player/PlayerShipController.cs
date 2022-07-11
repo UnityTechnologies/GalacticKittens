@@ -2,7 +2,6 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-[RequireComponent(typeof(NetworkObject))]
 public class PlayerShipController : NetworkBehaviour, IDamagable
 {
     public bool DoesTakeDamage = true;
