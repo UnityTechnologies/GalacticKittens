@@ -186,49 +186,13 @@ public class PlayerShipMovement : NetworkBehaviour
     // Check the limits of the player and adjust the input
     private void AdjustInputValuesBasedOnPositionLimits()
     {
-        AdjustXinput();
-
-        AdjustYinput();
-    }
-
-    private void AdjustXinput()
-    {
-        if (transform.position.x <= m_hortizontalLimits.minLimit)
-        {
-            // Check if the inputs goes on that direction -> horizontal min is negative
-            if (Mathf.Approximately(Mathf.Sign(m_inputX), -1f))
-            {
-                m_inputX = 0f;
-            }
-        }
-        else if (transform.position.x >= m_hortizontalLimits.maxLimit)
-        {
-            // Check if the inputs goes on that direction -> horizontal max is positive
-            if (Mathf.Approximately(Mathf.Sign(m_inputX), 1f))
-            {
-                m_inputX = 0f;
-            }
-        }
-    }
-
-    private void AdjustYinput()
-    {
-        if (transform.position.y <= m_verticalLimits.minLimit)
-        {
-            // Check if the inputs goes on that direction -> vertical min is negative
-            if (Mathf.Approximately(Mathf.Sign(m_inputY), -1f))
-            {
-                m_inputY = 0f;
-            }
-        }
-        else if (transform.position.y >= m_verticalLimits.maxLimit)
-        {
-            // Check if the inputs goes on that direction -> vertical max is positive
-            if (Mathf.Approximately(Mathf.Sign(m_inputY), 1f))
-            {
-                m_inputY = 0f;
-            }
-        }
+        PlayerMovementInputLimitAdjuster.AdjustInputValuesBasedOnPositionLimits(
+            transform.position,
+            ref m_inputX,
+            ref m_inputY,
+            m_hortizontalLimits,
+            m_verticalLimits
+        );
     }
 
     private void MovePlayerShip()
