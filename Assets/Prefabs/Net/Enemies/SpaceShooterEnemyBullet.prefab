@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4686488592954146570}
   - component: {fileID: 3947887347139645043}
   - component: {fileID: 467437988432744427}
+  - component: {fileID: 1174748552891835062}
   m_Layer: 6
   m_Name: SpaceShooterEnemyBullet
   m_TagString: Enemy
@@ -34,6 +35,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -93,9 +95,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  characterData: {fileID: 0}
   m_speed: 12
   m_owner: 0
-  characterData: {fileID: 0}
 --- !u!70 &3108039366544907229
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -144,6 +146,7 @@ SpriteRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -209,3 +212,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_autoDestroyTime: 6
+--- !u!114 &1174748552891835062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411154881606408662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06e52348f5f81489c88e7ade189f5deb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: {x: -1, y: 0, z: 0}
+  speed: 12
