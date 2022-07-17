@@ -55,8 +55,6 @@ public class Meteor : NetworkBehaviour, IDamagable
             return;
 
         m_meteorSprite.transform.Rotate(Vector3.forward * m_rotationSpeed * Time.deltaTime);
-
-        transform.Translate(Vector3.left * m_speed * Time.deltaTime, Space.Self);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

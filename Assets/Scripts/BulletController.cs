@@ -31,14 +31,6 @@ public class BulletController : NetworkBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (IsServer)
-        {
-            transform.Translate(direction * m_speed * Time.deltaTime);
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (!IsServer)
