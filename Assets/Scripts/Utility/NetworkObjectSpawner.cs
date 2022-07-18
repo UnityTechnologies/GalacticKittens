@@ -75,8 +75,7 @@ public class NetworkObjectSpawner
         GameObject newGameObject = Object.Instantiate(prefab, position, Quaternion.identity);
 
         NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
-        newGameObjectNetworkObject.Spawn(destroyWithScene);
-        newGameObjectNetworkObject.ChangeOwnership(newClientOwnerId);
+        newGameObjectNetworkObject.SpawnWithOwnership(newClientOwnerId, destroyWithScene);
 
         return newGameObject;
     }
