@@ -4,9 +4,7 @@ using System;
 public enum ButtonActions : byte
 {
     lobby_ready,
-    lobby_not_ready,
-    exit_to_menu,
-    continuar,
+    lobby_not_ready
 }
 
 /*
