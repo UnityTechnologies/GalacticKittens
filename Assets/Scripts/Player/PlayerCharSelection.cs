@@ -234,7 +234,6 @@ public class PlayerCharSelection : NetworkBehaviour
 
     public void Despawn()
     {
-        if(NetworkObject != null && IsSpawned)
-            NetworkObject.Despawn();
+        NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
     }
 }

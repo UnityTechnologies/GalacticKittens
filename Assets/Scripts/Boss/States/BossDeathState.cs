@@ -74,17 +74,11 @@ public class BossDeathState : BaseBossState
         yield return new WaitForEndOfFrame();
         GameplayManager.Instance.BossDefeat();
 
-        Despawn();
+        NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
     }
 
     public override void RunState()
     {
         StartCoroutine(RunDeath());
-    }
-
-    private void Despawn()
-    {
-        if (NetworkObject != null && NetworkObject.IsSpawned)
-            NetworkObject.Despawn();
     }
 }

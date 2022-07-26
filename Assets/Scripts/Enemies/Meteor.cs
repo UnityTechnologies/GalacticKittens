@@ -6,13 +6,7 @@ public class Meteor : NetworkBehaviour, IDamagable
 {
     [SerializeField]
     private int m_damage = 1;
-
-    [SerializeField]
-    private float m_speed = 5f;
-
-    [SerializeField]
-    private float m_rotationSpeed = 90f;
-
+    
     [SerializeField]
     private int m_health = 1;
 
@@ -26,7 +20,7 @@ public class Meteor : NetworkBehaviour, IDamagable
     private GameObject m_meteorSprite;
 
     [SerializeField]
-    SpriteRenderer m_spriteRenderer;
+    private SpriteRenderer m_spriteRenderer;
 
     [SerializeField]
     float m_hitEffectDuration = 0.2f;
@@ -47,14 +41,6 @@ public class Meteor : NetworkBehaviour, IDamagable
         // Randomly scale the meteor
         float randomScale = Random.Range(m_scaleMin, m_scaleMax);
         transform.localScale = new Vector3(randomScale, randomScale, 1f);
-    }
-
-    private void Update()
-    {
-        if (!IsServer)
-            return;
-
-        m_meteorSprite.transform.Rotate(Vector3.forward * m_rotationSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -97,16 +83,10 @@ public class Meteor : NetworkBehaviour, IDamagable
             PowerUpSpawnController.instance.OnPowerUpSpawn(transform.position);
             NetworkObjectSpawner.SpawnNewNetworkObject(m_vfxExplosion, transform.position);
 
-            Despawn();
+            NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
         }
 
         StopCoroutine(HitEffect());
         StartCoroutine(HitEffect());
-    }
-
-    private void Despawn()
-    {
-        if (NetworkObject != null && NetworkObject.IsSpawned)
-            NetworkObject.Despawn();
     }
 }

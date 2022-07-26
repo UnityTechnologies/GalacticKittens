@@ -108,11 +108,7 @@ public class BaseEnemyBehavior : NetworkBehaviour, IDamagable
     {
         gameObject.SetActive(false);
 
-        // Server tells clients that this object is no longer in play
-        if (NetworkObject != null && NetworkObject.IsSpawned) // <-- safety check
-            NetworkObject.Despawn();
-
-        Destroy(gameObject);
+        NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
     }
 
 

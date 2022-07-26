@@ -27,7 +27,7 @@ public class PowerUpSpawnController : MonoBehaviour
         if (listOfPowerUps == null || listOfPowerUps.Length == 0)
             return;
 
-        int randomPick = Random.Range(0, 100);
+        int randomPick = Random.Range(1, 100);
         if (randomPick <= probabilityOfPowerUpSpawn)
         {
             var nextPowerUpToSpawn = GetRandomPowerUp();

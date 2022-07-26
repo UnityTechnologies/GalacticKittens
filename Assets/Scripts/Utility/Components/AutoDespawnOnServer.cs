@@ -18,19 +18,13 @@ public class AutoDespawnOnServer : NetworkBehaviour
 
         if(m_autoDestroyTime <= 0f)
         {
-            Despawn();
+            NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
         }
-    }
-
-    private void Despawn()
-    {
-        if (NetworkObject.IsSpawned)
-            NetworkObject.Despawn();
     }
 
     public override void OnNetworkSpawn()
     {
-        // we only will Despawn on the server, so no need to have this active on client-side
+        // we only will De-spawn on the server, so no need to have this active on client-side
         if (!IsServer)
             enabled = false;
     }

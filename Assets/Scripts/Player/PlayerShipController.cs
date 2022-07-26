@@ -141,23 +141,24 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (IsServer)
+        if (!IsServer)
+            return;
+        
+        // If the collider hit a power-up
+        if (collider.gameObject.CompareTag("PowerUpSpecial"))
         {
-            // If the collider hit a power-up
-            if (collider.TryGetComponent(out PowerUpSpecial powerUp))
+            // Check if I have space to take the special
+            if (m_specials.Value < m_maxSpecialPower)
             {
-                // Check if I have space to take the special
-                if (m_specials.Value < m_maxSpecialPower)
-                {
-                    // Update var
-                    m_specials.Value++;
+                // Update var
+                m_specials.Value++;
 
-                    // Update UI
-                    playerUI.UpdatePowerUp(m_specials.Value, true);
+                // Update UI
+                playerUI.UpdatePowerUp(m_specials.Value, true);
 
-                    // Remove the power-up
-                    powerUp.Despawn();
-                }
+                // Remove the power-up
+                NetworkObjectDespawner.DespawnNetworkObject(
+                    collider.gameObject.GetComponent<NetworkObject>());
             }
         }
     }
@@ -202,10 +203,8 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
 
             // Tell the Gameplay manager that I've been defeated
             gameplayManager.PlayerDeath(m_characterData.clientId);
-
-            // Safety check
-            if (NetworkObject != null && NetworkObject.IsSpawned)
-                NetworkObject.Despawn();
+            
+            NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
         }
     }
 

@@ -14,12 +14,16 @@ public class TrioBullet : NetworkBehaviour
         // Spawn the bullets
         foreach (Transform firePosition in _firePositions)
         {
-            GameObject go = Instantiate(_smallBulletPrefab, firePosition.position, firePosition.rotation);
-            go.GetComponent<NetworkObject>().Spawn();
+            GameObject newBullet = Instantiate(
+                _smallBulletPrefab,
+                firePosition.position,
+                firePosition.rotation);
+            
+            newBullet.GetComponent<NetworkObject>().Spawn();
         }
 
-        // Despawn me
-        NetworkObject.Despawn();
+        // De-spawn me
+        NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
     }
 
     public override void OnNetworkSpawn()
