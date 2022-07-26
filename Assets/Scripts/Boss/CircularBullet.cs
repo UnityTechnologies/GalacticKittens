@@ -4,21 +4,10 @@ using UnityEngine;
 public class CircularBullet : NetworkBehaviour
 {
     [SerializeField]
-    private float _speed = 3f;
-
-    [SerializeField]
     private GameObject _smallBulletPrefab;
 
     [SerializeField]
     private Transform[] _firePositions;
-
-    private void Update()
-    {
-        if (!IsServer)
-            return;
-
-        transform.Translate(Vector3.left * _speed * Time.deltaTime);
-    }
 
     private void SpawnBullets()
     {
@@ -33,8 +22,8 @@ public class CircularBullet : NetworkBehaviour
             go.GetComponent<NetworkObject>().Spawn();
         }
 
-        // Despawn me
-        NetworkObject.Despawn();
+        // De-spawn me
+        NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
     }
 
     public override void OnNetworkSpawn()

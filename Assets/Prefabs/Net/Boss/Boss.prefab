@@ -480,8 +480,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9842317c2f3b9cab5850afcacfb1d12c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_misileSpawningArea: []
-  m_misilePrefab: {fileID: 0}
+  m_misileSpawningArea:
+  - {fileID: 1545438727913685152}
+  m_misilePrefab: {fileID: 7446514033910554141, guid: 7718440e32922dc42b59ab42f2ebe5ae, type: 3}
   m_misileDelayBetweenSpawns: 0
 --- !u!114 &8961208106210861817
 MonoBehaviour:

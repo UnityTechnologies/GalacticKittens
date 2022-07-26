@@ -8,9 +8,6 @@ public class Meteor : NetworkBehaviour, IDamagable
     private int m_damage = 1;
     
     [SerializeField]
-    private float m_rotationSpeed = 90f;
-
-    [SerializeField]
     private int m_health = 1;
 
     [SerializeField]
@@ -44,14 +41,6 @@ public class Meteor : NetworkBehaviour, IDamagable
         // Randomly scale the meteor
         float randomScale = Random.Range(m_scaleMin, m_scaleMax);
         transform.localScale = new Vector3(randomScale, randomScale, 1f);
-    }
-
-    private void Update()
-    {
-        if (!IsServer)
-            return;
-
-        m_meteorSprite.transform.Rotate(Vector3.forward * m_rotationSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
