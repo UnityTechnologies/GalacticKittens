@@ -11,9 +11,6 @@ public class BulletController : NetworkBehaviour
 
     public int damage = 1;
 
-    [HideInInspector]
-    public CharacterDataSO characterData;
-    
     [SerializeField]
     private BulletOwner m_owner;
 
