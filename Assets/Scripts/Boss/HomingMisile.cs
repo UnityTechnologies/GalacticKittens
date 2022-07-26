@@ -86,14 +86,10 @@ public class HomingMisile : NetworkBehaviour
             {
                 collider.GetComponent<IDamagable>().Hit(m_damage);
                 StopAllCoroutines();
-                Despawn();
+                
+                NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
             }
         }
-    }
-
-    private void Despawn()
-    {
-        NetworkObject.Despawn();
     }
 
     public override void OnNetworkSpawn()

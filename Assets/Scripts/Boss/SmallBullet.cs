@@ -21,14 +21,7 @@ public class SmallBullet : NetworkBehaviour
         {
             damagable.Hit(m_damage);
 
-            Despawn();
+            NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
         }
     }
-
-    private void Despawn()
-    {
-        if(NetworkObject != null && NetworkObject.IsSpawned)
-            NetworkObject.Despawn();
-    }
-
 }

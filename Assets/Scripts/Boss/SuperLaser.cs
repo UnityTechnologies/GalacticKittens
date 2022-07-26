@@ -27,7 +27,7 @@ public class SuperLaser : NetworkBehaviour
 
         yield return new WaitForSeconds(_animatorController.GetCurrentAnimatorStateInfo(0).length);
 
-        Despawn();
+        NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
 
     }
 
@@ -46,11 +46,6 @@ public class SuperLaser : NetworkBehaviour
                 collider.GetComponent<PlayerShipController>().Hit(_damage);
             }
         }
-    }
-
-    private void Despawn()
-    {
-        NetworkObject.Despawn();
     }
 
     public override void OnNetworkSpawn()

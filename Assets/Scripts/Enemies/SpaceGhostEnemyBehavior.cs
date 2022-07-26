@@ -65,7 +65,6 @@ public class SpaceGhostEnemyBehavior : BaseEnemyBehavior
         if (spacheshipController != null)
         {
             // tell the spaceship that it's taken damage
-            // Debug.Log($"Spaceship hit!\n client ID:{spacheshipController.NetworkObject.OwnerClientId}");
             spacheshipController.Hit(1);
 
             // enemy explodes when it collides with the a player's ship

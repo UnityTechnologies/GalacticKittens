@@ -8,10 +8,10 @@ public static class NetworkObjectDespawner
 #if UNITY_EDITOR
         if (!NetworkManager.Singleton.IsServer)
         {
-            Debug.LogError("ERROR: Despawning not happening in the server!");
+            Debug.LogError("ERROR: De-spawning not happening in the server!");
         }
 #endif
-        
+        // Safety check
         if (networkObject != null && networkObject.IsSpawned)
             networkObject.Despawn();
     }
