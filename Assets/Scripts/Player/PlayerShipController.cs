@@ -155,10 +155,8 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
                 m_explosionVfxPrefab,
                 transform.position,
                 Quaternion.identity);
-
-            // Safety check
-            if (NetworkObject != null && NetworkObject.IsSpawned)
-                NetworkObject.Despawn();
+            
+            NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
         }
     }
 

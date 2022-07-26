@@ -67,7 +67,6 @@ public class SpaceShooterEnemyBehavior : BaseEnemyBehavior
         if (bulletController != null)
         {
             bulletController.m_Owner = gameObject;
-            bulletController.direction = Vector2.left;
         }
 
         newEnemyLaser.transform.position = this.gameObject.transform.position;

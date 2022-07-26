@@ -7,7 +7,7 @@ public class MoveNetworkObjectLinearlyInOneDirection : NetworkBehaviour
 
     public float speed = 2f;
 
-    void Update()
+    private void Update()
     {
         if(!IsServer)
             return;

@@ -9,6 +9,8 @@ TagManager:
   - PowerUpSpecial
   - DefenseMatrix
   - Enemy
+  - EnemyDespawner
+  - PlayerBulletDespawner
   layers:
   - Default
   - TransparentFX

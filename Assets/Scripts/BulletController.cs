@@ -11,14 +11,11 @@ public class BulletController : NetworkBehaviour
 
     public int damage = 1;
 
-    [SerializeField]
-    private float m_speed = 12f;
-
+    [HideInInspector]
+    public CharacterDataSO characterData;
+    
     [SerializeField]
     private BulletOwner m_owner;
-
-    [HideInInspector]
-    public Vector3 direction { get; set; } = Vector3.right;
 
     [HideInInspector]
     public GameObject m_Owner { get; set; } = null;
@@ -39,8 +36,8 @@ public class BulletController : NetworkBehaviour
         if (collider.TryGetComponent(out IDamagable damagable))
         {
             damagable.Hit(damage);
-
-            Despawn();
+            
+            NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
         }
     }
 
@@ -48,11 +45,5 @@ public class BulletController : NetworkBehaviour
     private void ChangeBulletColorClientRpc(Color newColor)
     {
         GetComponent<SpriteRenderer>().color = newColor;
-    }
-
-    private void Despawn()
-    {
-        if(NetworkObject != null && NetworkObject.IsSpawned)
-            NetworkObject.Despawn();
     }
 }
