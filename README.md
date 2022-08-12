@@ -2,7 +2,7 @@
 ![titleBanner](https://user-images.githubusercontent.com/50964911/176073379-f84cdd78-625e-4790-85a6-4634cf549997.png)
 
 
-Galactic Kittens is a 2D co-op space adventure sample game where players must blast off to space and defeat all of the possible enemies in a small time range. This project was made using Netcode for Game Objects, our proprietary networking library, and is designed to help you learn how to apply and synchronize sprite animations, particle effects, and basic 2D movement of GameObjects.
+Galactic Kittens is a 2D co-op space adventure sample game where players must blast off to space and defeat all of the possible enemies in a small time range. This project was made using Netcode for Game Objects, our networking library. Although this is a complete game sample, it's not meant to be of high professional or production quality. It's designed to help you learn how to apply and synchronize sprite animations, particle effects, basic 2D movement of GameObjects, synchronize UI status, and more!
 <br>
 <br>
 
