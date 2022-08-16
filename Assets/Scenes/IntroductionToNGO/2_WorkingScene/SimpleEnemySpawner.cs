@@ -12,7 +12,7 @@ public class SimpleEnemySpawner : NetworkBehaviour
     private float m_EnemySpawnTime = 1.8f;
 
     [Header("Meteors")]
-    [SerializeField] 
+    [SerializeField]
     private GameObject m_meteorPrefab;
 
     [SerializeField]
