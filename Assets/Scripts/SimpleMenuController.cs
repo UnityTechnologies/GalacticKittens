@@ -11,8 +11,6 @@ public class SimpleMenuController : MonoBehaviour
 
     [SerializeField]
     private GameObject m_Logo;
-
-    public SimpleEnemySpawner m_SimpleEnemySpawner;
     
     private bool m_pressAnyKeyActive = true;
 
@@ -26,8 +24,6 @@ public class SimpleMenuController : MonoBehaviour
 
         NetworkManager.Singleton.StartHost();
         HideMenu();
-        
-        EnableSimpleEnemySpawner();
     }
 
     public void OnClickJoin()
@@ -40,8 +36,6 @@ public class SimpleMenuController : MonoBehaviour
 
         NetworkManager.Singleton.StartClient();
         HideMenu();
-
-        EnableSimpleEnemySpawner();
     }
 
     public void OnClickQuit()
@@ -71,13 +65,5 @@ public class SimpleMenuController : MonoBehaviour
     private void ToMenu()
     {        
         m_menuAnimator.SetTrigger("enter_menu");
-    }
-
-    private void EnableSimpleEnemySpawner()
-    {
-        if (m_SimpleEnemySpawner != null)
-        {
-            m_SimpleEnemySpawner.gameObject.SetActive(true);
-        }
     }
 }
