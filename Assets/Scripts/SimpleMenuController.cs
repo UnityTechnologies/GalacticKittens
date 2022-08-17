@@ -21,8 +21,8 @@ public class SimpleMenuController : MonoBehaviour
             Debug.Log("No Network manager present, cannot start as host");
             return;
         }
-
         NetworkManager.Singleton.StartHost();
+
         HideMenu();
     }
 
@@ -33,8 +33,8 @@ public class SimpleMenuController : MonoBehaviour
             Debug.Log("No Network manager present, cannot start as client");
             return;
         }
-
         NetworkManager.Singleton.StartClient();
+
         HideMenu();
     }
 
@@ -50,6 +50,7 @@ public class SimpleMenuController : MonoBehaviour
             if (Input.anyKey)
             {
                 ToMenu();
+
                 m_pressAnyKeyActive = false;
             }
         }
