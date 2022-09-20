@@ -9,10 +9,10 @@ public class DefenseMatrix : NetworkBehaviour, IDamagable
 
     private void Update()
     {
-        if (IsServer)
-        {
-            transform.Rotate(Vector3.forward * m_rotationSpeed * Time.deltaTime);
-        }
+        //if (IsServer)
+        //{
+        //    transform.Rotate(Vector3.forward * m_rotationSpeed * Time.deltaTime);
+        //}
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
