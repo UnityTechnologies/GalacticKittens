@@ -33,7 +33,7 @@ For a detailed overview of the project's structure please check out the *Galacti
 ## **Additional Resources**
 * If you're entirely new to Netcode for GameObjects, we do recommend that you first go over our [documentation](https://docs-multiplayer.unity3d.com/), and follow along with the "Hello World" [tutorial.](https://docs-multiplayer.unity3d.com/netcode/current/tutorials/helloworld)
 
-* For further discussion points and to connect with the team, join us on the Unity Multiplayer Networking Discord Server, on the `#dev-samples` channel.
+* For further discussion points and to connect with the team, join us on the Unity Multiplayer Networking Discord Server, on the `#samples` channel located in the `EDUCATION` section.
 
 [![Discord](https://img.shields.io/discord/449263083769036810.svg?label=discord&logo=discord&color=informational)](https://discord.gg/FM8SE9E)
 
