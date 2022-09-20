@@ -14,7 +14,7 @@ Galactic Kittens is a 2D co-op space adventure sample game where players must bl
 ---------------
 ## **Services Implemented:**
   * [Netcode for GameObjects](https://unity.com/products/netcode) :
-    >We use this library to synhchronize GameObject and game state data across all clients that connect in a networking session.
+    >This library is used to synchronize GameObject and game state data across all clients that connect in a networking session.
 
 ---------------
 ## **Setup**
@@ -24,14 +24,14 @@ You can quickly test this game sample by following the [setup instructions](http
 
 ---------------
 ## **Project Structure**
-Galactic Kittens has 7 main scenes that show each step in the game flow of the samples, and we use different managers to handle major game components (connection management, scene transition, audio, etc.).
+Galactic Kittens has seven main scenes that show each step in the game flow of the samples, and uses different managers to handle major game components (connection management, scene transition, audio, etc.).
 
-For a detailed overview of the project's structure please check out the [Galactic Kittens wiki](https://github.com/UnityTechnologies/GalacticKittens/wiki).
+For a detailed overview of the project's structure please check out the *Galactic Kittens* [developer guide](https://github.com/UnityTechnologies/GalacticKittens/wiki).
 <br>
 
 ---------------
 ## **Additional Resources**
-* If you're entirely new to Netcode for GameObjects, we do recommend that you first go over our [documentation](https://docs-multiplayer.unity3d.com/), and follow along the "Hello World" [tutorial.](https://docs-multiplayer.unity3d.com/netcode/current/tutorials/helloworld)
+* If you're entirely new to Netcode for GameObjects, we do recommend that you first go over our [documentation](https://docs-multiplayer.unity3d.com/), and follow along with the "Hello World" [tutorial.](https://docs-multiplayer.unity3d.com/netcode/current/tutorials/helloworld)
 
 * For further discussion points and to connect with the team, join us on the Unity Multiplayer Networking Discord Server, on the `#dev-samples` channel.
 
