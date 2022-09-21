@@ -15,6 +15,19 @@ public class DefenseMatrix : NetworkBehaviour, IDamagable
         m_circleCollider2D = gameObject.GetComponent<CircleCollider2D>();
     }
 
+    public void Hit(int damage)
+    {
+        TurnOffMatrixClientRpc();
+    }
+
+    public void TurnOnShield()
+    {
+        isShieldActive = true;
+
+        m_spriteRenderer.enabled = true;
+        m_circleCollider2D.enabled = true;
+    }
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (!IsServer)
@@ -25,11 +38,6 @@ public class DefenseMatrix : NetworkBehaviour, IDamagable
             damagable.Hit(1);
             TurnOffMatrixClientRpc();
         }
-    }
-
-    public void Hit(int damage)
-    {
-        TurnOffMatrixClientRpc();
     }
 
     [ClientRpc]
