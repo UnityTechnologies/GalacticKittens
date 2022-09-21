@@ -39,7 +39,13 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
             return;
 
         OnPlayerDefeated -= PlayerDeath;
-        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnect;
+
+        // Since the NetworkManager could potentially be destroyed before this component, only
+        // remove the subscriptions if that singleton still exists.
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnect;
+        }
     }
 
     public void PlayerDeath(ulong clientId)

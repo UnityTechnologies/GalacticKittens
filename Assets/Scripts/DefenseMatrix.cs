@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class DefenseMatrix : NetworkBehaviour, IDamagable
 {
-    [SerializeField]
-    private float m_rotationSpeed;
+    public bool isShieldActive { get; private set; } = false;
 
-    private void Update()
+    private SpriteRenderer m_spriteRenderer;
+    private CircleCollider2D m_circleCollider2D;
+
+    private void Start()
     {
-        //if (IsServer)
-        //{
-        //    transform.Rotate(Vector3.forward * m_rotationSpeed * Time.deltaTime);
-        //}
+        m_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        m_circleCollider2D = gameObject.GetComponent<CircleCollider2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (IsServer)
+        if (!IsServer)
+            return;
+
+        if (collider.TryGetComponent(out IDamagable damagable))
         {
-            if (collider.TryGetComponent(out IDamagable damagable))
-            {
-                damagable.Hit(1);
-                TurnOffMatrixClientRpc();
-            }
+            damagable.Hit(1);
+            TurnOffMatrixClientRpc();
         }
     }
 
@@ -35,7 +35,10 @@ public class DefenseMatrix : NetworkBehaviour, IDamagable
     [ClientRpc]
     private void TurnOffMatrixClientRpc()
     {
-        gameObject.SetActive(false);
+        isShieldActive = false;
+
+        m_spriteRenderer.enabled = false;
+        m_circleCollider2D.enabled = false;
     }
 
     IEnumerator IDamagable.HitEffect()
