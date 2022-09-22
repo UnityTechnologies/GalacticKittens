@@ -4,27 +4,15 @@ using UnityEngine;
 
 public class DefenseMatrix : NetworkBehaviour, IDamagable
 {
-    [SerializeField]
-    private float m_rotationSpeed;
+    public bool isShieldActive { get; private set; } = false;
 
-    private void Update()
-    {
-        if (IsServer)
-        {
-            transform.Rotate(Vector3.forward * m_rotationSpeed * Time.deltaTime);
-        }
-    }
+    private SpriteRenderer m_spriteRenderer;
+    private CircleCollider2D m_circleCollider2D;
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void Start()
     {
-        if (IsServer)
-        {
-            if (collider.TryGetComponent(out IDamagable damagable))
-            {
-                damagable.Hit(1);
-                TurnOffMatrixClientRpc();
-            }
-        }
+        m_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        m_circleCollider2D = gameObject.GetComponent<CircleCollider2D>();
     }
 
     public void Hit(int damage)
@@ -32,10 +20,33 @@ public class DefenseMatrix : NetworkBehaviour, IDamagable
         TurnOffMatrixClientRpc();
     }
 
+    public void TurnOnShield()
+    {
+        isShieldActive = true;
+
+        m_spriteRenderer.enabled = true;
+        m_circleCollider2D.enabled = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (!IsServer)
+            return;
+
+        if (collider.TryGetComponent(out IDamagable damagable))
+        {
+            damagable.Hit(1);
+            TurnOffMatrixClientRpc();
+        }
+    }
+
     [ClientRpc]
     private void TurnOffMatrixClientRpc()
     {
-        gameObject.SetActive(false);
+        isShieldActive = false;
+
+        m_spriteRenderer.enabled = false;
+        m_circleCollider2D.enabled = false;
     }
 
     IEnumerator IDamagable.HitEffect()

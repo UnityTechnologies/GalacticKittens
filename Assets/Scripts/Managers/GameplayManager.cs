@@ -26,18 +26,24 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
 
     private void OnEnable()
     {
-        if (IsServer)
-        {
-            OnPlayerDefeated += PlayerDeath;
-            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
-        }
+        if (!IsServer)
+            return;
+
+        OnPlayerDefeated += PlayerDeath;
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
     }
 
     private void OnDisable()
     {
-        if (IsServer)
+        if (!IsServer)
+            return;
+
+        OnPlayerDefeated -= PlayerDeath;
+
+        // Since the NetworkManager could potentially be destroyed before this component, only
+        // remove the subscriptions if that singleton still exists.
+        if (NetworkManager.Singleton != null)
         {
-            OnPlayerDefeated -= PlayerDeath;
             NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnect;
         }
     }
