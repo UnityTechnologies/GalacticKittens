@@ -10,7 +10,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     int m_maxSpecialPower;
 
     [SerializeField]
-    GameObject m_defenseShield;
+    DefenseMatrix m_defenseShield;
 
     [SerializeField]
     CharacterDataSO m_characterData;
@@ -52,7 +52,7 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     {
         if (IsOwner)
         {
-            if (!m_defenseShield.activeSelf &&
+            if (!m_defenseShield.isShieldActive &&
                 (Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.LeftShift)))
             {
                 // Tell the server to activate the shield
@@ -98,8 +98,9 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     [ClientRpc]
     void ActivateShieldClientRpc()
     {
-        // Activate the special
-        m_defenseShield.SetActive(true);
+        // Activate the shield
+        m_defenseShield.TurnOnShield();
+
         AudioManager.Instance?.PlaySoundEffect(m_shieldClip);
     }
 

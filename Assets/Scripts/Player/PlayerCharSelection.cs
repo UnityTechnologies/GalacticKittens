@@ -209,26 +209,26 @@ public class PlayerCharSelection : NetworkBehaviour
     // The arrows on the player are not meant to works as buttons
     private void OnUIButtonPress(ButtonActions buttonAction)
     {
-        if (IsOwner)
+        if (!IsOwner)
+            return;
+
+        switch (buttonAction)
         {
-            switch (buttonAction)
-            {
-                case ButtonActions.lobby_ready:
-                    CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(
-                        true,
-                        m_charSelected.Value);
+            case ButtonActions.lobby_ready:
+                CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(
+                    true,
+                    m_charSelected.Value);
 
-                    ReadyServerRpc();
-                    break;
+                ReadyServerRpc();
+                break;
 
-                case ButtonActions.lobby_not_ready:
-                    CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(
-                        false,
-                        m_charSelected.Value);
+            case ButtonActions.lobby_not_ready:
+                CharacterSelectionManager.Instance.SetPlayerReadyUIButtons(
+                    false,
+                    m_charSelected.Value);
 
-                    NotReadyServerRpc();
-                    break;
-            }
+                NotReadyServerRpc();
+                break;
         }
     }
 

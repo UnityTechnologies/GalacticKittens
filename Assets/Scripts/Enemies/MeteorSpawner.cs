@@ -13,14 +13,14 @@ public class MeteorSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (NetworkManager.Singleton.IsServer)
+        if (!NetworkManager.Singleton.IsServer)
+            return;
+
+        m_timer += Time.deltaTime;
+        if (m_timer > m_spawingTime)
         {
-            m_timer += Time.deltaTime;
-            if (m_timer > m_spawingTime)
-            {
-                m_timer = 0f;
-                SpawnMeteor();
-            }
+            m_timer = 0f;
+            SpawnMeteor();
         }
     }
 
@@ -28,7 +28,7 @@ public class MeteorSpawner : MonoBehaviour
     {
         // The min and max Y pos for spawning the meteors
         float randomYpos = Random.Range(-5f, 6f);
-        Vector3 newMeteorPosition = new Vector3(transform.position.x, randomYpos, 0f);
+        var newMeteorPosition = new Vector3(transform.position.x, randomYpos, 0f);
 
         NetworkObjectSpawner.SpawnNewNetworkObject(m_meteorPrefab, newMeteorPosition);
     }
