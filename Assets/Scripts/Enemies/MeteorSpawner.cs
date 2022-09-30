@@ -32,5 +32,4 @@ public class MeteorSpawner : MonoBehaviour
 
         NetworkObjectSpawner.SpawnNewNetworkObject(m_meteorPrefab, newMeteorPosition);
     }
-
 }
