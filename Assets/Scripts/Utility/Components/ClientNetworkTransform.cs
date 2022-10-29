@@ -11,6 +11,23 @@ namespace Unity.Netcode.Samples
     [DisallowMultipleComponent]
     public class ClientNetworkTransform : NetworkTransform
     {
+
+        public delegate void StateUpdatedDelegate(bool positionUpdated, bool rotationUpdated, bool scaleUpdated);
+        public StateUpdatedDelegate NonAuthoritativeTransformStasteUpdated;
+
+        protected override void OnNonAuthoritativeStateUpdated(bool positionUpdated, bool rotationUpdated, bool scaleUpdated)
+        {
+            NonAuthoritativeTransformStasteUpdated?.Invoke(positionUpdated, rotationUpdated, scaleUpdated);
+        }
+
+        public delegate void AuthoritativeStateUpdatedDelegate(bool positionUpdated, bool rotationUpdated, bool scaleUpdated);
+        public AuthoritativeStateUpdatedDelegate AuthoritativeStateCommitted;
+
+        protected override void OnAuthoritativeStateUpdated(bool positionUpdated, bool rotationUpdated, bool scaleUpdated)
+        {
+            AuthoritativeStateCommitted?.Invoke(positionUpdated, rotationUpdated, scaleUpdated);
+        }
+
         /// <summary>
         /// Used to determine who can write to this transform. Owner client only.
         /// This imposes state to the server. This is putting trust on your clients. Make sure no

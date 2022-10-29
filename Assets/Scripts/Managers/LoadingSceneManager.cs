@@ -71,8 +71,8 @@ public class LoadingSceneManager : SingletonPersistent<LoadingSceneManager>
         switch (sceneToLoad)
         {
             case SceneName.Menu:
-                if (AudioManager.Instance != null)
-                    AudioManager.Instance.PlayMusic(AudioManager.MusicName.intro);
+                //if (AudioManager.Instance != null)
+                //    AudioManager.Instance.PlayMusic(AudioManager.MusicName.intro);
                 break;
         }
     }

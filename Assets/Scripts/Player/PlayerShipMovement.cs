@@ -5,7 +5,7 @@ using Unity.Netcode;
 public class PlayerShipMovement : NetworkBehaviour
 {
     enum MoveType
-    { 
+    {
         constant,
         momentum
     }
@@ -68,7 +68,7 @@ public class PlayerShipMovement : NetworkBehaviour
 
         HandleKeyboardInput();
 
-        UpdateVerticalMovementSprite();
+        //UpdateVerticalMovementSprite();
 
         AdjustInputValuesBasedOnPositionLimits();
 
@@ -205,5 +205,60 @@ public class PlayerShipMovement : NetworkBehaviour
 
         // move the ship
         transform.Translate(newXposition, newYposition, 0f);
+
+        var averageLatency = 0.0f;
+        if (IsServer)
+        {
+            foreach(var clientId in NetworkManager.ConnectedClientsIds)
+            {
+                averageLatency += NetworkManager.NetworkConfig.NetworkTransport.GetCurrentRtt(clientId);
+            }
+            if (NetworkManager.ConnectedClientsIds.Count > 0)
+            {
+                averageLatency = averageLatency / NetworkManager.ConnectedClientsIds.Count;
+            }
+        }
+        else
+        {
+            averageLatency = NetworkManager.NetworkConfig.NetworkTransport.GetCurrentRtt(NetworkManager.ServerClientId);
+        }
+        averageLatency = averageLatency / 1000;
+        averageLatency += m_TickFrequency;
+
+        if (m_PlayerShipShootBullet != null)
+        {
+            // Predict the shoot bullet position
+            m_PlayerShipShootBullet.m_PlayerCurrentMotion.x = m_inputY * m_speed * averageLatency;
+            m_PlayerShipShootBullet.m_PlayerCurrentMotion.y = m_inputY * m_speed * averageLatency;
+
+            //if (!IsServer)
+            //{
+            //    m_PlayerShipShootBullet.m_PlayerCurrentMotion.x = m_inputX * m_speed * m_HalfTickFrequency; //- Time.deltaTime);
+            //    m_PlayerShipShootBullet.m_PlayerCurrentMotion.y = m_inputY * m_speed * m_HalfTickFrequency; //- Time.deltaTime);;
+            //}
+            //else
+            //{
+            //    m_PlayerShipShootBullet.m_PlayerCurrentMotion.x = m_inputX * m_speed * (m_HalfTickFrequency - Time.deltaTime);
+            //    m_PlayerShipShootBullet.m_PlayerCurrentMotion.y = m_inputY * m_speed * (m_HalfTickFrequency - Time.deltaTime);
+            //}
+        }
+    }
+
+    private PlayerShipShootBullet m_PlayerShipShootBullet;
+
+    private float m_HalfTickFrequency;
+    private float m_TickFrequency;
+
+    public override void OnNetworkSpawn()
+    {
+        m_TickFrequency = (1.0f / NetworkManager.NetworkConfig.TickRate);
+        m_HalfTickFrequency = m_TickFrequency * 0.5f;
+
+        if (IsOwner)
+        {
+            m_PlayerShipShootBullet = GetComponent<PlayerShipShootBullet>();
+        }
+
+        base.OnNetworkSpawn();
     }
 }

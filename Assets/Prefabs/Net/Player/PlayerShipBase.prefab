@@ -261,7 +261,7 @@ MonoBehaviour:
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
   InLocalSpace: 0
-  Interpolate: 1
+  Interpolate: 0
 --- !u!82 &-5345985685899822454
 AudioSource:
   m_ObjectHideFlags: 0
@@ -269,12 +269,12 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3287878277684609727}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 6a85dd27337a8c143980dd2d3c1498be, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.166
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -458,6 +458,9 @@ MonoBehaviour:
   m_characterData: {fileID: 11400000, guid: 1e81f2a0a4a2a004ab20734a419a77c0, type: 2}
   m_shootVfx: {fileID: 7011346253425340032, guid: 3e6abb8b3230f5b40af22df2ceb7bf2a, type: 3}
   m_shootClip: {fileID: 8300000, guid: 13cf73b828d6d4a45b61b7c7b8d8397b, type: 3}
+  MaximumPreSpawnedBullets: 20
+  VisualOffset: {x: 0.35, y: 0, z: 0}
+  m_PlayerCurrentMotion: {x: 0, y: 0, z: 0}
 --- !u!1 &5202601799221992705
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,7 +485,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5202601799221992705}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.825, y: -0.338, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

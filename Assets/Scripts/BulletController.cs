@@ -13,12 +13,17 @@ public class BulletController : NetworkBehaviour
 
     [HideInInspector]
     public CharacterDataSO characterData;
-    
+
     [SerializeField]
     private BulletOwner m_owner;
 
     [HideInInspector]
     public GameObject m_Owner { get; set; } = null;
+
+    public GameObject ServerCollider;
+
+    private NetworkObject m_ServerColliderInstance;
+
 
     private void Start()
     {
@@ -28,10 +33,40 @@ public class BulletController : NetworkBehaviour
         }
     }
 
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer && ServerCollider != null)
+        {
+            var objectInstance = Instantiate(ServerCollider);
+            m_ServerColliderInstance = objectInstance.GetComponent<NetworkObject>();
+            m_ServerColliderInstance.Spawn();
+            m_ServerColliderInstance.TrySetParent(NetworkObject, false);
+        }
+        base.OnNetworkSpawn();
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        if (IsServer && m_ServerColliderInstance != null && m_ServerColliderInstance.IsSpawned)
+        {
+            m_ServerColliderInstance.Despawn();
+        }
+
+        base.OnNetworkDespawn();
+    }
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (!IsServer)
             return;
+    }
+
+    public void OnCollide(Collider2D collider)
+    {
+        if (!IsServer || !IsSpawned)
+        {
+            return;
+        }
 
         if (collider.TryGetComponent(out IDamagable damagable))
         {
@@ -42,9 +77,10 @@ public class BulletController : NetworkBehaviour
             }
 
             damagable.Hit(damage);
-            
+
             NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
         }
+
     }
 
     [ClientRpc]

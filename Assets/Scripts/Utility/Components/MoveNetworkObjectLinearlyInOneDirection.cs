@@ -9,7 +9,7 @@ public class MoveNetworkObjectLinearlyInOneDirection : NetworkBehaviour
 
     private void Update()
     {
-        if(!IsServer)
+        if(!IsOwner)
             return;
 
         transform.Translate(speed * Time.deltaTime * direction);

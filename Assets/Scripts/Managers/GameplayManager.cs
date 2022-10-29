@@ -168,10 +168,10 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
     // Because of that, if we create the ship when a player connects we could have a sync error
     // with the other clients because maybe the scene on the client is no yet loaded.
     // To fix this problem we wait until all clients call this method then we create the ships
-    // for every client connected 
+    // for every client connected
     public void ServerSceneInit(ulong clientId)
     {
-        // Save the clients 
+        // Save the clients
         m_connectedClients.Add(clientId);
 
         // Check if is the last client

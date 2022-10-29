@@ -95,12 +95,15 @@ GameObject:
   - component: {fileID: 4404811376452213669}
   - component: {fileID: 4404811376452213668}
   - component: {fileID: 2807495727638379403}
+  - component: {fileID: 417110664252912761}
   - component: {fileID: 8177041451475642574}
+  - component: {fileID: 7114171189914704288}
+  - component: {fileID: 311270683999568434}
   - component: {fileID: 617737366153100663}
   - component: {fileID: 3793832842772979226}
   - component: {fileID: 5094607398634281736}
   m_Layer: 7
-  m_Name: Bullet
+  m_Name: BulletBackup
   m_TagString: Bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,6 +167,18 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!114 &417110664252912761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4404811376452213675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8177041451475642574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,6 +195,43 @@ MonoBehaviour:
   characterData: {fileID: 0}
   m_owner: 1
   ServerCollider: {fileID: 4404811376452213675, guid: 432307f679038dd468ea6c719bd85ad6, type: 3}
+--- !u!70 &7114171189914704288
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4404811376452213675}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.59, y: 0}
+  m_Size: {x: 0.8, y: 0.2}
+  m_Direction: 1
+--- !u!50 &311270683999568434
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4404811376452213675}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!212 &617737366153100663
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -1677,7 +1677,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 51, y: -21}
+  m_AnchoredPosition: {x: 51, y: -21.00003}
   m_SizeDelta: {x: 884, y: 275}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &683186879
@@ -2653,6 +2653,10 @@ PrefabInstance:
     - target: {fileID: 337772052164782586, guid: 52f92f6fd3f222748b62adb742c71515, type: 3}
       propertyPath: m_Name
       value: EnemySpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 337772052164782586, guid: 52f92f6fd3f222748b62adb742c71515, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 337772052164782587, guid: 52f92f6fd3f222748b62adb742c71515, type: 3}
       propertyPath: GlobalObjectIdHash
