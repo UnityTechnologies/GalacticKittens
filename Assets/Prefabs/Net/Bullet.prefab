@@ -96,8 +96,8 @@ GameObject:
   - component: {fileID: 4404811376452213668}
   - component: {fileID: 130659997503718199}
   - component: {fileID: 8177041451475642574}
-  - component: {fileID: 7114171189914704288}
   - component: {fileID: 311270683999568434}
+  - component: {fileID: 7325187297317161119}
   - component: {fileID: 617737366153100663}
   - component: {fileID: 4577849880838723}
   - component: {fileID: 3793832842772979226}
@@ -158,7 +158,7 @@ MonoBehaviour:
   SyncPositionZ: 0
   SyncRotAngleX: 0
   SyncRotAngleY: 0
-  SyncRotAngleZ: 1
+  SyncRotAngleZ: 0
   SyncScaleX: 0
   SyncScaleY: 0
   SyncScaleZ: 0
@@ -181,24 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   characterData: {fileID: 0}
-  m_speed: 12
   m_owner: 1
---- !u!70 &7114171189914704288
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4404811376452213675}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.59, y: 0}
-  m_Size: {x: 0.8, y: 0.2}
-  m_Direction: 1
 --- !u!50 &311270683999568434
 Rigidbody2D:
   serializedVersion: 4
@@ -220,6 +203,32 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!61 &7325187297317161119
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4404811376452213675}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.56, y: 2.56}
+    newSize: {x: 15.01, y: 9.49}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.65, y: 0.12}
+  m_EdgeRadius: 0
 --- !u!212 &617737366153100663
 SpriteRenderer:
   m_ObjectHideFlags: 0
