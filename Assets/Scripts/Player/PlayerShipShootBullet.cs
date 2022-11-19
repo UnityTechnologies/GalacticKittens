@@ -40,33 +40,23 @@ public class PlayerShipShootBullet : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             m_PlayerShoot = true;
-            //if (IsServer)
-            //{
-            //    FireNewBulletServerRpc(m_cannonPosition.position);
-            //}
-            //else
-            //{
-
-            //}
-
         }
     }
 
     [ServerRpc]
     void FireNewBulletServerRpc(Vector3 clientCannonPosition)
     {
-        var startPosition = ((clientCannonPosition * 3) + m_NonAuthTargetPosition) * 0.25f + VisualOffset;
+        var startPosition = clientCannonPosition + VisualOffset;
         m_ShootBullet = true;
         FireBullet(startPosition);
     }
 
     private void SpawnNewBulletVfx()
     {
-        var objectSpawned = Instantiate(m_shootVfx);
-        // Set the FX's local space positioin to the cannon's local space position;
-        objectSpawned.transform.localPosition = m_cannonPosition.localPosition;
-        NetworkObject newGameObjectNetworkObject = objectSpawned.GetComponent<NetworkObject>();
+        NetworkObject newGameObjectNetworkObject = Instantiate(m_shootVfx).GetComponent<NetworkObject>();
         newGameObjectNetworkObject.Spawn(false);
+        // Set the FX's local space position to the cannon's local space position;
+        newGameObjectNetworkObject.transform.localPosition = m_cannonPosition.localPosition;
         // Parent the FX to the ship so it follows the ship
         newGameObjectNetworkObject.TrySetParent(GetComponent<NetworkObject>(), false);
     }
@@ -113,11 +103,6 @@ public class PlayerShipShootBullet : NetworkBehaviour
             m_ClientNetworkTransform.NonAuthoritativeTransformStasteUpdated += NonAuthoritativeTransformStateUpdated;
         }
 
-        //if (IsServer)// && !IsOwner)
-        //{
-        //    NetworkManager.NetworkTickSystem.Tick += Server_Tick;
-        //}
-
         base.OnNetworkSpawn();
     }
 
@@ -127,8 +112,6 @@ public class PlayerShipShootBullet : NetworkBehaviour
         m_ClientNetworkTransform.NonAuthoritativeTransformStasteUpdated -= NonAuthoritativeTransformStateUpdated;
         base.OnDestroy();
     }
-
-
 
     private void FireBullet(Vector3 startPosition)
     {
@@ -171,15 +154,13 @@ public class PlayerShipShootBullet : NetworkBehaviour
             if (IsServer)
             {
                 var targetPosition = ((m_PreviousTickPosition * 2) + m_cannonPosition.position) * 0.33333f;
-
-                //var targetPosition = (m_PreviousTickPosition + m_cannonPosition.position) * 0.5f;
                 targetPosition -= m_PlayerCurrentMotion;
                 m_ShootBullet = true;
                 FireBullet(targetPosition + VisualOffset);
             }
             else
             {
-                FireNewBulletServerRpc(m_cannonPosition.position + m_PlayerCurrentMotion);
+                FireNewBulletServerRpc(m_cannonPosition.position);
             }
             m_PlayerShoot = false;
         }
