@@ -33,7 +33,7 @@ public class MenuManager : MonoBehaviour
         // If you'd like to test without the simulated latency, just set all parameters below to zero(0).
         //
         // More information here:
-        // https://docs-multiplayer.unity3d.com/docs/tutorials/testing/testing_with_artificial_conditions#debug-builds
+        // https://docs-multiplayer.unity3d.com/netcode/current/tutorials/testing/testing_with_artificial_conditions#debug-builds
 #if DEVELOPMENT_BUILD && !UNITY_EDITOR
         NetworkManager.Singleton.GetComponent<Unity.Netcode.Transports.UTP.UnityTransport>().
             SetDebugSimulatorParameters(
