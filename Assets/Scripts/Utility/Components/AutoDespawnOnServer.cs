@@ -9,6 +9,13 @@ public class AutoDespawnOnServer : NetworkBehaviour
     [Header("Time alive in seconds (s)")]
     private float m_autoDestroyTime;
 
+    public override void OnNetworkSpawn()
+    {
+        // we only will De-spawn on the server, so no need to have this active on client-side
+        if (!IsServer)
+            enabled = false;
+    }
+
     private void Update()
     {
         if (!IsServer)
@@ -20,12 +27,5 @@ public class AutoDespawnOnServer : NetworkBehaviour
         {
             NetworkObjectDespawner.DespawnNetworkObject(NetworkObject);
         }
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        // we only will De-spawn on the server, so no need to have this active on client-side
-        if (!IsServer)
-            enabled = false;
     }
 }
