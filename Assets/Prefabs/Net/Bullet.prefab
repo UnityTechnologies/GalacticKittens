@@ -95,11 +95,11 @@ GameObject:
   - component: {fileID: 4404811376452213669}
   - component: {fileID: 4404811376452213668}
   - component: {fileID: 130659997503718199}
+  - component: {fileID: 4577849880838723}
   - component: {fileID: 8177041451475642574}
   - component: {fileID: 311270683999568434}
   - component: {fileID: 7325187297317161119}
   - component: {fileID: 617737366153100663}
-  - component: {fileID: 4577849880838723}
   - component: {fileID: 3793832842772979226}
   - component: {fileID: 5094607398634281736}
   m_Layer: 7
@@ -167,6 +167,18 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!114 &4577849880838723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4404811376452213675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8177041451475642574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,18 +293,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4577849880838723
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4404811376452213675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80d7c879794dfda4687da0e400131852, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3793832842772979226
 MonoBehaviour:
   m_ObjectHideFlags: 0
