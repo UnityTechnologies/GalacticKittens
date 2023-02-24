@@ -7,8 +7,16 @@ public class NetworkObjectSpawner
         GameObject prefab,
         bool destroyWithScene = true)
     {
+#if UNITY_EDITOR
+        if (!NetworkManager.Singleton.IsServer)
+        {
+            Debug.LogError("ERROR: Spawning not happening in the server!");
+        }
+#endif
+        // We're first instantiating the new instance in the host client
         GameObject newGameObject = Object.Instantiate(prefab, Vector3.zero, Quaternion.identity);
 
+        // Replicating that same new instance to all connected clients
         NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
         newGameObjectNetworkObject.Spawn(destroyWithScene);
 
@@ -20,8 +28,16 @@ public class NetworkObjectSpawner
         Vector3 position,
         bool destroyWithScene = true)
     {
+#if UNITY_EDITOR
+        if (!NetworkManager.Singleton.IsServer)
+        {
+            Debug.LogError("ERROR: Spawning not happening in the server!");
+        }
+#endif
+        // We're first instantiating the new instance in the host client
         GameObject newGameObject = Object.Instantiate(prefab, position, Quaternion.identity);
 
+        // Replicating that same new instance to all connected clients
         NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
         newGameObjectNetworkObject.Spawn(destroyWithScene);
 
@@ -40,8 +56,10 @@ public class NetworkObjectSpawner
             Debug.LogError("ERROR: Spawning not happening in the server!");
         }
 #endif
+        // We're first instantiating the new instance in the host client
         GameObject newGameObject = Object.Instantiate(prefab, position, rotation);
 
+        // Replicating that same new instance to all connected clients
         NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
         newGameObjectNetworkObject.Spawn(destroyWithScene);
 
@@ -54,8 +72,16 @@ public class NetworkObjectSpawner
         ulong newClientOwnerId,
         bool destroyWithScene = true)
     {
+#if UNITY_EDITOR
+        if (!NetworkManager.Singleton.IsServer)
+        {
+            Debug.LogError("ERROR: Spawning not happening in the server!");
+        }
+#endif
+        // We're first instantiating the new instance in the host client
         GameObject newGameObject = Object.Instantiate(prefab, position, Quaternion.identity);
 
+        // Replicating that same new instance to all connected clients
         NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
         newGameObjectNetworkObject.SpawnWithOwnership(newClientOwnerId, destroyWithScene);
 
