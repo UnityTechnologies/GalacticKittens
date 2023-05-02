@@ -592,6 +592,22 @@ PrefabInstance:
       propertyPath: NetworkConfig.NetworkPrefabs.Array.data[11].Prefab
       value: 
       objectReference: {fileID: 5848059733458262090, guid: fb788bc15d1791b44ba081e57e6dd30e, type: 3}
+    - target: {fileID: 5466296451182135794, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5466296451182135794, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 86403f1aa9e650f4a8eec800c0ca6743, type: 2}
+    - target: {fileID: 5466296451182135794, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 86403f1aa9e650f4a8eec800c0ca6743, type: 2}
+    - target: {fileID: 5466296451182135794, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4849ff22894208046a4122404143576a, type: 2}
     - target: {fileID: 5466296451182135796, guid: 568e754c531e50f95a5ae2f9065631c1, type: 3}
       propertyPath: m_Name
       value: NetworkManager
@@ -891,7 +907,7 @@ RectTransform:
   m_Pivot: {x: 0, y: 0}
 --- !u!95 &809242483
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -908,7 +924,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &853160614
 GameObject:
   m_ObjectHideFlags: 0
@@ -2042,7 +2059,7 @@ RectTransform:
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1903920712
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2059,7 +2076,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1903920713
 MonoBehaviour:
   m_ObjectHideFlags: 0
