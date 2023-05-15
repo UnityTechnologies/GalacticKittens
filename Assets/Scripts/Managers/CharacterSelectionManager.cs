@@ -98,15 +98,14 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
         if (!IsServer)
             return;
 
-        if (m_isTimerOn)
-        {
-            m_timer -= Time.deltaTime;
+        if (!m_isTimerOn)
+            return;
 
-            if (m_timer < 0f)
-            {
-                m_isTimerOn = false;
-                StartGame();
-            }
+        m_timer -= Time.deltaTime;
+        if (m_timer <= 0f)
+        {
+            m_isTimerOn = false;
+            StartGame();
         }
     }
 
@@ -430,7 +429,7 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
         for (int i = 0; i < m_playerStates.Length; i++)
         {
-            // Only changes the ones on clients that are not selected            
+            // Only changes the ones on clients that are not selected
             if (m_playerStates[i].playerState == ConnectionState.connected)
             {
                 if (m_playerStates[i].playerObject.CharSelected == characterSelected)
@@ -486,6 +485,8 @@ public class CharacterSelectionManager : SingletonNetwork<CharacterSelectionMana
 
         // All character data unselected
         RemoveSelectedStates();
+
+        m_playerStates[playerId].playerState = ConnectionState.disconnected;
     }
 
     public override void OnNetworkSpawn()
