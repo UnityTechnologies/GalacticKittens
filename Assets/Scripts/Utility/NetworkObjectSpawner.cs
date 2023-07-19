@@ -83,7 +83,7 @@ public class NetworkObjectSpawner
 
         // Replicating that same new instance to all connected clients
         NetworkObject newGameObjectNetworkObject = newGameObject.GetComponent<NetworkObject>();
-        newGameObjectNetworkObject.SpawnWithOwnership(newClientOwnerId, destroyWithScene);
+        newGameObjectNetworkObject.SpawnAsPlayerObject(newClientOwnerId, destroyWithScene);
 
         return newGameObject;
     }
