@@ -188,7 +188,7 @@ public class GameplayManager : SingletonNetwork<GameplayManager>
                 if (data.isSelected && data.clientId == client)
                 {
                     GameObject playerSpaceship =
-                        NetworkObjectSpawner.SpawnNewNetworkObjectChangeOwnershipToClient(
+                        NetworkObjectSpawner.SpawnNewNetworkObjectAsPlayerObject(
                             data.spaceshipPrefab,
                             m_shipStartingPositions[m_numberOfPlayerConnected].position,
                             data.clientId,
