@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerShipController : NetworkBehaviour, IDamagable
 {
-    public bool DoesTakeDamage = true;
+    public bool DoesTakeDamage = false;
     public NetworkVariable<int> health = new NetworkVariable<int>();
 
     [SerializeField]
@@ -40,7 +40,8 @@ public class PlayerShipController : NetworkBehaviour, IDamagable
     {
         if (IsOwner)
         {
-            if (!m_defenseShield.isShieldActive &&
+            if (DoesTakeDamage && 
+                !m_defenseShield.isShieldActive &&
                 (Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.LeftShift)))
             {
                 // Tell the server to activate the shield
